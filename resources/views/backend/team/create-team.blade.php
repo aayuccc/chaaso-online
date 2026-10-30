@@ -24,44 +24,7 @@
                     {{-- excerpt --}}
                     {{-- <x-backend.post.excerpt /> --}}
 
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="mb-2 d-flex align-content-center border-1 border-bottom">
-                                        <h4 class="header-title">Single Team Builder</h4>
-                                    </div>
-                                    <div class="tab-heading">
-                                        <ul class="nav nav-tabs mb-3">
-                                            <li class="nav-item">
-                                                <a href="#general" data-bs-toggle="tab"
-                                                    aria-expanded="{{ !request()->has('tab') || request()->query('tab') == 'general' ? 'true' : 'false' }}"
-                                                    class="nav-link {{ !request()->has('tab') || request()->query('tab') == 'general' ? 'active' : '' }}">
-                                                    General
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="tab-content">
-                                        <div class="tab-pane {{ !request()->has('tab') || request()->query('tab') == 'general' ? 'show active' : '' }}"
-                                            id="general">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="product-order">Order</label>
-                                                <input name="menu_order" type="number" class="form-control"
-                                                    id="product-order" value="0" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Designation</label>
-                                                <input type="text" name="designation" class="form-control" />
-                                            </div>
-                                        </div>
-                                        {{-- <div class="tab-pane {{ request()->query('tab') == 'best-seller' ? 'show active' : '' }}"
-                                            id="best-seller"> --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('backend.team.fields-team')
 
                     {{-- seo --}}
                     {{-- <x-backend.seo.seo-section /> --}}
@@ -73,7 +36,9 @@
 
                     {{-- feature image --}}
                     <x-backend.post.featured-image />
-
+                    {{-- departments --}}
+                    <x-backend.post.category title="Departments" name="departments[]" type="multiple"
+                        :categories="$departments" />
                 </div>
             </div>
         </form>

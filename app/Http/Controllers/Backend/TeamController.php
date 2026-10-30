@@ -70,9 +70,11 @@ class TeamController extends Controller
     public function create()
     {
         $type = $this->postRepository->encodeType($this->postType);
+        $departments = Category::where('type', 'department')->orderBy('name', 'ASC')->get();
 
         return view('backend.team.create-team', [
             'type' => $type,
+            'departments' => $departments,
         ]);
     }
 
@@ -90,6 +92,12 @@ class TeamController extends Controller
 
             $post = $this->postRepository->createPost($request, $this->postType);
 
+            // Assign departments
+            $departments = isset($request->departments) ? $request->departments : [];
+            if (!empty($departments)) {
+                $this->categoryPostRepository->assignCategory($post, $departments);
+            }
+
             $metaDatas =  $this->teamRepository->processMetaData($post, $request);
 
             foreach ($metaDatas as $key => $value) {
@@ -98,7 +106,7 @@ class TeamController extends Controller
 
             session()->flash('success', 'Team Created.');
 
-            return redirect()->route('backend.team.edit', $post->id);
+            return redirect()->route('backend.team.edit', $post->ulid);
 
         } catch (\Exception $e) {
 
@@ -111,12 +119,15 @@ class TeamController extends Controller
 
     public function edit($id)
     {
-        $post = Post::where('post_type', $this->postType)->findOrFail($id);
-
+        $post = Post::where('post_type', $this->postType)
+            ->where('ulid', $id)
+            ->firstOrFail();
+        $departments = Category::where('type', 'department')->orderBy('name', 'ASC')->get();
         $metaDatas = $this->postRepository->getMetaDatas($post);
 
         return view('backend.team.edit-team', [
             'post' => $post,
+            'departments' => $departments,
             'metaDatas' => $metaDatas,
         ]);
     }
@@ -133,6 +144,10 @@ class TeamController extends Controller
             if ( $data['status'] && $data['post'] ) {
 
                 $post = $data['post'];
+
+                // Assign departments
+                $departments = isset($request->departments) ? $request->departments : [];
+                $this->categoryPostRepository->assignCategory($post, $departments);
 
                 $metaDatas =  $this->teamRepository->processMetaData($post, $request);
 

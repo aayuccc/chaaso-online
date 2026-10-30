@@ -8,6 +8,7 @@ class CategoryType
     const AUTHOR = 'author';
     const TAG = 'tag';
     const NAV_MENU = 'nav_menu';
+    const DEPARTMENT = 'department';
 
     public static function toArray()
     {
@@ -16,6 +17,7 @@ class CategoryType
             self::AUTHOR,
             self::TAG,
             self::NAV_MENU,
+            self::DEPARTMENT,
         ];
     }
 }

@@ -166,7 +166,7 @@
                 </div>
             </li>
             
-            {{-- <li class="side-nav-item {{ request()->segment(2) === 'team' ? 'menuitem-active' : '' }}">
+            <li class="side-nav-item {{ request()->segment(2) === 'team' ? 'menuitem-active' : '' }}">
                 <a data-bs-toggle="collapse" href="#team" aria-expanded="false" aria-controls="team"
                     class="side-nav-link">
                     <i class="ri-team-line"></i>
@@ -183,9 +183,12 @@
                                 <a href="{{ route('backend.team.create') }}">Add New Team</a>
                             </li>
                         @endcan
+                        <li>
+                            <a href="{{ route('backend.department') }}">Departments</a>
+                        </li>
                     </ul>
                 </div>
-            </li> --}}
+            </li>
 
             <li
                 class="side-nav-item {{ request()->segment(3) === 'user' || request()->segment(2) === 'user' ? 'menuitem-active' : '' }}">

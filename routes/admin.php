@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\TrashController;
 use App\Http\Controllers\Backend\AuthorController;
@@ -92,7 +93,16 @@ Route::prefix('backend')->middleware(['auth', 'check.user.role'])->group(functio
     Route::get('post/tag/{id}/edit', [TagController::class, 'edit'])->name('backend.tag.edit');
     Route::post('post/tag/{id}/edit', [TagController::class, 'update'])->name('backend.tag.update');
     Route::get('post/tag/{id}/delete', [TagController::class, 'destroy'])->name('backend.tag.delete');
-
+    
+    // Department routing
+    Route::get('team/department', [DepartmentController::class, 'index'])->name('backend.department');
+    Route::post('team/department', [DepartmentController::class, 'store'])->name('backend.department.store');
+    Route::get('team/department/{id}/edit', [DepartmentController::class, 'edit'])->name('backend.department.edit');
+    Route::post('team/department/{id}/edit', [DepartmentController::class, 'update'])->name('backend.department.update');
+    Route::get('team/department/{id}/delete', [DepartmentController::class, 'destroy'])->name('backend.department.delete');
+    Route::get('team/department/{id}/restructure', [DepartmentController::class, 'restructure'])->name('backend.department.restructure');
+    Route::get('department/{id}/restore', [TrashController::class, 'restoreCategory'])->name('backend.department.restore');
+    Route::get('department/{id}/delete-permanent', [TrashController::class, 'permanentlyDeleteCategory'])->name('backend.department.delete.permanant');
     // post routing
     Route::get('post', [PostController::class, 'index'])->name('backend.post');
     Route::get('post/create', [PostController::class, 'create'])->name('backend.post.create');
