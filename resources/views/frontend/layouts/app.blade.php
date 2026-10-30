@@ -13,6 +13,15 @@
         'websiteName' => $websiteName,
         'headerLogo' => $headerLogo,
     ])
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('co-theme');
+                if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', t);
+            } catch (e) {}
+        })();
+    </script>
     @include('frontend.partials.css')
 
     {{-- schema --}}
@@ -32,7 +41,7 @@
     @endif
 </head>
 
-<body>
+<body class="co-body">
 
     @include('frontend.layouts.header')
 

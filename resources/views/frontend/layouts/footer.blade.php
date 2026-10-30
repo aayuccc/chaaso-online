@@ -4,7 +4,7 @@
       <div class="container co-container">
         <div class="co-ft-row">
           <div class="co-ft-brand">
-            <a href="index.html" class="co-ft-logo"><img src="assets/images/logo.png" alt="चासो अनलाइन" width="200" height="100"></a>
+            <a href="index.html" class="co-ft-logo"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन" width="200" height="100"></a>
             <div class="co-ft-info">
               <p class="co-ft-tag">समाचार, राजनीति, अर्थतन्त्रदेखि <em>मनोरञ्जनसम्म</em></p>
               <p class="co-ft-copy">© २०२६ Chaasoonline, सर्वाधिकार सुरक्षित <span class="co-ft-dot" aria-hidden="true"></span> <span class="co-ft-credit">Site by <a href="#">Webtech Nepal</a></span></p>

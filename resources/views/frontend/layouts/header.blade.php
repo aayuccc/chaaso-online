@@ -2,7 +2,7 @@
     <div class="container co-container">
       <div class="co-header-top">
         <div class="co-brand">
-          <a href="#" class="co-logo"><img src="assets/images/logo.png" alt="चासो अनलाइन" width="200" height="100"></a>
+          <a href="#" class="co-logo"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन" width="200" height="100"></a>
           <div class="co-header-date d-none d-lg-flex">
             <span class="co-date-day">सोमबार</span>
             <span class="co-date-full">असोज २६, २०८३</span>
@@ -11,7 +11,7 @@
 
         <div class="co-ad co-header-ad d-none d-lg-block" data-ad-slot="header">
           <a href="#" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><span
-              class="co-ad-badge">विज्ञापन</span><img class="co-cr-img" src="assets/images/ads/router.jpg" alt=""
+              class="co-ad-badge">विज्ञापन</span><img class="co-cr-img" src="{{ asset('assets/images/ads/router.jpg') }}" alt=""
               loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-wifi"></i> NovaNet
                 फाइबर</span><span class="co-cr-copy"><strong>३०० Mbps इन्टरनेट, मासिक रु. ९९९
                   मात्र</strong><small>निःशुल्क जडान · २४ घण्टा सेवा</small></span><span class="co-cr-cta">जडान
@@ -51,7 +51,7 @@
     <div class="container co-container">
       <nav class="co-nav" id="coMainNav">
         <a href="#" class="co-nav-logo" aria-label="चासो अनलाइन — गृहपृष्ठ" tabindex="-1"><img
-            src="assets/images/sticky-logo.png" alt="" width="67" height="66"></a>
+            src="{{ asset('assets/images/sticky-logo.png') }}" alt="" width="67" height="66"></a>
         <ul class="co-nav-list">
           <li><a href="#" class="co-nav-link co-nav-home is-active" aria-label="गृहपृष्ठ"><i
                 class="bi bi-house-door"></i></a></li>
@@ -159,7 +159,7 @@
   <!-- Mobile offcanvas menu -->
   <div class="offcanvas offcanvas-start co-offcanvas" tabindex="-1" id="coOffcanvas" aria-labelledby="coOffcanvasLabel">
     <div class="co-oc-head">
-      <a href="#" class="co-oc-logo" id="coOffcanvasLabel"><img src="assets/images/logo.png" alt="चासो अनलाइन"
+      <a href="#" class="co-oc-logo" id="coOffcanvasLabel"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन"
           width="200" height="100"></a>
       <button type="button" class="co-oc-close" data-bs-dismiss="offcanvas" aria-label="बन्द गर्नुहोस्"><i
           class="bi bi-x-lg"></i></button>

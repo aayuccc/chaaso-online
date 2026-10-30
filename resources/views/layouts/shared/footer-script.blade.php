@@ -31,8 +31,9 @@
         'closeButton': true,
         'toastClass': 'mt-5',
     }
-    $(document).ready(function() {
-        $('textarea.editor').summernote({
+    // Reusable so dynamically added textareas (e.g. repeater rows) can be initialized too
+    window.initEditor = function($elements) {
+        $elements.summernote({
             tabsize: 2,
             height: 400,
             toolbar: [
@@ -83,6 +84,10 @@
                 }
             });
         }
+    };
+
+    $(document).ready(function() {
+        initEditor($('textarea.editor'));
     });
 
     document.addEventListener('livewire:init', () => {
