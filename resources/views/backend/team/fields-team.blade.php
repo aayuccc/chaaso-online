@@ -32,42 +32,42 @@
                                     <div class="mb-3">
                                         <label for="facebook" class="form-label">Facebook URL</label>
                                         <input type="url" class="form-control" id="facebook" name="facebook"
-                                            value="{{ isset($settings['facebook']) ? $settings['facebook'] : '' }}" />
+                                            value="{{ isset($metaDatas['facebook']) && $metaDatas['facebook'] ? $metaDatas['facebook'] : '' }}" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="twitter" class="form-label">Twitter URL</label>
                                         <input type="url" class="form-control" id="twitter" name="twitter"
-                                            value="{{ isset($settings['twitter']) ? $settings['twitter'] : '' }}" />
+                                            value="{{ isset($metaDatas['twitter']) && $metaDatas['twitter'] ? $metaDatas['twitter'] : '' }}" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="instagram" class="form-label">Instagram URL</label>
                                         <input type="url" class="form-control" id="instagram" name="instagram"
-                                            value="{{ isset($settings['instagram']) ? $settings['instagram'] : '' }}" />
+                                            value="{{ isset($metaDatas['instagram']) && $metaDatas['instagram'] ? $metaDatas['instagram'] : '' }}" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="youtube" class="form-label">YouTube URL</label>
                                         <input type="url" class="form-control" id="youtube" name="youtube"
-                                            value="{{ isset($settings['youtube']) ? $settings['youtube'] : '' }}" />
+                                            value="{{ isset($metaDatas['youtube']) && $metaDatas['youtube'] ? $metaDatas['youtube'] : '' }}" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="tiktok" class="form-label">TikTok URL</label>
                                         <input type="url" class="form-control" id="tiktok" name="tiktok"
-                                            value="{{ isset($settings['tiktok']) ? $settings['tiktok'] : '' }}" />
+                                            value="{{ isset($metaDatas['tiktok']) && $metaDatas['tiktok'] ? $metaDatas['tiktok'] : '' }}" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="team_email" class="form-label">Email Address</label>
-                                        <input type="url" class="form-control" id="team_email" name="team_email"
-                                            value="{{ isset($settings['team_email']) ? $settings['team_email'] : '' }}" />
+                                        <input type="email" class="form-control" id="team_email" name="team_email"
+                                            value="{{ isset($metaDatas['team_email']) && $metaDatas['team_email'] ? $metaDatas['team_email'] : '' }}" />
                                     </div>
                                 </div>
                             </div>

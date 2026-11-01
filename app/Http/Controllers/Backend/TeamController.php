@@ -20,8 +20,9 @@ class TeamController extends Controller
     private $postType;
     private $postRepository;
     private $teamRepository;
+    private $categoryPostRepository;
 
-    public function __construct(PostRepository $postRepository, TeamRepository $teamRepository)
+    public function __construct(PostRepository $postRepository, TeamRepository $teamRepository, CategoryPostRepository $categoryPostRepository)
     {
         // $this->middleware('permission:create_team', ['only' => ['create','store']] );
         // $this->middleware('permission:read_team', ['only' => ['index']] );
@@ -31,6 +32,7 @@ class TeamController extends Controller
         $this->postType = 'team';
         $this->teamRepository = $teamRepository;
         $this->postRepository = $postRepository;
+        $this->categoryPostRepository = $categoryPostRepository;
     }
 
     public function index(Request $request)
@@ -106,7 +108,7 @@ class TeamController extends Controller
 
             session()->flash('success', 'Team Created.');
 
-            return redirect()->route('backend.team.edit', $post->ulid);
+            return redirect()->route('backend.team.edit', $post->id);
 
         } catch (\Exception $e) {
 
@@ -119,9 +121,7 @@ class TeamController extends Controller
 
     public function edit($id)
     {
-        $post = Post::where('post_type', $this->postType)
-            ->where('ulid', $id)
-            ->firstOrFail();
+        $post = Post::where('post_type', $this->postType)->findOrFail($id);
         $departments = Category::where('type', 'department')->orderBy('name', 'ASC')->get();
         $metaDatas = $this->postRepository->getMetaDatas($post);
 

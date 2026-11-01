@@ -56,8 +56,8 @@ class DepartmentDataTable extends Component
             $html .= '<td>';
             $html .= '<span class="fw-600">' . str_repeat('— ', $level) . $category->name . '</span>';
             $html .= '<div class="row-action">';
-            $html .= '<span class="edit"><a href="' . route('backend.department.edit', $category->ulid) . '" class="text-primary">Edit</a></span>';
-            $html .= '<span class="delete"> | <a href="' . route('backend.department.delete', $category->ulid) . '" onclick="return confirm(\'Are you sure you want to delete?\');" class="text-danger">Delete</a></span>';
+            $html .= '<span class="edit"><a href="' . route('backend.department.edit', $category->id) . '" class="text-primary">Edit</a></span>';
+            $html .= '<span class="delete"> | <a href="' . route('backend.department.delete', $category->id) . '" onclick="return confirm(\'Are you sure you want to delete?\');" class="text-danger">Delete</a></span>';
             $html .= '<span class="restructure"> | <a href="' . $this->siteURL . '/department/' . $category->slug . '" class="text-primary" target="_blank">View</a></span>';
             $html .= '</div>';
             $html .= '</td>';

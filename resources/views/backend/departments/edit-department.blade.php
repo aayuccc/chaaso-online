@@ -14,7 +14,7 @@
                 <div class="col-12">
                     <div class="page-title-box">
                         <h4 class="page-title">Edit Department</h4>
-                        <form method="POST" action="{{ route('backend.department.update', $category->ulid) }}">
+                        <form method="POST" action="{{ route('backend.department.update', $category->id) }}">
                             @csrf
                             <div class="row">
                                 <div class="col-md-9">

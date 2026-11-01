@@ -13,11 +13,16 @@ class PageRepository
     use ImageFieldTrait;
 
     // define template repository as per template name same as in TemplateType.php enums other wise not working
-    protected $homeRepository, $blogRepository, $contactRepository, $aboutRepository, $searchRepository;
+    protected $homeRepository, $blogRepository, $contactRepository, $aboutRepository, $searchRepository, $teamsRepository;
 
-    public function __construct(HomeRepository $homeRepository)
+    public function __construct(HomeRepository $homeRepository, AboutRepository $aboutRepository,ContactRepository $contactRepository,TeamsRepository $teamsRepository)
     {
-        $this->homeRepository = $homeRepository;;
+        $this->homeRepository = $homeRepository;
+        $this->aboutRepository = $aboutRepository;
+        $this->contactRepository = $contactRepository;
+        $this->teamsRepository = $teamsRepository;
+        // $this->blogRepository = $blogRepository;
+        // $this->searchRepository = $searchRepository;
     }
 
     // insert or update meta data

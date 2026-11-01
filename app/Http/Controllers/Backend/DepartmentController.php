@@ -77,7 +77,7 @@ class DepartmentController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $category = Category::where('ulid', $id)->orWhere('id', $id)->where('type', $this->categoryType)->firstOrFail();
+        $category = Category::where('id', $id)->where('type', $this->categoryType)->firstOrFail();
 
         $metaDatas = $this->categoryRepository->getMetaDatas($category);
 
@@ -103,7 +103,7 @@ class DepartmentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $category = Category::where('ulid', $id)->orWhere('id', $id)->firstOrFail();
+        $category = Category::where('id', $id)->where('type', $this->categoryType)->firstOrFail();
 
         $request->validate([
             'name' => 'required|unique:categories,name,' . $category->id,
@@ -117,7 +117,7 @@ class DepartmentController extends Controller
                 $this->categoryRepository->storeMetaData($category, $request);
 
                 session()->flash('success', 'Department Updated.');
-                return redirect()->route('backend.department.edit', $category->ulid);
+                return redirect()->route('backend.department.edit', $category->id);
             } else {
                 session()->flash('error', 'Error While Updating: Unable to update the department.');
             }

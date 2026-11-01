@@ -8,7 +8,7 @@ class TemplateType
     const HOME = 'home';
     const ABOUT = 'about';
     const CONTACT = 'contact';
-    const TEAM = 'team';
+    const TEAMS = 'teams';
 
     public static function toArray()
     {
@@ -17,7 +17,7 @@ class TemplateType
             self::HOME,
             self::ABOUT,
             self::CONTACT,
-            self::TEAM,
+            self::TEAMS,
         ];
     }
 
@@ -30,7 +30,7 @@ class TemplateType
         $keyValuePairs['Home'] = self::HOME;
         $keyValuePairs['About'] = self::ABOUT;
         $keyValuePairs['Contact'] = self::CONTACT;
-        $keyValuePairs['Team'] = self::TEAM;
+        $keyValuePairs['Teams'] = self::TEAMS;
 
         // Extract 'Default' and sort the remaining keys
         $defaultValue = ['Default' => $keyValuePairs['Default']];

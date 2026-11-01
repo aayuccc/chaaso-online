@@ -110,7 +110,12 @@ Route::prefix('backend')->middleware(['auth', 'check.user.role'])->group(functio
     Route::get('post/{id}/edit', [PostController::class, 'edit'])->name('backend.post.edit');
     Route::post('post/{id}/edit', [PostController::class, 'update'])->name('backend.post.update');
     Route::get('post/{id}/delete', [PostController::class, 'destroy'])->name('backend.post.delete');
-
+    // team routing
+    Route::get('team', [TeamController::class, 'index'])->name('backend.team.index');
+    Route::get('team/create', [TeamController::class, 'create'])->name('backend.team.create');
+    Route::post('team', [TeamController::class, 'store'])->name('backend.team.store');
+    Route::get('team/{id}/edit', [TeamController::class, 'edit'])->name('backend.team.edit');
+    Route::post('team/{id}/edit', [TeamController::class, 'update'])->name('backend.team.update');
     // soft deletes for posts
     Route::get('{type}/trash', [TrashController::class, 'index'])->name('backend.post.trash');
     Route::get('post/{id}/restore', [TrashController::class, 'restore'])->name('backend.post.restore');
