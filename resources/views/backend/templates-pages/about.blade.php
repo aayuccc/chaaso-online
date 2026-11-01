@@ -57,9 +57,68 @@
                                     value="{{ isset($metaDatas['registration_number']) ? $metaDatas['registration_number'] : '' }}" />
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="col-6">
                             <label class="form-label">Editor's Quote</label>
                             <textarea name="editor_quote" class="form-control" rows="2">{{ $metaDatas['editor_quote'] ?? '' }}</textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Editor's Image</label>
+                            <span>(Recommended Size : 270 x 255 px)</span>
+                            <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="editor_image" data-select="single">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
+                                </div>
+                                <div class="form-control file-amount">Choose File</div>
+                            </div>
+                            <div class="preview-closer">
+                                @php
+                                    $storyImageId = isset($metaDatas['editor_image'])
+                                        ? $metaDatas['editor_image']
+                                        : null;
+                                    $storyImage = $storyImageId
+                                        ? \App\Helpers\MediaHelper::getModel()->where('id', $storyImageId)->first()
+                                        : null;
+                                @endphp
+                                @if ($storyImage)
+                                    <input type="hidden" id="editor_image" name="editor_image"
+                                        class="selected-files" value="{{ $storyImageId }}" />
+                                    <div id="editor_image_select" class="mt-2">
+                                        <div class="file-preview box sm">
+                                            <div
+                                                class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                                <div
+                                                    class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                                    <img class="img-fit"
+                                                        src="{{ asset('storage/' . $storyImage->file_name) }}"
+                                                        alt="" />
+                                                </div>
+                                                <div class="col body">
+                                                    <h6 class="d-flex">
+                                                        <span
+                                                            class="text-truncate title">{{ $storyImage->file_original_name }}</span>
+                                                        <span
+                                                            class="flex-shrink-0 ext">.{{ $storyImage->extension }}</span>
+                                                    </h6>
+                                                    <p>{{ \App\Helpers\MediaHelper::getKBorMB($storyImage->file_size) }}
+                                                    </p>
+                                                </div>
+                                                <div class="remove">
+                                                    <button data-id="{{ $storyImage->id }}"
+                                                        data-slug="editor_image"
+                                                        class="btn btn-sm btn-link remove-attachment" type="button">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <input type="hidden" id="editor_image" name="editor_image"
+                                        class="selected-files" value="" />
+                                    <div id="editor_image_select"></div>
+                                @endif
+                            </div>
+
                         </div>
                     </div>
                     <div class="row">
@@ -331,10 +390,10 @@
                                                         <td>
                                                             <select name="values_step[{{ $index }}][icon]" class="form-control">
                                                                 <option value="">Select Icon</option>
-                                                                <option value="shield-check" {{ ($item['icon'] ?? '') == 'shield-check' ? 'selected' : '' }}>Shield Check</option>
-                                                                <option value="symmetry-vertical" {{ ($item['icon'] ?? '') == 'symmetry-vertical' ? 'selected' : '' }}>Symmetry Vertical</option>
-                                                                <option value="people" {{ ($item['icon'] ?? '') == 'people' ? 'selected' : '' }}>People</option>
-                                                                <option value="arrow-repeat" {{ ($item['icon'] ?? '') == 'arrow-repeat' ? 'selected' : '' }}>Arrow Repeat</option>
+                                                                <option value="broadcast" {{ ($item['icon'] ?? '') == 'broadcast' ? 'selected' : '' }}>Broadcast</option>
+                                                                <option value="search" {{ ($item['icon'] ?? '') == 'search' ? 'selected' : '' }}>Search</option>
+                                                                <option value="pencil-square" {{ ($item['icon'] ?? '') == 'pencil-square' ? 'selected' : '' }}>Pencil</option>
+                                                                <option value="send-check" {{ ($item['icon'] ?? '') == 'send-check' ? 'selected' : '' }}>Send Message</option>
                                                             </select>
                                                         </td>
 

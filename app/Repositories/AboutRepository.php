@@ -11,7 +11,7 @@ class AboutRepository
         $metaDatas['editor_designation'] = isset( $request->editor_designation ) ? $request->editor_designation : NULL;
         $metaDatas['registration_number'] = isset( $request->registration_number ) ? $request->registration_number : NULL;
         $metaDatas['editor_quote'] = isset( $request->editor_quote ) ? $request->editor_quote : NULL;
-
+        $metaDatas['editor_image'] = isset($request->editor_image) ? $request->editor_image : NULL;
         $metaDatas['first_additional_image'] = isset($request->first_additional_image) ? $request->first_additional_image : NULL;
         $metaDatas['second_additional_image'] = isset($request->second_additional_image) ? $request->second_additional_image : NULL;
 

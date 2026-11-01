@@ -5,78 +5,117 @@
     <!-- ================= PAGE HEADER ================= -->
     @include('frontend.common.banner')
 
+    @php
+      $featured_image = $metaData['featured_image'] ?? '';
+      $content = $post->post_content;
+      $about_editor = $metaData['about_editor'] ?? ($post->post_title ?? '');
+      $editor_designation = $metaData['editor_designation'] ?? ($post->post_title ?? '');
+      $editor_image = $metaData['editor_image'] ?? null;
+      $first_additional_image = $metaData['first_additional_image'] ?? null;
+      $second_additional_image = $metaData['second_additional_image'] ?? null;
+      $featured_media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
+      $first_media = $first_additional_image ? MediaHelper::getImageById($first_additional_image) : null;
+      $second_media = $second_additional_image ? MediaHelper::getImageById($second_additional_image) : null;
+      $editor_media = $editor_image ? MediaHelper::getImageById($editor_image) : null;
+      $features = $metaData['feature'];
+      $featuresArray = $features ? (is_string($features) ? unserialize($features) : $features) : [];
+    @endphp
+    @if ($about_editor ||$editor_designation|| $featured_image || $content|| $first_additional_image || $second_additional_image || !empty($featuresArray) || $editor_image)
     <!-- ================= STORY ================= -->
     <section class="co-section">
       <div class="container co-container">
         <div class="co-ab-story">
+          @if($post->post_content)
           <div class="co-ab-story-text">
             <span class="co-pg-eyebrow"><i class="bi bi-bookmark-star"></i> हाम्रो कथा</span>
             <h2 class="co-pg-lead">समाचार केवल सूचना होइन, <em>सरोकार</em> हो।</h2>
-            <p>चासो अनलाइन २०७७ सालमा सूचना विभागमा दर्ता भई सुरु भएको डिजिटल समाचार पोर्टल हो। राजनीति, अर्थतन्त्र, समाज, स्वास्थ्य, प्रविधि, खेलकुददेखि मनोरञ्जनसम्मका विषयलाई हामी छिटो, भरपर्दो र सरल भाषामा प्रस्तुत गर्छौं।</p>
-            <p>काठमाडौंको नयाँ बानेश्वरस्थित न्युजरुमबाट सञ्चालित हाम्रो टिम देशभरका संवाददातासँग मिलेर गाउँदेखि सिंहदरबारसम्मका आवाजलाई समान महत्त्व दिन्छ। हाम्रो लक्ष्य स्पष्ट छ — पाठकलाई सही सूचना दिनु र सार्वजनिक बहसलाई स्वस्थ बनाउनु।</p>
+            {!! $post->post_content !!}
+            @if(!empty($editor_designation) || !empty($about_editor) || $editor_media)
             <div class="co-ab-sign">
-              <img src="assets/images/np/woman1.jpg" alt="" width="52" height="52" loading="lazy">
+              <img src="{{ asset('storage/' . $editor_media->file_name) }}" alt="" width="52" height="52" loading="lazy">
               <div>
-                <strong>Amrita Bhandari</strong>
-                <span>प्रधान सम्पादक</span>
+                <strong>{{$about_editor}}</strong>
+                <span>{{$editor_designation}}</span>
               </div>
             </div>
+            @endif
           </div>
+          @endif
+          @if ($featured_media || $first_media || $second_media)
           <div class="co-ab-mosaic">
-            <div class="co-img co-ab-mosaic-a"><img src="assets/images/np/team.jpg" alt="चासो अनलाइनको न्युजरुम" loading="lazy"></div>
-            <div class="co-img co-ab-mosaic-b"><img src="assets/images/np/press.jpg" alt="पत्रकार सम्मेलनमा रिपोर्टिङ" loading="lazy"></div>
-            <div class="co-img co-ab-mosaic-c"><img src="assets/images/np/conf.jpg" alt="सम्पादकीय बैठक" loading="lazy"></div>
+            @if ($featured_media)
+            <div class="co-img co-ab-mosaic-a"><img src="{{ asset('storage/' . $featured_media->file_name) }}" alt="चासो अनलाइनको न्युजरुम" loading="lazy"></div>
+            @endif
+            @if ($first_media)
+            <div class="co-img co-ab-mosaic-b"><img src="{{ asset('storage/' . $first_media->file_name) }}" alt="पत्रकार सम्मेलनमा रिपोर्टिङ" loading="lazy"></div>
+            @endif
+            @if ($second_media)
+            <div class="co-img co-ab-mosaic-c"><img src="{{ asset('storage/' . $second_media->file_name) }}" alt="सम्पदकीय बैठक" loading="lazy"></div>
+            @endif
             <div class="co-ab-badge">
               <i class="bi bi-patch-check-fill"></i>
               <span><small>सूचना विभाग दर्ता नं.</small>2423/077-78</span>
             </div>
           </div>
+          @endif
         </div>
-
+        @if($features)
         <ul class="co-ab-figures mt-5">
-          <li><strong>२४/७</strong><span>लगातार अपडेट हुने न्युजरुम</span></li>
-          <li><strong>७७</strong><span>जिल्लासम्म पुग्ने संवाददाता सञ्जाल</span></li>
-          <li><strong>१०+</strong><span>विषयगत डेस्क र श्रेणी</span></li>
-          <li><strong>१००%</strong><span>प्रकाशनअघि तथ्य जाँच</span></li>
+          @foreach ($featuresArray as $index => $feature)
+            <li><strong>{{$feature['number']}}</strong><span>{{$feature['title']}}</span></li>
+          @endforeach
         </ul>
+        @endif
       </div>
     </section>
+    @endif
 
+    @php
+        $values_features = $metaData['values_feature'] ?? [];
+
+        $values_featuresArray = is_string($values_features)
+            ? (unserialize($values_features) ?: [])
+            : $values_features;
+    @endphp
+
+    @if (!empty($values_featuresArray) && is_array($values_featuresArray))
+    
     <!-- ================= VALUES ================= -->
     <section class="co-section">
-      <div class="container co-container">
-        <div class="co-section-head">
-          <h2 class="co-section-title">हाम्रा मूल्य</h2><span class="co-hatch"></span>
-        </div>
-        <div class="co-ab-values">
-          <article class="co-ab-value">
-            <span class="co-ab-value-no">०१</span>
-            <span class="co-pg-ic"><i class="bi bi-shield-check"></i></span>
-            <h3>तथ्यमा आधारित</h3>
-            <p>हरेक समाचार कम्तीमा दुई स्वतन्त्र स्रोतबाट पुष्टि गरेर मात्र प्रकाशन गरिन्छ।</p>
-          </article>
-          <article class="co-ab-value">
-            <span class="co-ab-value-no">०२</span>
-            <span class="co-pg-ic"><i class="bi bi-symmetry-vertical"></i></span>
-            <h3>निष्पक्ष र सन्तुलित</h3>
-            <p>कुनै दल, समूह वा व्यापारिक स्वार्थप्रति झुकाव नराखी सबै पक्षको कुरा समेटिन्छ।</p>
-          </article>
-          <article class="co-ab-value">
-            <span class="co-ab-value-no">०३</span>
-            <span class="co-pg-ic"><i class="bi bi-people"></i></span>
-            <h3>जनसरोकार पहिलो</h3>
-            <p>सनसनी होइन, पाठकको दैनिक जीवनसँग जोडिएका विषयलाई प्राथमिकता दिइन्छ।</p>
-          </article>
-          <article class="co-ab-value">
-            <span class="co-ab-value-no">०४</span>
-            <span class="co-pg-ic"><i class="bi bi-arrow-repeat"></i></span>
-            <h3>पारदर्शी सुधार</h3>
-            <p>गल्ती भए खुला रूपमा स्वीकार गरी सुधार र स्पष्टीकरण सार्वजनिक गरिन्छ।</p>
-          </article>
-        </div>
-      </div>
-    </section>
+        <div class="container co-container">
+            <div class="co-section-head">
+                <h2 class="co-section-title">हाम्रा मूल्य</h2>
+                <span class="co-hatch"></span>
+            </div>
 
+            <div class="co-ab-values">
+                @foreach ($values_featuresArray as $index => $values_feature)
+                    <article class="co-ab-value">
+                        <span class="co-ab-value-no">
+                            {{ sprintf('%02d', $index + 1) }}
+                        </span>
+
+                        <span class="co-pg-ic">
+                            <i class="bi bi-{{ $values_feature['icon'] ?? '' }}"></i>
+                        </span>
+
+                        {!! $values_feature['description'] ?? '' !!}
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
+    @php
+        $values_steps = $metaData['values_step'] ?? [];
+
+        $values_stepsArray = is_string($values_steps)
+            ? (unserialize($values_steps) ?: [])
+            : $values_steps;
+    @endphp
+
+    @if (!empty($values_stepsArray) && is_array($values_stepsArray))
     <!-- ================= EDITORIAL PROCESS ================= -->
     <section class="co-section">
       <div class="container co-container">
@@ -84,29 +123,16 @@
           <h2 class="co-section-title">समाचार कसरी बन्छ?</h2><span class="co-hatch"></span>
         </div>
         <ol class="co-ab-steps">
+          @foreach ($values_stepsArray as $index => $values_step)
           <li>
-            <span class="co-ab-step-dot"><i class="bi bi-broadcast"></i></span>
-            <h3>सूचना संकलन</h3>
-            <p>संवाददाता, पाठकका टिप र आधिकारिक स्रोतबाट सूचना आउँछ।</p>
+            <span class="co-ab-step-dot"><i class="bi bi-{{$values_step['icon'] ?? ''}}"></i></span>
+            {!!$values_step['description'] ?? ''!!}
           </li>
-          <li>
-            <span class="co-ab-step-dot"><i class="bi bi-search"></i></span>
-            <h3>तथ्य जाँच</h3>
-            <p>स्रोत, तथ्यांक र तस्बिरको सत्यता छुट्टै डेस्कले पुष्टि गर्छ।</p>
-          </li>
-          <li>
-            <span class="co-ab-step-dot"><i class="bi bi-pencil-square"></i></span>
-            <h3>सम्पादन</h3>
-            <p>भाषा, सन्दर्भ र सन्तुलन सम्पादकले दोस्रो पटक हेर्छन्।</p>
-          </li>
-          <li>
-            <span class="co-ab-step-dot"><i class="bi bi-send-check"></i></span>
-            <h3>प्रकाशन</h3>
-            <p>स्पष्ट शीर्षक र स्रोत उल्लेखसहित पाठकसम्म पुग्छ।</p>
-          </li>
+          @endforeach
         </ol>
       </div>
     </section>
+    @endif
 
     <!-- ================= COVERAGE ================= -->
     <section class="co-section">
@@ -133,21 +159,30 @@
     <section class="co-section">
       <div class="container co-container">
         <div class="co-ab-close">
+          @php
+            $editor_quote = $metaData['editor_quote'] ?? ($post->post_title ?? '');
+          @endphp
+          @if($editor_image ||$editor_designation || $about_editor || $editor_quote)
           <blockquote class="co-quote-card co-ab-quote">
             <i class="bi bi-quote" aria-hidden="true"></i>
-            <p>हामी पाठकको विश्वासलाई सबैभन्दा ठूलो पूँजी मान्छौं। छिटो हुनु राम्रो हो, तर सही हुनु अनिवार्य हो।</p>
+            <p>{{$editor_quote}}</p>
             <cite class="co-ab-cite">
-              <img src="assets/images/np/woman1.jpg" alt="" width="44" height="44" loading="lazy">
-              <span><strong>Amrita Bhandari</strong>प्रधान सम्पादक, चासो अनलाइन</span>
+              @if($editor_media)
+                <img src="{{ asset('storage/' . $editor_media->file_name) }}" alt="" width="44" height="44" loading="lazy">
+              @else
+                <img src="assets/images/np/woman1.jpg" alt="" width="44" height="44" loading="lazy">
+              @endif
+              <span><strong>{{ $about_editor }}</strong>{{$editor_designation}}</span>
             </cite>
           </blockquote>
+          @endif
           <div class="co-pg-links">
-            <a href="team.html" class="co-pg-link">
+            <a href="{{url('/teams/')}}" class="co-pg-link">
               <span class="co-pg-ic"><i class="bi bi-people"></i></span>
               <span><strong>हाम्रो टिम</strong><small>न्युजरुमका अनुहारहरूलाई चिन्नुहोस्</small></span>
               <i class="bi bi-arrow-right"></i>
             </a>
-            <a href="contact.html" class="co-pg-link">
+            <a href="{{url('/contact/')}}" class="co-pg-link">
               <span class="co-pg-ic"><i class="bi bi-chat-dots"></i></span>
               <span><strong>सम्पर्क</strong><small>समाचार टिप, विज्ञापन वा सुझाव पठाउनुहोस्</small></span>
               <i class="bi bi-arrow-right"></i>
