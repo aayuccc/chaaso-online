@@ -26,7 +26,7 @@
       <div class="container co-container">
         <article class="co-tm-lead">
           @if ($featured_media)
-          <div class="co-img co-tm-lead-photo"><img src="{{ asset('storage/' . $featured_media->file_name) }}" alt="{{$chiefeditor_name}}"></div>
+          <div class="co-img co-tm-lead-photo"><img src="{{ asset($featured_media->file_name) }}" alt="{{$chiefeditor_name}}"></div>
           @endif
           <div class="co-tm-lead-body">
             <span class="co-pg-eyebrow"><i class="bi bi-award"></i> नेतृत्व</span>
@@ -100,7 +100,7 @@
           @endphp
           <article class="co-tm-card" data-desk="{{ $teamDesks }}">
             @if ($teamMedia)
-            <div class="co-img co-tm-photo"><img src="{{ asset('storage/' . $teamMedia->file_name) }}" alt="{{ $team->post_title }}" loading="lazy"></div>
+            <div class="co-img co-tm-photo"><img src="{{ asset($teamMedia->file_name) }}" alt="{{ $team->post_title }}" loading="lazy"></div>
             @else
             <div class="co-tm-photo co-tm-initials" aria-hidden="true"><span>{{ $teamInitials }}</span></div>
             @endif

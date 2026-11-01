@@ -32,7 +32,7 @@
             {!! $post->post_content !!}
             @if(!empty($editor_designation) || !empty($about_editor) || $editor_media)
             <div class="co-ab-sign">
-              <img src="{{ asset('storage/' . $editor_media->file_name) }}" alt="" width="52" height="52" loading="lazy">
+              <img src="{{ asset($editor_media->file_name) }}" alt="" width="52" height="52" loading="lazy">
               <div>
                 <strong>{{$about_editor}}</strong>
                 <span>{{$editor_designation}}</span>
@@ -44,13 +44,13 @@
           @if ($featured_media || $first_media || $second_media)
           <div class="co-ab-mosaic">
             @if ($featured_media)
-            <div class="co-img co-ab-mosaic-a"><img src="{{ asset('storage/' . $featured_media->file_name) }}" alt="चासो अनलाइनको न्युजरुम" loading="lazy"></div>
+            <div class="co-img co-ab-mosaic-a"><img src="{{ asset($featured_media->file_name) }}" alt="चासो अनलाइनको न्युजरुम" loading="lazy"></div>
             @endif
             @if ($first_media)
-            <div class="co-img co-ab-mosaic-b"><img src="{{ asset('storage/' . $first_media->file_name) }}" alt="पत्रकार सम्मेलनमा रिपोर्टिङ" loading="lazy"></div>
+            <div class="co-img co-ab-mosaic-b"><img src="{{ asset($first_media->file_name) }}" alt="पत्रकार सम्मेलनमा रिपोर्टिङ" loading="lazy"></div>
             @endif
             @if ($second_media)
-            <div class="co-img co-ab-mosaic-c"><img src="{{ asset('storage/' . $second_media->file_name) }}" alt="सम्पदकीय बैठक" loading="lazy"></div>
+            <div class="co-img co-ab-mosaic-c"><img src="{{ asset($second_media->file_name) }}" alt="सम्पदकीय बैठक" loading="lazy"></div>
             @endif
             <div class="co-ab-badge">
               <i class="bi bi-patch-check-fill"></i>
@@ -168,7 +168,7 @@
             <p>{{$editor_quote}}</p>
             <cite class="co-ab-cite">
               @if($editor_media)
-                <img src="{{ asset('storage/' . $editor_media->file_name) }}" alt="" width="44" height="44" loading="lazy">
+                <img src="{{ asset($editor_media->file_name) }}" alt="" width="44" height="44" loading="lazy">
               @else
                 <img src="assets/images/np/woman1.jpg" alt="" width="44" height="44" loading="lazy">
               @endif
