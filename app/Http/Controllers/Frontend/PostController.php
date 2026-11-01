@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Post;
+use App\Models\Category;
+use App\Enums\CategoryType;
+use App\Enums\TemplateType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PostRepository;
@@ -29,16 +32,51 @@ class PostController extends Controller
                 $pageTemplate = $metaDatas['page_template'];
                 $viewName = "frontend.pages.$pageTemplate";
 
-                return view($viewName, [
+                $data = [
                     'post' => $post,
                     'metaData' => $metaDatas,
-                ]);
+                ];
+
+                if ( $pageTemplate === TemplateType::TEAMS ) {
+                    $data = array_merge($data, $this->getTeamsData());
+                }
+
+                return view($viewName, $data);
 
             }
         }
         else {
             abort(404, 'Not Found');
         }
+    }
+
+    // published team members and the departments that have at least one of them
+    private function getTeamsData()
+    {
+        $teams = Post::PostType('team')
+            ->PostStatus('publish')
+            ->with([
+                'postMeta',
+                'categories' => function ($query) {
+                    $query->where('type', CategoryType::DEPARTMENT);
+                },
+            ])
+            ->orderBy('menu_order', 'ASC')
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        $departments = Category::where('type', CategoryType::DEPARTMENT)
+            ->whereHas('posts', function ($query) {
+                $query->where('post_type', 'team')->where('post_status', 'publish');
+            })
+            ->orderBy('menu_order', 'ASC')
+            ->orderBy('name', 'ASC')
+            ->get();
+
+        return [
+            'teams' => $teams,
+            'departments' => $departments,
+        ];
     }
 
     public function newsIndex($year, $month, $id)

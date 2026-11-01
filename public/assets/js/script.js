@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         let shown = 0;
         teamGrid.querySelectorAll(".co-tm-card").forEach((card) => {
-          const match = desk === "all" || card.dataset.desk === desk;
+          const match = desk === "all" || card.dataset.desk.split(" ").includes(desk);
           card.hidden = !match;
           if (match) shown++;
         });

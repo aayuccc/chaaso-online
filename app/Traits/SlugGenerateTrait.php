@@ -14,17 +14,17 @@ trait SlugGenerateTrait
         $slug = Str::slug(strtolower($slug));
 
         // Check if the form-provided slug exists in the database
-        // if (empty($slug) && !$model->where('slug', $slug)->exists()) {
+        // if (empty($slug) && !$this->slugExists($model, $slug)) {
         if ( empty($slug) ) {
 
             $slug = Str::slug($name);
 
-            while ($model->where('slug', $slug)->exists()) {
+            while ($this->slugExists($model, $slug)) {
                 $slug = $this->generateUniqueSlugCreate($slug, $model);
             }
         }
         else {
-            while ($model->where('slug', $slug)->exists()) {
+            while ($this->slugExists($model, $slug)) {
                 $slug = $this->generateUniqueSlugCreate($slug, $model);
             }
         }
@@ -52,7 +52,7 @@ trait SlugGenerateTrait
         $nextSuffix = $currentSuffix + 1;
 
         // Check if the next suffix is already taken
-        while ($model->where('slug', $baseSlug . '-' . $nextSuffix)->exists()) {
+        while ($this->slugExists($model, $baseSlug . '-' . $nextSuffix)) {
             $nextSuffix++;
         }
 
@@ -76,7 +76,7 @@ trait SlugGenerateTrait
         }
 
         // Check if the form-provided slug exists in the database
-        if ( $payload::where('slug', $slug)->exists() ) {
+        if ( $this->slugExists($payload, $slug) ) {
             $slug = $this->generateUniqueSlug($slug, $payload);
         }
 
@@ -103,11 +103,23 @@ trait SlugGenerateTrait
         $nextSuffix = $currentSuffix + 1;
 
         // Check if the next suffix is already taken
-        while ($payload::where('slug', $baseSlug . '-' . $nextSuffix)->exists()) {
+        while ($this->slugExists($payload, $baseSlug . '-' . $nextSuffix)) {
             $nextSuffix++;
         }
 
         return $nextSuffix;
+    }
+
+    // check slug against all rows, including soft deleted ones (unique index covers them too)
+    private function slugExists($model, $slug)
+    {
+        $query = $model->newQuery();
+
+        if ( method_exists($query, 'withTrashed') ) {
+            $query->withTrashed();
+        }
+
+        return $query->where('slug', $slug)->exists();
     }
 
 }

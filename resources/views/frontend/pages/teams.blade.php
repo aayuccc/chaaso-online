@@ -5,33 +5,70 @@
     <!-- ================= PAGE HEADER ================= -->
     @include('frontend.common.banner')
 
+    @php
+      $featured_image = $metaData['featured_image'] ?? '';
+      $featured_media = $featured_image ? MediaHelper::getImageById($featured_image) : null;
+      $content = $post->post_content;
+      $chiefeditor_name = $metaData['chiefeditor_name'] ?? ($post->post_title ?? '');
+      $chiefeditor_exp = $metaData['chiefeditor_exp'] ?? ($post->post_title ?? '');
+      $chiefeditor_topic = $metaData['chiefeditor_topic'] ?? ($post->post_title ?? '');
+      $chiefeditor_lang = $metaData['chiefeditor_lang'] ?? ($post->post_title ?? '');
+      $facebook = $metaData['facebook'] ?? ($post->post_title ?? '');
+      $instagram = $metaData['instagram'] ?? ($post->post_title ?? '');
+      $twitter = $metaData['twitter'] ?? ($post->post_title ?? '');
+      $youtube = $metaData['youtube'] ?? ($post->post_title ?? '');
+      $tiktok = $metaData['tiktok'] ?? ($post->post_title ?? '');
+      $team_email = $metaData['team_email'] ?? ($post->post_title ?? '');
+    @endphp
+    @if ($chiefeditor_name ||$chiefeditor_exp|| $chiefeditor_topic||$chiefeditor_lang||$facebook||$instagram||$twitter||$youtube||$tiktok||$team_email )
     <!-- ================= LEADERSHIP ================= -->
     <section class="co-section">
       <div class="container co-container">
         <article class="co-tm-lead">
-          <div class="co-img co-tm-lead-photo"><img src="assets/images/np/woman1.jpg" alt="Amrita Bhandari"></div>
+          @if ($featured_media)
+          <div class="co-img co-tm-lead-photo"><img src="{{ asset('storage/' . $featured_media->file_name) }}" alt="{{$chiefeditor_name}}"></div>
+          @endif
           <div class="co-tm-lead-body">
             <span class="co-pg-eyebrow"><i class="bi bi-award"></i> नेतृत्व</span>
-            <h2 class="co-tm-lead-name">Amrita Bhandari</h2>
+            <h2 class="co-tm-lead-name">{{$chiefeditor_name}}</h2>
             <span class="co-tm-lead-role">प्रधान सम्पादक</span>
-            <p>डेढ दशकभन्दा लामो पत्रकारिता अनुभव भएकी भण्डारी चासो अनलाइनको सम्पादकीय नीति र न्युजरुम सञ्चालनको नेतृत्व गर्छिन्। राजनीति, लैंगिक समानता र सुशासनका विषयमा उनका रिपोर्ट चर्चित छन्।</p>
+            {!!$post->post_content!!}
             <ul class="co-tm-lead-facts">
-              <li><i class="bi bi-briefcase"></i> १५+ वर्ष पत्रकारितामा</li>
-              <li><i class="bi bi-pen"></i> सम्पादकीय नीति र गुणस्तर</li>
-              <li><i class="bi bi-translate"></i> नेपाली, अंग्रेजी</li>
+              @if($chiefeditor_exp)
+                <li><i class="bi bi-briefcase"></i> {{$chiefeditor_exp}}</li>
+              @endif
+              @if($chiefeditor_topic)
+                <li><i class="bi bi-pen"></i> {{$chiefeditor_topic}}</li>
+              @endif
+              @if($chiefeditor_lang)
+                <li><i class="bi bi-translate"></i> {{$chiefeditor_lang}}</li>
+              @endif
             </ul>
             <div class="co-tm-lead-foot">
-              <a href="mailto:chaasogobalmedia9@gmail.com" class="co-btn"><i class="bi bi-envelope"></i> सम्पर्क गर्नुहोस्</a>
+              <a href="mailto:{{$team_email}}" class="co-btn"><i class="bi bi-envelope"></i> सम्पर्क गर्नुहोस्</a>
               <div class="co-tm-social">
-                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                @if(!empty($facebook))
+                  <a href="{{$facebook}}" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                @endif
+                @if(!empty($twitter))
+                  <a href="{{$twitter}}" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+                @endif
+                @if(!empty($instagram))
+                  <a href="{{$instagram}}" aria-label="instagram"><i class="bi bi-instagram"></i></a>
+                @endif
+                @if(!empty($youtube))
+                  <a href="{{$youtube}}" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                @endif
+                @if(!empty($tiktok))
+                  <a href="{{$tiktok}}" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                @endif
               </div>
             </div>
           </div>
         </article>
       </div>
     </section>
+    @endif
 
     <!-- ================= NEWSROOM ================= -->
     <section class="co-section">
@@ -40,135 +77,102 @@
           <h2 class="co-section-title">न्युजरुम</h2><span class="co-hatch"></span>
           <div class="co-tm-filter" role="group" aria-label="डेस्क अनुसार छान्नुहोस्">
             <button type="button" class="is-active" aria-pressed="true" data-desk="all">सबै</button>
-            <button type="button" aria-pressed="false" data-desk="edit">सम्पादकीय</button>
-            <button type="button" aria-pressed="false" data-desk="report">रिपोर्टिङ</button>
-            <button type="button" aria-pressed="false" data-desk="digital">डिजिटल</button>
-            <button type="button" aria-pressed="false" data-desk="manage">व्यवस्थापन</button>
+            @foreach ($departments as $department)
+            <button type="button" aria-pressed="false" data-desk="dept-{{ $department->id }}">{{ $department->name }}</button>
+            @endforeach
           </div>
         </div>
 
         <div class="co-tm-grid" id="coTeamGrid">
-          <article class="co-tm-card" data-desk="edit">
-            <div class="co-img co-tm-photo"><img src="assets/images/np/man2.jpg" alt="रमेश अधिकारी" loading="lazy"></div>
+          @foreach ($teams as $team)
+          @php
+            $teamMeta = $team->postMeta->pluck('meta_value', 'meta_key');
+            $teamMedia = $teamMeta->get('featured_image') ? MediaHelper::getImageById($teamMeta->get('featured_image')) : null;
+            $teamDesks = $team->categories->map(fn ($department) => 'dept-' . $department->id)->implode(' ');
+            $teamInitials = collect(preg_split('/\s+/u', trim($team->post_title)))->take(2)->map(fn ($word) => mb_substr($word, 0, 1))->implode('');
+            $teamSocials = [
+              'facebook' => ['icon' => 'bi-facebook', 'label' => 'Facebook'],
+              'twitter' => ['icon' => 'bi-twitter-x', 'label' => 'X'],
+              'instagram' => ['icon' => 'bi-instagram', 'label' => 'Instagram'],
+              'youtube' => ['icon' => 'bi-youtube', 'label' => 'YouTube'],
+              'tiktok' => ['icon' => 'bi-tiktok', 'label' => 'TikTok'],
+            ];
+          @endphp
+          <article class="co-tm-card" data-desk="{{ $teamDesks }}">
+            @if ($teamMedia)
+            <div class="co-img co-tm-photo"><img src="{{ asset('storage/' . $teamMedia->file_name) }}" alt="{{ $team->post_title }}" loading="lazy"></div>
+            @else
+            <div class="co-tm-photo co-tm-initials" aria-hidden="true"><span>{{ $teamInitials }}</span></div>
+            @endif
             <div class="co-tm-info">
-              <span class="co-tm-desk">सम्पादकीय</span>
-              <h3>रमेश अधिकारी</h3>
-              <p>कार्यकारी सम्पादक</p>
-              <div class="co-tm-social"><a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
+              @if ($team->categories->isNotEmpty())
+              <span class="co-tm-desk">{{ $team->categories->pluck('name')->implode(' · ') }}</span>
+              @endif
+              <h3>{{ $team->post_title }}</h3>
+              @if ($teamMeta->get('designation'))
+              <p>{{ $teamMeta->get('designation') }}</p>
+              @endif
+              <div class="co-tm-social">
+                @foreach ($teamSocials as $key => $social)
+                @if ($teamMeta->get($key))
+                <a href="{{ $teamMeta->get($key) }}" target="_blank" rel="noopener" aria-label="{{ $social['label'] }}"><i class="bi {{ $social['icon'] }}"></i></a>
+                @endif
+                @endforeach
+                @if ($teamMeta->get('team_email'))
+                <a href="mailto:{{ $teamMeta->get('team_email') }}" aria-label="इमेल"><i class="bi bi-envelope"></i></a>
+                @endif
+              </div>
             </div>
           </article>
-          <article class="co-tm-card" data-desk="edit">
-            <div class="co-img co-tm-photo"><img src="assets/images/p1.jpg" alt="सुजन श्रेष्ठ" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">सम्पादकीय</span>
-              <h3>सुजन श्रेष्ठ</h3>
-              <p>समाचार सम्पादक</p>
-              <div class="co-tm-social"><a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="report">
-            <div class="co-img co-tm-photo"><img src="assets/images/w2.jpg" alt="प्रतिभा गुरुङ" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">रिपोर्टिङ</span>
-              <h3>प्रतिभा गुरुङ</h3>
-              <p>वरिष्ठ संवाददाता · राजनीति</p>
-              <div class="co-tm-social"><a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="report">
-            <div class="co-img co-tm-photo"><img src="assets/images/p2.jpg" alt="विकास थापा" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">रिपोर्टिङ</span>
-              <h3>विकास थापा</h3>
-              <p>संवाददाता · अर्थ वाणिज्य</p>
-              <div class="co-tm-social"><a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="report">
-            <div class="co-img co-tm-photo"><img src="assets/images/p3.jpg" alt="अनिल राई" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">रिपोर्टिङ</span>
-              <h3>अनिल राई</h3>
-              <p>संवाददाता · खेलकुद</p>
-              <div class="co-tm-social"><a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="report">
-            <div class="co-img co-tm-photo"><img src="assets/images/np/man1.jpg" alt="दिनेश पौडेल" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">रिपोर्टिङ</span>
-              <h3>दिनेश पौडेल</h3>
-              <p>संवाददाता · स्वास्थ्य र शिक्षा</p>
-              <div class="co-tm-social"><a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="digital">
-            <div class="co-img co-tm-photo"><img src="assets/images/np/oldman.jpg" alt="हरि कार्की" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">डिजिटल</span>
-              <h3>हरि कार्की</h3>
-              <p>फोटो पत्रकार</p>
-              <div class="co-tm-social"><a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="digital">
-            <div class="co-img co-tm-photo"><img src="assets/images/w1.jpg" alt="सृष्टि महर्जन" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">डिजिटल</span>
-              <h3>सृष्टि महर्जन</h3>
-              <p>सोसल मिडिया र भिडियो</p>
-              <div class="co-tm-social"><a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="digital">
-            <div class="co-img co-tm-photo"><img src="assets/images/np/man3.jpg" alt="प्रकाश भट्ट" loading="lazy"></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">डिजिटल</span>
-              <h3>प्रकाश भट्ट</h3>
-              <p>वेब तथा प्रविधि प्रमुख</p>
-              <div class="co-tm-social"><a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
-          <article class="co-tm-card" data-desk="manage">
-            <div class="co-tm-photo co-tm-initials" aria-hidden="true"><span>सक</span></div>
-            <div class="co-tm-info">
-              <span class="co-tm-desk">व्यवस्थापन</span>
-              <h3>सरिता केसी</h3>
-              <p>विज्ञापन तथा बजार व्यवस्थापक</p>
-              <div class="co-tm-social"><a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a><a href="#" aria-label="इमेल"><i class="bi bi-envelope"></i></a></div>
-            </div>
-          </article>
+          @endforeach
         </div>
-        <p class="co-tm-empty" id="coTeamEmpty" hidden>यस डेस्कमा अहिले कुनै सदस्य छैनन्।</p>
+        <p class="co-tm-empty" id="coTeamEmpty" @if ($teams->isNotEmpty()) hidden @endif>यस डेस्कमा अहिले कुनै सदस्य छैनन्।</p>
       </div>
     </section>
 
     <!-- ================= JOIN ================= -->
+    @php
+      $career_section_label = $metaData['career_section_label'] ?? ($post->post_title ?? '');
+      $career_section_title = $metaData['career_section_title'] ?? ($post->post_title ?? '');
+      $career_section_description = $metaData['career_section_description'] ?? ($post->post_title ?? '');
+      $cta_url = $metaData['cta_url'] ?? ($post->post_title ?? '');
+      $cta_btn_text = $metaData['cta_btn_text'] ?? ($post->post_title ?? '');
+      $career_job_listingss = $metaData['career_job_listings'];
+      $career_job_listingssArray = $career_job_listingss ? (is_string($career_job_listingss) ? unserialize($career_job_listingss) : $career_job_listingss) : [];
+    @endphp
+    @if ($career_section_label ||$career_section_title|| $career_section_description||$cta_url||$cta_btn_text||$career_job_listingssArray)
     <section class="co-section">
       <div class="container co-container">
         <div class="co-tm-join">
           <div class="co-tm-join-text">
-            <span class="co-pg-eyebrow"><i class="bi bi-stars"></i> करियर</span>
-            <h2 class="co-pg-lead">हाम्रो टिममा <em>जोडिनुहोस्</em></h2>
-            <p>जिज्ञासु, तथ्यप्रति इमानदार र कथा भन्न रुचाउने साथीहरूको खोजीमा छौं। तलका पदमा रुचि भए बायोडाटा र कामका नमुना इमेल गर्नुहोस्।</p>
-            <a href="mailto:chaasogobalmedia9@gmail.com?subject=करियर" class="co-btn"><i class="bi bi-send"></i> आवेदन पठाउनुहोस्</a>
+            @if($career_section_label)
+              <span class="co-pg-eyebrow"><i class="bi bi-stars"></i> {{$career_section_label}}</span>
+            @endif
+            @if($career_section_title)
+              <h2 class="co-pg-lead">{{ $career_section_title }}</h2>
+            @endif
+            @if($career_section_description)
+              <p>{{ $career_section_description }}</p>
+            @endif
+            @if($cta_btn_text || $cta_url)
+              <a href="mailto:{{ $cta_url }}" class="co-btn"><i class="bi bi-send"></i> {{ $cta_btn_text }}</a>
+            @endif
           </div>
+          @if($career_job_listingss)
           <ul class="co-tm-jobs">
+            @foreach ($career_job_listingssArray as $index => $job)
             <li>
-              <div><strong>प्रदेश संवाददाता</strong><span><i class="bi bi-geo-alt"></i> कोशी / लुम्बिनी</span></div>
-              <span class="co-tm-job-type">पूर्णकालीन</span>
+              <div><strong>{{ $job['job_title'] ?? '' }}</strong><span><i class="bi bi-geo-alt"></i> {{ $job['job_location'] ?? '' }}</span></div>
+              <span class="co-tm-job-type">{{ $job['job_type'] ?? '' }}</span>
             </li>
-            <li>
-              <div><strong>भिडियो सम्पादक</strong><span><i class="bi bi-geo-alt"></i> काठमाडौं</span></div>
-              <span class="co-tm-job-type">पूर्णकालीन</span>
-            </li>
-            <li>
-              <div><strong>पत्रकारिता इन्टर्न</strong><span><i class="bi bi-geo-alt"></i> काठमाडौं</span></div>
-              <span class="co-tm-job-type">३ महिना</span>
-            </li>
+            @endforeach
           </ul>
+          @endif
         </div>
       </div>
     </section>
+    @endif
+
   </main>
+
 @endsection

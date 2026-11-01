@@ -23,6 +23,13 @@ class TeamsRepository
         $data['tiktok'] = isset( $request->tiktok ) ? $request->tiktok : NULL;
         $data['team_email'] = isset( $request->team_email ) ? $request->team_email : NULL;
 
+        $data['career_section_label'] = isset( $request->career_section_label ) ? $request->career_section_label : NULL;
+        $data['career_section_title'] = isset( $request->career_section_title ) ? $request->career_section_title : NULL;
+        $data['career_section_description'] = isset( $request->career_section_description ) ? $request->career_section_description : NULL;
+        $data['cta_url'] = isset( $request->cta_url ) ? $request->cta_url : NULL;
+        $data['cta_btn_text'] = isset( $request->cta_btn_text ) ? $request->cta_btn_text : NULL;
+        $data['career_job_listings'] = isset($request->career_job_listings) ? serialize($request->career_job_listings) : null;
+
         // add more meta data
 
         return $data;
