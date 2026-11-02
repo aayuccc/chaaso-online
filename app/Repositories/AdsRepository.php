@@ -12,77 +12,42 @@ class AdsRepository
     {
         $metaDatas = [];
 
-        /*
-         * Every ad block has the same 6 fields:
-         * brand logo, title, subtitle, ad image, button url, button text.
-         * Each block below maps those 6 fields to the form input / meta key names.
-         */
-        $ads = [];
+        // Every ad has only an image and a URL: [image key, url key]
+        $ads = [
+            // navbar
+            ['navbar_img',               'navbar_url'],
 
-        // Blocks that follow the standard naming: {prefix}_brand, _ad_title, _ad_subtitle, _img, _url, _cta_text
-        $standardPrefixes = [
-            'navbar',           // navbar ads
-            'between_sports',   // homepage long: between sports
-            'before_it',        // homepage long: before IT
-            'after_it',         // homepage long: after IT
-            'after_interview',  // homepage long: after interview
-            'after_video',      // homepage long: after video
-            'before_photo',     // homepage long: before photo
-            'before_footer',    // homepage long: before footer
+            // homepage short
+            ['after_jiwansaili',         'after_jiwansaili_url'],
+            ['after_sikshya',            'after_sikshya_url'],
+            ['after_tourism',            'after_tourism_url'],
+
+            // homepage long
+            ['below_highlighted_img',    'highlighted_ad_url'],
+            ['below_rajniti_ad',         'below_rajniti_ad_url'],
+            ['between_sports_img',       'between_sports_url'],
+            ['before_it_img',            'before_it_url'],
+            ['after_it_img',             'after_it_url'],
+            ['after_interview_img',      'after_interview_url'],
+            ['after_video_img',          'after_video_url'],
+            ['before_photo_img',         'before_photo_url'],
+            ['before_footer_img',        'before_footer_url'],
+
+            // single page long
+            ['after_relatednews_long',   'after_relatednews_long_url'],
+
+            // category long
+            ['after_featured_news',      'after_featured_news_url'],
+            ['between_category_news',    'between_category_news_url'],
+            ['sidebar_category_long',    'sidebar_category_long_url'],
         ];
 
-        foreach ($standardPrefixes as $prefix) {
-            $ads[] = $this->standardKeys($prefix);
+        foreach ($ads as [$img, $url]) {
+            $metaDatas[$img] = $request->input($img) ?? null;
+            $metaDatas[$url] = $request->input($url) ?? null;
         }
 
-        // Blocks that keep their older image / url key names (so saved data still loads)
-        $legacyImageUrlBlocks = [
-            // [prefix, image key, url key]
-            ['after_jiwansaili',        'after_jiwansaili',        'after_jiwansaili_url'],        // homepage short
-            ['after_sikshya',           'after_sikshya',           'after_sikshya_url'],
-            ['after_tourism',           'after_tourism',           'after_tourism_url'],
-            ['after_relatednews_long',  'after_relatednews_long',  'after_relatednews_long_url'],  // single page long
-            ['after_featured_news',     'after_featured_news',     'after_featured_news_url'],     // category long
-            ['between_category_news',   'between_category_news',   'between_category_news_url'],
-            ['sidebar_category_long',   'sidebar_category_long',   'sidebar_category_long_url'],
-        ];
-
-        foreach ($legacyImageUrlBlocks as [$prefix, $img, $url]) {
-            $ads[] = $this->standardKeys($prefix, $img, $url);
-        }
-
-        // Homepage long: below highlight (brand + image are new)
-        $ads[] = [
-            'brand'    => 'below_highlighted_brand',
-            'title'    => 'below_highlighted_ad_title',
-            'subtitle' => 'below_highlighted_ad_subtitle',
-            'img'      => 'below_highlighted_img',
-            'url'      => 'highlighted_ad_url',
-            'cta'      => 'highlighted_ad_cta_text',
-        ];
-
-        // Homepage long: below rajniti
-        $ads[] = [
-            'brand'    => 'brand_logo_rajniti',
-            'title'    => 'below_rajniti_ad_title',
-            'subtitle' => 'below_rajniti_ad_subtitle',
-            'img'      => 'below_rajniti_ad',
-            'url'      => 'below_rajniti_ad_url',
-            'cta'      => 'below_rajniti_ad_cta_text',
-        ];
-
-        foreach ($ads as $keys) {
-            $metaDatas[$keys['brand']]    = $request->input($keys['brand']) ?? 0;
-            $metaDatas[$keys['title']]    = $request->input($keys['title']) ?? null;
-            $metaDatas[$keys['subtitle']] = $request->input($keys['subtitle']) ?? null;
-            $metaDatas[$keys['img']]      = $request->input($keys['img']) ?? null;
-            $metaDatas[$keys['url']]      = $request->input($keys['url']) ?? null;
-            $metaDatas[$keys['cta']]      = $request->input($keys['cta']) ?? null;
-        }
-
-        // Repeaters (single page short / category short).
-        // Each row holds: brand, title, subtitle, image, link, cta_text. The whole array is serialized,
-        // so the new row keys are saved automatically.
+        // Repeaters (single page short / category short). Each row: image, link. Whole array is serialized.
         $metaDatas['header_popup_ads'] = $request->header_popup_ads ? serialize($request->header_popup_ads) : null;
         $metaDatas['below_masthead_ads'] = $request->below_masthead_ads ? serialize($request->below_masthead_ads) : null;
 
@@ -90,22 +55,6 @@ class AdsRepository
         foreach ($metaDatas as $key => $value) {
             $this->updateOrCreateMeta($payload, $key, $value);
         }
-    }
-
-    /**
-     * Build the 6-field key map for a block.
-     * $img / $url default to the standard {prefix}_img / {prefix}_url names.
-     */
-    private function standardKeys(string $prefix, ?string $img = null, ?string $url = null): array
-    {
-        return [
-            'brand'    => $prefix . '_brand',
-            'title'    => $prefix . '_ad_title',
-            'subtitle' => $prefix . '_ad_subtitle',
-            'img'      => $img ?? $prefix . '_img',
-            'url'      => $url ?? $prefix . '_url',
-            'cta'      => $prefix . '_cta_text',
-        ];
     }
 
     // update Or insert data

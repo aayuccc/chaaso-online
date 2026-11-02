@@ -1,6 +1,6 @@
-{{-- Params: $prefix, $index, $key (image|brand), $label, $imageId (nullable) --}}
+{{-- Params: $prefix, $index, $key, $label, $imageId (nullable), $col (optional, default col-4) --}}
 @php $fieldId = $prefix . $index . '_' . $key; @endphp
-<div class="mb-3 col-4">
+<div class="mb-3 {{ $col ?? 'col-4' }}">
     <label class="form-label">{{ $label }}</label>
     <div class="media-input image-input">
         <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="{{ $fieldId }}" data-select="single">

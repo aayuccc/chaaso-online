@@ -23,28 +23,11 @@
                                         <td class="custom-table-no">{{ $loop->iteration }}</td>
                                         <td>
                                             <div class="row" style="background-color: #b3b9c01c; padding: 20px 20px 0; border-radius: 10px; margin: 0;">
-                                                @include('backend.ads.partials.repeater-image', ['prefix' => 'header_popup_ads', 'index' => $index, 'key' => 'brand', 'label' => 'Brand Logo', 'imageId' => $item['brand'] ?? null])
+                                                @include('backend.ads.partials.repeater-image', ['prefix' => 'header_popup_ads', 'index' => $index, 'key' => 'image', 'label' => 'Ad Image', 'imageId' => $item['image'] ?? null, 'col' => 'col-6'])
 
-                                                <div class="mb-3 col-4">
-                                                    <label class="form-label">Title</label>
-                                                    <input type="text" name="header_popup_ads[{{ $index }}][title]" class="form-control" value="{{ $item['title'] ?? '' }}" />
-                                                </div>
-
-                                                <div class="mb-3 col-4">
-                                                    <label class="form-label">Subtitle</label>
-                                                    <textarea name="header_popup_ads[{{ $index }}][subtitle]" class="form-control" rows="2">{{ $item['subtitle'] ?? '' }}</textarea>
-                                                </div>
-
-                                                @include('backend.ads.partials.repeater-image', ['prefix' => 'header_popup_ads', 'index' => $index, 'key' => 'image', 'label' => 'Ad Image', 'imageId' => $item['image'] ?? null])
-
-                                                <div class="mb-3 col-4">
-                                                    <label class="form-label">Button URL</label>
+                                                <div class="mb-3 col-6">
+                                                    <label class="form-label">Ad URL</label>
                                                     <input type="url" name="header_popup_ads[{{ $index }}][link]" class="form-control" value="{{ $item['link'] ?? '' }}" />
-                                                </div>
-
-                                                <div class="mb-3 col-4">
-                                                    <label class="form-label">Button Text</label>
-                                                    <input type="text" name="header_popup_ads[{{ $index }}][cta_text]" class="form-control" value="{{ $item['cta_text'] ?? '' }}" placeholder="Read More" />
                                                 </div>
                                             </div>
                                         </td>
@@ -84,14 +67,12 @@
         const PREFIX = 'header_popup_ads';
         const $body = () => $('.addMoreSliderGalleryHeaderAds');
 
-        // Add new row at the end
         $(document).on('click', '.add_slider_gallery_header_ads', function() {
             $body().append(buildRowHeaderAds());
             refreshHeaderAds();
             initMediaHeaderAds($body().find('tr:last'));
         });
 
-        // Add new row after the clicked one
         $(document).on('click', '.add_more_slider_gallery_header_ads', function() {
             let clickedRow = $(this).closest('tr');
             clickedRow.after(buildRowHeaderAds());
@@ -99,50 +80,22 @@
             initMediaHeaderAds(clickedRow.next());
         });
 
-        // Remove row
         $(document).on('click', '.addMoreSliderGalleryHeaderAds .remove_slider_gallery_header_ads', function() {
             $(this).closest('tr').remove();
             refreshHeaderAds();
         });
 
-        // Move up
         $(document).on('click', '.addMoreSliderGalleryHeaderAds .move-up-header-ads', function() {
             let row = $(this).closest('tr');
             let prev = row.prev('tr');
-            if (prev.length) {
-                row.insertBefore(prev);
-                refreshHeaderAds();
-            }
+            if (prev.length) { row.insertBefore(prev); refreshHeaderAds(); }
         });
 
-        // Move down
         $(document).on('click', '.addMoreSliderGalleryHeaderAds .move-down-header-ads', function() {
             let row = $(this).closest('tr');
             let next = row.next('tr');
-            if (next.length) {
-                row.insertAfter(next);
-                refreshHeaderAds();
-            }
+            if (next.length) { row.insertAfter(next); refreshHeaderAds(); }
         });
-
-        function imageFieldHeaderAds(key, label, n) {
-            return `
-            <div class="mb-3 col-4">
-                <label class="form-label">${label}</label>
-                <div class="media-input image-input">
-                    <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="${PREFIX}${n}_${key}" data-select="single">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
-                        </div>
-                        <div class="form-control file-amount">Choose File</div>
-                    </div>
-                    <div class="preview-closer">
-                        <input type="hidden" id="${PREFIX}${n}_${key}" name="${PREFIX}[${n}][${key}]" class="selected-files" value="" />
-                        <div id="${PREFIX}${n}_${key}_select"></div>
-                    </div>
-                </div>
-            </div>`;
-        }
 
         function buildRowHeaderAds() {
             let n = $body().find('tr').length;
@@ -152,28 +105,25 @@
                 <td class="custom-table-no no">${n + 1}</td>
                 <td>
                     <div class="row" style="background-color: #b3b9c01c; padding: 20px 20px 0; border-radius: 10px; margin: 0;">
-                        ${imageFieldHeaderAds('brand', 'Brand Logo', n)}
-
-                        <div class="mb-3 col-4">
-                            <label class="form-label">Title</label>
-                            <input type="text" name="${PREFIX}[${n}][title]" class="form-control" />
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ad Image</label>
+                            <div class="media-input image-input">
+                                <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="${PREFIX}${n}_image" data-select="single">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
+                                    </div>
+                                    <div class="form-control file-amount">Choose File</div>
+                                </div>
+                                <div class="preview-closer">
+                                    <input type="hidden" id="${PREFIX}${n}_image" name="${PREFIX}[${n}][image]" class="selected-files" value="" />
+                                    <div id="${PREFIX}${n}_image_select"></div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3 col-4">
-                            <label class="form-label">Subtitle</label>
-                            <textarea name="${PREFIX}[${n}][subtitle]" class="form-control" rows="2"></textarea>
-                        </div>
-
-                        ${imageFieldHeaderAds('image', 'Ad Image', n)}
-
-                        <div class="mb-3 col-4">
-                            <label class="form-label">Button URL</label>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Ad URL</label>
                             <input type="url" name="${PREFIX}[${n}][link]" class="form-control" />
-                        </div>
-
-                        <div class="mb-3 col-4">
-                            <label class="form-label">Button Text</label>
-                            <input type="text" name="${PREFIX}[${n}][cta_text]" class="form-control" placeholder="Read More" />
                         </div>
                     </div>
                 </td>
@@ -238,9 +188,7 @@
         }
 
         $(document).ready(function() {
-            $body().find('tr').each(function() {
-                initMediaHeaderAds($(this));
-            });
+            $body().find('tr').each(function() { initMediaHeaderAds($(this)); });
         });
     })();
 </script>

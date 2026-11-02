@@ -1,5 +1,5 @@
-{{-- Params: $field (meta key), $label --}}
-<div class="mb-3 col-4">
+{{-- Params: $field (meta key), $label, $col (optional, default col-4) --}}
+<div class="mb-3 {{ $col ?? 'col-4' }}">
     <label class="form-label">{{ $label }}</label>
     <div class="input-group open-media-manager" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;" data-field="{{ $field }}" data-select="single">
         <div class="input-group-prepend">
