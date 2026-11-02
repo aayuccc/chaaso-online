@@ -1,8 +1,11 @@
+@php
+  $mainMenu = app(\App\Repositories\FrontMenuRepository::class)->getMenuTree($settings['header_main_menu'] ?? null);
+@endphp
 <header class="co-header">
     <div class="container co-container">
       <div class="co-header-top">
         <div class="co-brand">
-          <a href="#" class="co-logo"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन" width="200" height="100"></a>
+          <a href="{{ route('frontend.home') }}" class="co-logo"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन" width="200" height="100"></a>
           <div class="co-header-date d-none d-lg-flex">
             <span class="co-date-day">सोमबार</span>
             <span class="co-date-full">असोज २६, २०८३</span>
@@ -50,30 +53,30 @@
   <div class="co-navbar d-none d-lg-block" id="coNavbar">
     <div class="container co-container">
       <nav class="co-nav" id="coMainNav">
-        <a href="#" class="co-nav-logo" aria-label="चासो अनलाइन — गृहपृष्ठ" tabindex="-1"><img
+        <a href="{{ route('frontend.home') }}" class="co-nav-logo" aria-label="चासो अनलाइन — गृहपृष्ठ" tabindex="-1"><img
             src="{{ asset('assets/images/sticky-logo.png') }}" alt="" width="67" height="66"></a>
         <ul class="co-nav-list">
-          <li><a href="#" class="co-nav-link co-nav-home is-active" aria-label="गृहपृष्ठ"><i
-                class="bi bi-house-door"></i></a></li>
-          <li><a href="#" class="co-nav-link">समाचार</a></li>
-          <li><a href="category.html" class="co-nav-link">राजनीति</a></li>
-          <li><a href="#" class="co-nav-link">अर्थ वाणिज्य</a></li>
-          <li><a href="#" class="co-nav-link">जीवनशैली</a></li>
-          <li><a href="#" class="co-nav-link">विश्वव्यापी</a></li>
-          <li><a href="#" class="co-nav-link">स्वास्थ्य</a></li>
-          <li><a href="#" class="co-nav-link">प्रविधि</a></li>
-          <li><a href="#" class="co-nav-link">शिक्षा</a></li>
-          <li><a href="#" class="co-nav-link">खेलकुद</a></li>
-          <li class="co-nav-dropdown">
-            <button class="co-nav-link co-nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
-              विविध <i class="bi bi-chevron-down"></i>
-            </button>
-            <ul class="co-nav-submenu">
-              <li><a href="#" class="co-nav-sublink">हस्पिटालिटी</a></li>
-              <li><a href="#" class="co-nav-sublink">मनोरञ्जन कला</a></li>
-              <li><a href="#" class="co-nav-sublink">साहित्य/लेख</a></li>
-            </ul>
-          </li>
+          <li><a href="{{ route('frontend.home') }}" class="co-nav-link co-nav-home {{ request()->is('/') ? 'is-active' : '' }}"
+              aria-label="गृहपृष्ठ"><i class="bi bi-house-door"></i></a></li>
+          @foreach ($mainMenu as $item)
+            @if ($item['children'])
+              <li class="co-nav-dropdown">
+                <button class="co-nav-link co-nav-dropdown-toggle {{ $item['classes'] }} {{ $item['is_active'] || collect($item['children'])->contains('is_active', true) ? 'is-active' : '' }}"
+                  type="button" aria-expanded="false" aria-haspopup="true">
+                  {{ $item['title'] }} <i class="bi bi-chevron-down"></i>
+                </button>
+                <ul class="co-nav-submenu">
+                  @foreach ($item['children'] as $child)
+                    <li><a href="{{ $child['link'] }}" class="co-nav-sublink {{ $child['classes'] }}"
+                        target="{{ $child['target'] }}" @if ($child['attr']) title="{{ $child['attr'] }}" @endif>{{ $child['title'] }}</a></li>
+                  @endforeach
+                </ul>
+              </li>
+            @else
+              <li><a href="{{ $item['link'] }}" class="co-nav-link {{ $item['classes'] }} {{ $item['is_active'] ? 'is-active' : '' }}"
+                  target="{{ $item['target'] }}" @if ($item['attr']) title="{{ $item['attr'] }}" @endif>{{ $item['title'] }}</a></li>
+            @endif
+          @endforeach
         </ul>
         <div class="co-nav-actions">
           <button class="co-icon-ghost" type="button" aria-label="खोज्नुहोस्" aria-haspopup="dialog" data-search-open>
@@ -159,7 +162,7 @@
   <!-- Mobile offcanvas menu -->
   <div class="offcanvas offcanvas-start co-offcanvas" tabindex="-1" id="coOffcanvas" aria-labelledby="coOffcanvasLabel">
     <div class="co-oc-head">
-      <a href="#" class="co-oc-logo" id="coOffcanvasLabel"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन"
+      <a href="{{ route('frontend.home') }}" class="co-oc-logo" id="coOffcanvasLabel"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन"
           width="200" height="100"></a>
       <button type="button" class="co-oc-close" data-bs-dismiss="offcanvas" aria-label="बन्द गर्नुहोस्"><i
           class="bi bi-x-lg"></i></button>
@@ -181,27 +184,27 @@
       </div>
 
       <ul class="co-oc-menu">
-        <li><a href="#" class="co-oc-link is-active"><i class="bi bi-house-door"></i> गृहपृष्ठ</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-newspaper"></i> समाचार</a></li>
-        <li><a href="category.html" class="co-oc-link"><i class="bi bi-bank"></i> राजनीति</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-graph-up-arrow"></i> अर्थ वाणिज्य</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-cup-hot"></i> जीवनशैली</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-globe2"></i> विश्वव्यापी</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-heart-pulse"></i> स्वास्थ्य</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-cpu"></i> प्रविधि</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-mortarboard"></i> शिक्षा</a></li>
-        <li><a href="#" class="co-oc-link"><i class="bi bi-trophy"></i> खेलकुद</a></li>
-        <li>
-          <button class="co-oc-link co-oc-toggle collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#coOcMisc" aria-expanded="false" aria-controls="coOcMisc">
-            <span><i class="bi bi-grid"></i> विविध</span><i class="bi bi-chevron-down co-oc-caret"></i>
-          </button>
-          <ul class="collapse co-oc-sub" id="coOcMisc">
-            <li><a href="#">हस्पिटालिटी</a></li>
-            <li><a href="#">मनोरञ्जन कला</a></li>
-            <li><a href="#">साहित्य/लेख</a></li>
-          </ul>
-        </li>
+        <li><a href="{{ route('frontend.home') }}" class="co-oc-link {{ request()->is('/') ? 'is-active' : '' }}"><i
+              class="bi bi-house-door"></i> गृहपृष्ठ</a></li>
+        @foreach ($mainMenu as $item)
+          @if ($item['children'])
+            <li>
+              <button class="co-oc-link co-oc-toggle collapsed {{ $item['classes'] }}" type="button" data-bs-toggle="collapse"
+                data-bs-target="#coOcSub{{ $item['id'] }}" aria-expanded="false" aria-controls="coOcSub{{ $item['id'] }}">
+                <span><i class="bi {{ $item['icon'] ?? 'bi-grid' }}"></i> {{ $item['title'] }}</span><i
+                  class="bi bi-chevron-down co-oc-caret"></i>
+              </button>
+              <ul class="collapse co-oc-sub" id="coOcSub{{ $item['id'] }}">
+                @foreach ($item['children'] as $child)
+                  <li><a href="{{ $child['link'] }}" class="{{ $child['classes'] }}" target="{{ $child['target'] }}">{{ $child['title'] }}</a></li>
+                @endforeach
+              </ul>
+            </li>
+          @else
+            <li><a href="{{ $item['link'] }}" class="co-oc-link {{ $item['classes'] }} {{ $item['is_active'] ? 'is-active' : '' }}"
+                target="{{ $item['target'] }}"><i class="bi {{ $item['icon'] ?? 'bi-newspaper' }}"></i> {{ $item['title'] }}</a></li>
+          @endif
+        @endforeach
       </ul>
     </div>
     <div class="co-oc-foot">

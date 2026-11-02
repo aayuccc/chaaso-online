@@ -24,6 +24,7 @@ class SettingRepository
 
         // header
         $metaDatas['header_logo'] = $request->header_logo ?? null;
+        $metaDatas['header_main_menu'] = $request->header_main_menu ?? null;
 
         // Footer
         $metaDatas['footer_logo'] = $request->footer_logo ?? null;

@@ -282,6 +282,11 @@
             left: 101%;
         }
 
+        .menu-source-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
         .delete-wrap {
             position: absolute;
             top: 0;
@@ -329,9 +334,11 @@
                                                         Pages
                                                     </button>
                                                 </h2>
+                                                <div id="page" class="accordion-collapse collapse"
+                                                    aria-labelledby="pages" data-bs-parent="#accordionExample">
+                                                <div class="menu-source-list">
                                                 @foreach ($pages as $page)
-                                                    <div id="page" class="accordion-collapse collapse"
-                                                        aria-labelledby="pages" data-bs-parent="#accordionExample">
+                                                    <div>
                                                         <div class="accordion-body px-2 pt-2 pb-1">
                                                             <div class="">
                                                                 <div class="form-check">
@@ -379,8 +386,7 @@
                                                         $menuItemCount++;
                                                     @endphp
                                                 @endforeach
-                                                <div id="page" class="accordion-collapse collapse"
-                                                    aria-labelledby="pages" data-bs-parent="#accordionExample">
+                                                </div>
                                                     <hr class="m-0">
                                                     <div class="add-to-menu-btn text-end p-1">
                                                         <button type="submit" class="btn btn-soft-primary">Add to
@@ -405,18 +411,20 @@
                                                         Categories
                                                     </button>
                                                 </h2>
+                                                <div id="category" class="accordion-collapse collapse"
+                                                    aria-labelledby="categories" data-bs-parent="#accordionExample">
+                                                <div class="menu-source-list">
                                                 @foreach ($categories as $category)
-                                                    <div id="category" class="accordion-collapse collapse"
-                                                        aria-labelledby="categories" data-bs-parent="#accordionExample">
+                                                    <div>
                                                         <div class="accordion-body px-2 pt-2 pb-1">
                                                             <div class="">
                                                                 <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input"
-                                                                        id="post{{ $category->id }}"
+                                                                        id="category{{ $category->id }}"
                                                                         name="menu_item[{{ $menuItemCount }}][menu_item_object_id]"
                                                                         value="{{ $category->id }}" />
                                                                     <label class="form-check-label"
-                                                                        for="post{{ $category->id }}">{{ $category->name }}</label>
+                                                                        for="category{{ $category->id }}">{{ $category->name }}</label>
                                                                     <input type="hidden"
                                                                         name="menu_item[{{ $menuItemCount }}][menu_item_type]"
                                                                         value="category">
@@ -455,8 +463,7 @@
                                                         $menuItemCount++;
                                                     @endphp
                                                 @endforeach
-                                                <div id="category" class="accordion-collapse collapse"
-                                                    aria-labelledby="categories" data-bs-parent="#accordionExample">
+                                                </div>
                                                     <hr class="m-0">
                                                     <div class="add-to-menu-btn text-end p-1">
                                                         <button type="submit" class="btn btn-soft-primary">Add to
@@ -482,9 +489,11 @@
                                                         Posts
                                                     </button>
                                                 </h2>
+                                                <div id="post" class="accordion-collapse collapse"
+                                                    aria-labelledby="posts" data-bs-parent="#accordionExample">
+                                                <div class="menu-source-list">
                                                 @foreach ($posts as $post)
-                                                    <div id="post" class="accordion-collapse collapse"
-                                                        aria-labelledby="posts" data-bs-parent="#accordionExample">
+                                                    <div>
                                                         <div class="accordion-body px-2 pt-2 pb-1">
                                                             <div class="">
                                                                 <div class="form-check">
@@ -532,8 +541,7 @@
                                                         $menuItemCount++;
                                                     @endphp
                                                 @endforeach
-                                                <div id="post" class="accordion-collapse collapse"
-                                                    aria-labelledby="posts" data-bs-parent="#accordionExample">
+                                                </div>
                                                     <hr class="m-0">
                                                     <div class="add-to-menu-btn text-end p-1">
                                                         <button type="submit" class="btn btn-soft-primary">Add to
@@ -691,12 +699,10 @@
             var object = $(this);
             var liElement = object.closest('li');
             var item_id = object.closest('li').data('id');
-            var menu_id = "{{ $menu->id }}";
             var confirmation = confirm("Are you sure you want to remove this menu item?");
             if (confirmation) {
-                var baseUrl = "{{ url('/') }}/";
-                var URL = baseUrl + 'admin/menu/' + menu_id + '/delete/' + item_id;
-                console.log(URL);
+                var URL = "{{ route('backend.menu.delete_item', ['menu_id' => $menu->id, 'item_id' => '__ITEM__']) }}"
+                    .replace('__ITEM__', item_id);
                 $.ajax({
                     type: "POST",
                     url: URL,
@@ -765,36 +771,6 @@
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
                 }
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const accordionItems = document.querySelectorAll('.accordion-item');
-
-            accordionItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const content = this.querySelector('.accordion-body');
-
-                    // Get the content height
-                    const contentHeight = content.scrollHeight;
-
-                    // Remove the inline style from all items
-                    accordionItems.forEach(i => {
-                        i.style.maxHeight = '';
-                        i.style.overflowY = '';
-                    });
-
-                    // Toggle the height for the clicked item
-                    if (this.style.maxHeight) {
-                        this.style.maxHeight = '';
-                        this.style.overflowY = '';
-                    } else {
-                        // Set max-height to contentHeight + some padding
-                        this.style.maxHeight =
-                            `${contentHeight + 300}px`; // Adjust padding as needed
-                        this.style.overflowY = 'auto';
-                    }
-                });
             });
         });
     </script>

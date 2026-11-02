@@ -94,7 +94,7 @@ class MenuController extends Controller
         
         $request->validate([
             'name' => 'required',
-            'menu_order' => 'numeric|min:0|max:3'
+            'menu_order' => 'numeric|min:1|max:3'
         ], [
             'menu_order.min' => 'The depth field must be at least 1.',
             'menu_order.max' => 'The depth field must not be greater than 3.',
@@ -148,7 +148,8 @@ class MenuController extends Controller
         // return view('backend.menus.add-edit-menu-item', compact('menu', 'pages', 'posts', 'categories', 'allMenuItems') );
         return view('backend.menus.add-edit-menu-item', [
             'menu' => $menu,
-            'depth' => $menu->menu_order,
+            // nestable rejects every drop when maxDepth is 0, so allow at least one level
+            'depth' => max(1, (int) $menu->menu_order),
             'pages' => $pages,
             'posts' => $posts,
             'categories' => $categories,

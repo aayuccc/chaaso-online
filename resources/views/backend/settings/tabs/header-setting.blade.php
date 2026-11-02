@@ -50,6 +50,21 @@
                 </div>
             </div>
             <hr>
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="header_main_menu" class="form-label">Header Main Menu</label>
+                    <select class="form-select" id="header_main_menu" name="header_main_menu">
+                        <option value="">Select Menu</option>
+                        @foreach ($menus ?? [] as $menu)
+                            <option value="{{ $menu->id }}" @selected(($settings['header_main_menu'] ?? null) == $menu->id)>
+                                {{ $menu->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small class="text-muted">Used for the desktop navigation and mobile menu. Add a <code>bi-*</code>
+                        class (e.g. <code>bi-trophy</code>) to a menu item's CSS classes to show an icon in the mobile menu.</small>
+                </div>
+            </div>
         </div>
     </div>
 </div>
