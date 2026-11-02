@@ -16,14 +16,22 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index( $slug )
+    public function index($slug)
     {
-        $cat = Category::where([ 'slug' => $slug, 'type' => 'category' ])->firstOrFail();
+        $cat = Category::where(['slug' => $slug, 'type' => 'category'])->firstOrFail();
 
         $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
-        $posts = $cat->posts()->orderBy('created_at', 'desc')->get();
+        // 3 featured + 12 in the list
+        $posts = $cat->posts()
+            ->with(['postMeta:id,post_id,meta_key,meta_value', 'user:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->take(15)
+            ->get();
 
-        return view('frontend.category', compact('cat', 'posts', 'catMeta'));
+        $featuredPosts = $posts->take(3);
+        $listPosts     = $posts->slice(3);
+
+        return view('frontend.category', compact('cat', 'posts', 'catMeta', 'featuredPosts', 'listPosts'));
     }
 }

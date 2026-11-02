@@ -16,9 +16,9 @@ class AuthorController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index($id)
+    public function index($slug)
     {
-        $cat = Category::where([ 'id' => $id, 'type' => 'author' ])->firstOrFail();
+        $cat = Category::where([ 'slug' => $slug, 'type' => 'author' ])->firstOrFail();
 
         $catMeta = $this->categoryRepository->getMetaDatas($cat);
 

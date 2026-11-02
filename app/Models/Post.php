@@ -75,10 +75,10 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    // public function authors()
-    // {
-    //     return $this->categories()->where('type', 'author');
-    // }
+    public function authors()
+    {
+        return $this->categories()->where('type', 'author');
+    }
 
     public function postMeta()
     {

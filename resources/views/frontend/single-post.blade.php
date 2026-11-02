@@ -141,7 +141,7 @@
                     $author_name = $author->name ?? '';
                     $authordesc = $author->description ?? '';
                     $author_url = ($author && Route::has('frontend.author.index'))
-                        ? route('frontend.author.index', $author->id)
+                        ? route('frontend.author.index', $author->slug)
                         : '#';
                 @endphp
                 @if($author_name || $authordesc)
