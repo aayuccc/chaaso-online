@@ -50,12 +50,12 @@ class PostController extends Controller
     {
         $type = $this->postRepository->encodeType($this->postType);
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
-        // $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
+        $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
         return view('backend.posts.create-post', [
             'categories' => $categories,
-            // 'authors' => $authors,
+            'authors' => $authors,
             // 'tags' => $tags,
             'type' => $type,
         ]);
@@ -115,7 +115,7 @@ class PostController extends Controller
         $post = Post::with(['categories', 'lastUpdatedBy'])->where('post_type', $this->postType)->where('ulid', $id)->firstOrFail();
 
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
-        // $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
+        $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
         // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
         $metaDatas = $this->postRepository->getMetaDatas($post);
@@ -123,7 +123,7 @@ class PostController extends Controller
         return view('backend.posts.edit-post', [
             'post' => $post,
             'categories' => $categories,
-            // 'authors' => $authors,
+            'authors' => $authors,
             // 'tags' => $tags,
             'metaDatas' => $metaDatas,
         ]);

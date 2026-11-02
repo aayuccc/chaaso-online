@@ -89,6 +89,14 @@
                     </div>
                 </li>
             @endcan
+            
+            <li class="side-nav-title text-success">Ads Management</li>
+            <li class="side-nav-item">
+                <a href="{{ route('backend.ads.setting') }}" class="side-nav-link">
+                    <i class="ri-advertisement-line"></i>
+                    <span> Ads Settings </span>
+                </a>
+            </li>
 
             <li class="side-nav-title text-success">Content Management</li>
             @canany(['create_post', 'read_post'])
@@ -117,12 +125,13 @@
                                     <a href="{{ route('backend.category') }}">Categories</a>
                                 </li>
                             @endcan
-                            {{-- @can(['create_author', 'read_author'])
+                            @can(['create_author', 'read_author'])
                                 <li
                                     class="{{ request()->segment(3) === 'author' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('backend.author') }}">Authors</a>
                                 </li>
                             @endcan
+                            {{-- 
                             @can(['create_tag', 'read_tag'])
                                 <li
                                     class="{{ request()->segment(3) === 'tag' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">

@@ -7,5 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [FrontController::class, 'index'])->name('frontend.home');
+Route::get('/news/{id}', [PostController::class, 'newsIndex'])->name('frontend.news.show');
+
 // for all dynamic post and page
 Route::match(['get', 'post'], '{slug}', [PostController::class, 'index'])->name('frontend.post.index');

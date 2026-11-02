@@ -34,4 +34,9 @@ class MediaHelper
             return Media::with('user:id,name')->where('id', $id)->first();
         });
     }
+
+    public static function WsrvService($media)
+    {
+        return $media ? asset($media->file_name) : null;
+    }
 }

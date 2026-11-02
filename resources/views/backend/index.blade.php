@@ -377,7 +377,7 @@
                                                     </span>
                                                     <span class="view">
                                                         |
-                                                        <a href="{{ $siteURL . '/news/' . $post->slug }}" target="_blank"
+                                                        <a href="{{ $siteURL . '/news/' . $post->id }}" target="_blank"
                                                             class="text-primary">View</a>
                                                     </span>
                                                 </div>

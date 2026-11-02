@@ -1,5 +1,225 @@
 @extends('frontend.layouts.app', ['payload' => $post, 'payloadMeta' => $postMeta, 'title' => $post->post_title])
 
 @section('main-section')
-    <h1>Single Post</h1>
+  <main class="co-main">
+    <!-- Floating reading bar (appears once the cover scrolls away) -->
+    <div class="co-readbar" id="coReadbar" aria-hidden="true">
+      <div class="container co-container co-readbar-in">
+        <svg class="co-ring" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15.5"/><circle class="co-ring-fill" id="coRing" cx="18" cy="18" r="15.5"/></svg>
+        <span class="co-readbar-title">{{$post->post_title}}</span>
+
+        <div class="co-fontsize">
+          <button type="button" data-font="-1" aria-label="अक्षर सानो गर्नुहोस्" tabindex="-1">अ−</button>
+          <button type="button" data-font="1" aria-label="अक्षर ठूलो गर्नुहोस्" tabindex="-1">अ+</button>
+          <button type="button" class="co-fontsize-reset" data-font-reset aria-label="अक्षरको आकार पहिलेजस्तै बनाउनुहोस्" title="रिसेट" tabindex="-1"><i class="bi bi-arrow-counterclockwise"></i></button>
+        </div>
+
+        <div class="co-share co-readbar-share">
+          <span class="co-readbar-share-label">सेयर</span>
+          <a href="#" class="co-share-fb" aria-label="Facebook मा सेयर गर्नुहोस्" tabindex="-1"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="co-share-x" aria-label="X मा सेयर गर्नुहोस्" tabindex="-1"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="co-share-wa" aria-label="WhatsApp मा सेयर गर्नुहोस्" tabindex="-1"><i class="bi bi-whatsapp"></i></a>
+          <button type="button" class="co-share-copy" aria-label="लिङ्क कपी गर्नुहोस्" data-copy-link tabindex="-1"><i class="bi bi-link-45deg"></i><span class="co-share-done">कपी भयो</span></button>
+        </div>
+        
+      </div>
+    </div>
+
+    <article class="co-article">
+
+      <!-- ================= ARTICLE HEAD: headline block, then photo ================= -->
+      <header class="co-cover">
+        <div class="container co-container">
+          @php
+              // no frontend category route yet, so fall back to '#' instead of throwing
+              $category_url = ($category && Route::has('frontend.category.index'))
+                  ? route('frontend.category.index', $category->slug)
+                  : '#';
+          @endphp
+          <nav class="co-crumbs" aria-label="ब्रेडक्रम्ब">
+            <a href="{{ route('frontend.home') }}"><i class="bi bi-house-door"></i> गृहपृष्ठ</a>
+            @if(!empty($category_name))<i class="bi bi-chevron-right" aria-hidden="true"></i>
+            <a href="{{ $category_url }}">{{ $category_name }}</a>@endif
+          </nav>
+          <div class="co-cover-panel">
+
+            <h1 class="co-art-title">{{$post->post_title}}</h1>
+            @php
+                $short_desc = $metaData['short_desc'] ?? '';
+            @endphp
+            @if($short_desc)
+            <p class="co-art-dek">{{ $short_desc }}</p>
+            @endif
+            <div class="co-cover-bar">
+
+              <div class="co-art-byline">
+                <span class="co-art-av" aria-hidden="true">चा</span>
+                <div>
+                  <strong>चासो संवाददाता</strong>
+                  <span class="co-art-meta"><span>{{ $post->created_at->format('M d, Y h:i A') }}</span><span>६ मिनेट पढाइ</span><span><i class="bi bi-eye"></i> २,४१२</span></span>
+                </div>
+              </div>
+
+              <div class="co-share">
+                  <a href="#" class="co-share-fb" aria-label="Facebook मा सेयर गर्नुहोस्"><i class="bi bi-facebook"></i></a>
+                  <a href="#" class="co-share-x" aria-label="X मा सेयर गर्नुहोस्"><i class="bi bi-twitter-x"></i></a>
+                  <a href="#" class="co-share-wa" aria-label="WhatsApp मा सेयर गर्नुहोस्"><i class="bi bi-whatsapp"></i></a>
+                  <button type="button" class="co-share-copy" aria-label="लिङ्क कपी गर्नुहोस्" data-copy-link><i class="bi bi-link-45deg"></i><span class="co-share-done">कपी भयो</span></button>
+              </div>
+
+            </div>
+          </div>
+          <!-- cover photo + ad column: ads stretch to the photo's height, label sits on the caption line -->
+          <div class="co-cover-row">
+            @php
+                $featured_image = $postMeta['featured_image'] ?? null;
+                $media = MediaHelper::getImageById($featured_image);
+                if (!empty($featured_image) && !empty($media->file_name)) {
+                    $featured_image_url = MediaHelper::WsrvService($media);
+                }
+                else {
+                    $featured_image_url = null;
+                }
+            @endphp
+            @if($featured_image_url)
+            <figure class="co-cover-media">
+              <div class="co-img"><img src="{{ $featured_image_url }}" alt="{{$post->post_title}}"></div>
+              <figcaption><i class="bi bi-camera"></i> {{$post->post_title}} · चासो अनलाइन</figcaption>
+            </figure>
+            @endif
+
+            <!-- ad section -->
+            <div class="co-cover-ads" role="complementary" aria-label="विज्ञापन">
+              <div class="co-cover-ads-list">
+                <div class="co-ad" data-ad-slot="detail-cover-1">
+                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/router.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-wifi"></i> NovaNet फाइबर</span><span class="co-cr-copy"><strong>३०० Mbps इन्टरनेट, मासिक रु. ९९९ मात्र</strong><small>निःशुल्क जडान · २४ घण्टा सेवा</small></span><span class="co-cr-cta">जडान गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
+                </div>
+                <div class="co-ad" data-ad-slot="detail-cover-2">
+                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--pahadpay" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/phone.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-phone-fill"></i> PahadPay</span><span class="co-cr-copy"><strong>बिल भुक्तानीमा ५% क्यासब्याक</strong><small>बिजुली, पानी, इन्टरनेट — सबै एकै एपमा</small></span><span class="co-cr-cta">एप डाउनलोड <i class="bi bi-arrow-right"></i></span></span></a>
+                </div>
+                <div class="co-ad" data-ad-slot="detail-cover-3">
+                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--skyyatra" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/plane.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-airplane-fill"></i> Sky Yatra</span><span class="co-cr-copy"><strong>काठमाडौं–पोखरा रु. ३,९९९ बाट</strong><small>सीमित सिट · अहिले नै बुक गर्नुहोस्</small></span><span class="co-cr-cta">टिकट बुक <i class="bi bi-arrow-right"></i></span></span></a>
+                </div>
+              </div>
+              <span class="co-ad-tag">विज्ञापन</span>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= READING COLUMN + CONTENTS ================= -->
+      <div class="co-section co-art-wrap">
+        <div class="container co-container">
+          <div class="co-read">
+            <div class="co-read-main">
+                
+                <!-- summary -->
+              <details class="co-summary" open>
+                <summary><span class="co-summary-label"><span class="co-summary-ic"><i class="bi bi-stars"></i></span> समाचार सारांश <small>३० सेकेन्डमा</small></span><i class="bi bi-chevron-down co-summary-caret"></i></summary>
+                <ul>
+                  <li>देशभरका ६ हजारभन्दा बढी वडामा एकैसाथ अधिवेशन सुरु भएको छ।</li>
+                  <li>पहिलो दिन ७० प्रतिशतभन्दा बढी सक्रिय सदस्यले सहभागिता जनाए।</li>
+                  <li>नेतृत्वले गुटबन्दी त्यागी पार्टी एकतामा जोड दिन आग्रह गरेको छ।</li>
+                </ul>
+              </details>
+
+              <div class="co-art-body" id="coArtBody">
+                {!!$post->post_content!!}
+              </div>
+
+              <div class="co-art-foot">
+                <div class="co-art-tags">
+                  <span><i class="bi bi-tags"></i> विषय</span>
+                  <a href="#">#कांग्रेस</a>
+                  <a href="#">#वडा_अधिवेशन</a>
+                  <a href="#">#महाधिवेशन</a>
+                </div>
+              </div>
+
+                @php
+                    $author_name = $author->name ?? '';
+                    $authordesc = $author->description ?? '';
+                    $author_url = ($author && Route::has('frontend.author.index'))
+                        ? route('frontend.author.index', $author->id)
+                        : '#';
+                @endphp
+                @if($author_name || $authordesc)
+                    <div class="co-author-box">
+                        <span class="co-art-av co-art-av-lg" aria-hidden="true">{{ mb_substr($author_name, 0, 2) }}</span>
+                        <div>
+                        <small>लेखक</small>
+                        <strong>{{ $author_name }}</strong>
+                        @if(!empty($author->description))
+                        <p>{{ $author->description }}</p>
+                        @endif
+                        </div>
+                        <a href="{{ $author_url }}" class="co-more">थप समाचार <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                @endif
+
+            </div>
+
+            <aside class="co-read-side">
+
+                <div class="co-section-head">
+                    <h2 class="co-section-title">यो पनि हेर्नुहोस्</h2><span class="co-hatch co-hatch-sm"></span>
+                </div>
+                <div class="co-mini-list co-mini-list-sm">
+                    @foreach($latestNews as $item)
+                    @php
+                        $item_image = MediaHelper::WsrvService(MediaHelper::getImageById($item->postMeta->firstWhere('meta_key', 'featured_image')?->meta_value));
+                        $item_url = route('frontend.news.show', $item->id);
+                    @endphp
+                    <article class="co-mini">
+                        @if($item_image)
+                        <a href="{{ $item_url }}" class="co-mini-thumb co-img"><img src="{{ $item_image }}" alt="{{ $item->post_title }}" loading="lazy"></a>
+                        @endif
+                        <div><h3 class="co-title-sm"><a href="{{ $item_url }}">{{ $item->post_title }}</a></h3><div class="co-meta"><span>{{ $item->created_at->format('M d, Y') }}</span></div></div>
+                    </article>
+                    @endforeach
+                </div>
+                <!-- ads section -->
+                <div class="co-ad co-ad-sticky co-aside-sticky" data-ad-slot="article-aside-sticky">
+                    <span class="co-ad-tag">विज्ञापन</span>
+                    <a href="#" class="co-ad-box co-cr co-cr-v co-cr--lakebreeze" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/resort.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-water"></i> Lake Breeze Resort</span><span class="co-cr-copy"><strong>पोखरामा परिवारसँग बिदा — २५% छुट</strong><small>नास्ता सहित · ३ रात बस्दा १ रात निःशुल्क</small></span><span class="co-cr-cta">बुक गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
+                </div>
+
+            </aside>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ================= RELATED ================= -->
+    @if($relatedPosts->isNotEmpty())
+    <section class="co-section co-related">
+      <div class="container co-container">
+        <div class="co-section-head">
+          <h2 class="co-section-title">सम्बन्धित समाचार</h2><span class="co-hatch"></span>
+          <a href="{{ $category_url }}" class="co-more">थप हेर्नुहोस् <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="co-related-grid">
+          @foreach($relatedPosts->take(4) as $item)
+          @php
+              $item_image = MediaHelper::WsrvService(MediaHelper::getImageById($item->postMeta->firstWhere('meta_key', 'featured_image')?->meta_value));
+              $item_url = route('frontend.news.show', $item->id);
+          @endphp
+          <article class="co-card co-cat-card">
+            @if($item_image)
+            <a href="{{ $item_url }}" class="co-card-media co-img"><img src="{{ $item_image }}" alt="{{ $item->post_title }}" loading="lazy"></a>
+            @endif
+            <h3 class="co-title-md"><a href="{{ $item_url }}">{{ $item->post_title }}</a></h3>
+            <div class="co-meta">
+                @php
+                    $author_name = $author->name ?? '';
+                @endphp
+                @if($author_name)<span class="co-meta-author">{{$author_name}}</span>@endif<span>{{ $item->created_at->format('M d, Y') }}</span></div>
+          </article>
+          @endforeach
+        </div>
+      </div>
+    </section>
+    @endif
+  </main>
 @endsection

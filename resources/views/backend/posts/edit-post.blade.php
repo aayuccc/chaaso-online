@@ -44,10 +44,10 @@
                                             :categories="$categories" :post="$post" />
                                     </div>
 
-                                    {{-- <div class="col-12">
+                                    <div class="col-12">
                                         <x-backend.post.category title="Author" name="authors[]" type="single"
                                             :categories="$authors" :post="$post" />
-                                    </div> --}}
+                                    </div>
 
                                     {{-- <div class="col-12">
                                         <x-backend.post.category title="Tags" name="tags[]" type="multiple"

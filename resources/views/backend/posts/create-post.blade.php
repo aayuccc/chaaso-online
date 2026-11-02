@@ -38,8 +38,8 @@
                                     :categories="$categories" />
 
                                 {{-- authors --}}
-                                {{-- <x-backend.post.category title="Author" name="authors[]" type="single"
-                                    :categories="$authors" /> --}}
+                                <x-backend.post.category title="Author" name="authors[]" type="single"
+                                    :categories="$authors" />
 
                                 {{-- tags --}}
                                 {{-- <x-backend.post.category title="Tags" name="tags[]" type="multiple"

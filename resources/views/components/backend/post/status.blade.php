@@ -67,7 +67,7 @@
 
                 @if ($status == 'publish' && $siteURL && $route)
                     <div class="d-grid mt-2">
-                        <a target="_blank" href="{{ $siteURL . $route . $post->slug }}"
+                        <a target="_blank" href="{{ $siteURL . $route . $post->id }}"
                             class="btn btn-sm btn-dark">View</a>
                     </div>
                 @endif

@@ -79,7 +79,7 @@ class PostController extends Controller
         ];
     }
 
-    public function newsIndex($year, $month, $id)
+    public function newsIndex($id)
     {
         $post = Post::where([ 'id' => $id, 'post_type' => 'post' ])->first();
 
@@ -90,14 +90,26 @@ class PostController extends Controller
 
             if ( $isPublished || ( $isDraft && auth()->check()) ) {
                 $postMeta = $post->GetAllMetaData();
+
+                // first assigned category, used for the breadcrumb and "more" link
+                $category = $post->categories()->where('type', CategoryType::CATEGORY)->first();
+                $category_name = $category->name ?? null;
+
+                // first selected author, shown in the byline and author box
+                $author = $post->categories()->where('type', CategoryType::AUTHOR)->first();
+
+                $relatedPosts = $this->postRepository->getRelatedPosts($post->id, 'post');
+
+                // latest posts from any category, skipping the ones already shown as related
                 $latestNews = Post::where('id', '!=', $post->id)
+                    ->whereNotIn('id', $relatedPosts->pluck('id'))
                     ->where([ 'post_type' => 'post', 'post_status' => 'publish' ])
+                    ->with('postMeta:id,post_id,meta_key,meta_value')
                     ->latest()
-                    ->take(5)
+                    ->take(4)
                     ->get();
 
-                $relatedPosts = $this->postRepository->getRelatedPosts($post->id);
-                return view('frontend.single-post', compact('post', 'latestNews', 'relatedPosts', 'postMeta'));
+                return view('frontend.single-post', compact('post', 'latestNews', 'relatedPosts', 'postMeta', 'category', 'category_name', 'author'));
             }
 
             if ( $isDraft && !auth()->check() ) {

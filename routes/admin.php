@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\GeneralSettingController;
 use App\Http\Controllers\Backend\AppearanceSettingController;
+use App\Http\Controllers\Backend\AdsController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/backend', '/backend/dashboard')->middleware(['auth']);
@@ -153,6 +154,9 @@ Route::prefix('backend')->middleware(['auth', 'check.user.role'])->group(functio
     Route::post('team', [TeamController::class, 'store'])->name('backend.store.team');
     Route::get('team/{id}/edit', [TeamController::class, 'edit'])->name('backend.team.edit');
     Route::post('team/{id}/edit', [TeamController::class, 'update'])->name('backend.team.update');
+    // ads settings
+    Route::get('ads', [AdsController::class, 'index'])->name('backend.ads.setting');
+    Route::post('ads', [AdsController::class, 'store'])->name('backend.ads.store');
 
     // ajax
     Route::post('get-page-template', [PageController::class, 'getPageTemplate'])->name('backend.get.template');
