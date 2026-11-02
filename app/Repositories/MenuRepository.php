@@ -111,6 +111,7 @@ class MenuRepository
         $menuMethods = [
             'page'                  => 'pageBuildTree',
             'news'                  => 'newsBuildTree',
+            'post'                  => 'newsBuildTree',
             'wiki-category'         => 'wikiCategoryBuildTree',
             'web-stories-category'  => 'webStoriesCategoryBuildTree',
             'category'              => 'categoryBuildTree',

@@ -69,22 +69,22 @@
                                                 <br />
                                                 <div class="row-action">
                                                     {{-- <span class="edit">
-                                                        <a href="{{ route('backend.menu.edit', $menu->id) }}"
+                                                        <a href="{{ route('backend.menu.edit', $menu) }}"
                                                             class="text-primary">Edit</a>
                                                     </span>
                                                     <span class="delete">
                                                         |
-                                                        <a href="{{ route('backend.menu.delete', $menu->id) }}"
+                                                        <a href="{{ route('backend.menu.delete', $menu) }}"
                                                             onclick="return confirm('Are you sure you want to delete?');"
                                                             class="text-danger">Delete</a>
                                                     </span> --}}
                                                     <span class="edit">
-                                                        <a href="{{ route('backend.menu.edit', $menu->id) }}"
+                                                        <a href="{{ route('backend.menu.edit', $menu) }}"
                                                             class="text-primary">Edit</a>
                                                     </span>
                                                     <span class="add-edit">
                                                         |
-                                                        <a href="{{ route('backend.menu.add_edit_menu_item', $menu->id) }}"
+                                                        <a href="{{ route('backend.menu.add_edit_menu_item', $menu) }}"
                                                             class="text-success" target="_self">Add/Edit Menu
                                                             Items</a>
                                                     </span>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Setting;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -25,10 +26,16 @@ class SettingController extends Controller
     public function index()
     {
         $settings = [];
+        $menus = collect();
 
         try {
 
             $settings = $this->settingRepository->index($this->setting);
+
+            $menus = Category::where('type', 'nav_menu')
+                ->where('parent', 0)
+                ->orderBy('name', 'ASC')
+                ->get();
 
         } catch (\Exception $e) {
 
@@ -38,6 +45,7 @@ class SettingController extends Controller
 
         return view('backend.settings.index-setting', [
             'settings' => $settings,
+            'menus' => $menus,
         ]);
     }
 

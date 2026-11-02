@@ -122,12 +122,11 @@ class MenuController extends Controller
 
         // sidebar lists for menu
         $pages = $this->postModel->where([ 'post_type' => 'page', 'post_status' => 'publish'])->orderBy('post_title', 'ASC')->get();
-        // $posts = $this->postModel->where([ 'post_type' => 'post', 'post_status' => 'publish'])->orderBy('post_title', 'ASC')->get();
+        // latest published posts only, the full list is too large for the sidebar
+        $posts = $this->postModel->where([ 'post_type' => 'post', 'post_status' => 'publish'])->orderBy('id', 'DESC')->limit(50)->get();
         $categories = $this->catModel->where([ 'type' => 'category'])->orderBy('name', 'ASC')->get();
         $wikiCats = $this->catModel->where([ 'type' => 'wiki-category'])->orderBy('name', 'ASC')->get();
         $webstoriesCats = $this->catModel->where([ 'type' => 'web-stories-category'])->orderBy('name', 'ASC')->get();
-
-        $posts = [];
 
         $allMenuItems = $menu->posts;
         // $parentMenuItems = $allMenuItems->filter(function ($item) {
@@ -151,7 +150,7 @@ class MenuController extends Controller
             'menu' => $menu,
             'depth' => $menu->menu_order,
             'pages' => $pages,
-            'posts' => [],
+            'posts' => $posts,
             'categories' => $categories,
             'wikiCats' => $wikiCats,
             'webstoriesCats' => $webstoriesCats,

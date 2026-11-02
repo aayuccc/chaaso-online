@@ -6,7 +6,7 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <h4 class="page-title">Edit Menu</h4>
-                    <form action="{{ route('backend.menu.update', $menu->id) }}" method="POST">
+                    <form action="{{ route('backend.menu.update', $menu) }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-9">

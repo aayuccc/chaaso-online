@@ -45,6 +45,24 @@ class FrontMenuRepository
             ];
         }
 
+        if ( $type == 'post' ) {
+
+            $menuItem = PostHelper::getModel()
+            ->where(['id' => $meta['menu_item_object_id'], 'post_type' => 'post'])
+            ->first();
+            $menuTitle = $menu->post_title;
+            $menuLink = route($meta['menu_item_route'], $menuItem->id);
+            $menuCSS = isset($meta['menu_item_classes']) ? $meta['menu_item_classes'] : '';
+            $menuTarget = isset($meta['menu_item_target']) ? $meta['menu_item_target'] : '_self';
+
+            return [
+                'title' => $menuTitle,
+                'link' => $menuLink,
+                'css' => $menuCSS,
+                'target' => $menuTarget,
+            ];
+        }
+
         if ( $type == 'custom' ) {
             $menuItem = PostHelper::getModel()
             ->where(['id' => $meta['menu_item_object_id'], 'post_type' => 'nav_menu_item'])

@@ -46,19 +46,40 @@
                             <input type="hidden" id="footer_logo" name="footer_logo" class="selected-files"
                                 value="" />
                             <div id="footer_logo_select"></div>
-                        @endisset
+                        @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
 <hr class="mt-0">
-<div class="mb-3">
+<!-- <div class="mb-3">
     <label for="copyright_text" class="form-label">Copyright Text</label>
     <p class="text-muted fs-14">
         <i><code style="cursor: pointer;">%copy%</code> is © <code style="cursor: pointer;">%year%</code> is Latest
             Date <code style="cursor: pointer;">%sitename%</code> is Site Title</i>
     </p>
     <textarea class="form-control" name="copyright_text" id="copyright_text" cols="30" rows="10">{{ isset($settings['copyright_text']) ? $settings['copyright_text'] : '' }}</textarea>
-</div>
+</div> -->
+    <div class="mb-3">
+        <label for="footer_title" class="form-label">Footer Title</label>
+        <input type="text" class="form-control" id="footer_title" name="footer_title" value="{{ isset($settings['footer_title']) ? $settings['footer_title'] : '' }}" />
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label for="footer_widget_first" class="form-label">Footer Widget First Menu</label>
+                <select class="form-select" id="footer_widget_first" name="footer_widget_first">
+                    <option value="">Select Menu</option>
+                    @foreach ($menus ?? [] as $menu)
+                        <option value="{{ $menu->id }}" @selected(($settings['footer_widget_first'] ?? null) == $menu->id)>
+                            {{ $menu->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
