@@ -89,21 +89,49 @@
             @endif
 
             <!-- ad section -->
+             @php
+                $header_popup_ads = SettingHelper::get_field('header_popup_ads');
+
+                $header_popup_ads = $header_popup_ads
+                    ? (is_string($header_popup_ads) ? unserialize($header_popup_ads) : $header_popup_ads)
+                    : [];
+
+                $header_popup_ads = is_array($header_popup_ads) ? $header_popup_ads : [];
+            @endphp
+
+            @if(count($header_popup_ads))
             <div class="co-cover-ads" role="complementary" aria-label="विज्ञापन">
               <div class="co-cover-ads-list">
-                <div class="co-ad" data-ad-slot="detail-cover-1">
-                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/router.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-wifi"></i> NovaNet फाइबर</span><span class="co-cr-copy"><strong>३०० Mbps इन्टरनेट, मासिक रु. ९९९ मात्र</strong><small>निःशुल्क जडान · २४ घण्टा सेवा</small></span><span class="co-cr-cta">जडान गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
-                </div>
-                <div class="co-ad" data-ad-slot="detail-cover-2">
-                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--pahadpay" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/phone.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-phone-fill"></i> PahadPay</span><span class="co-cr-copy"><strong>बिल भुक्तानीमा ५% क्यासब्याक</strong><small>बिजुली, पानी, इन्टरनेट — सबै एकै एपमा</small></span><span class="co-cr-cta">एप डाउनलोड <i class="bi bi-arrow-right"></i></span></span></a>
-                </div>
-                <div class="co-ad" data-ad-slot="detail-cover-3">
-                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--skyyatra" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/plane.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-airplane-fill"></i> Sky Yatra</span><span class="co-cr-copy"><strong>काठमाडौं–पोखरा रु. ३,९९९ बाट</strong><small>सीमित सिट · अहिले नै बुक गर्नुहोस्</small></span><span class="co-cr-cta">टिकट बुक <i class="bi bi-arrow-right"></i></span></span></a>
-                </div>
+                @foreach($header_popup_ads as $index => $ad)
+                  @php
+                    $featuredmedia = !empty($ad['image']) ? MediaHelper::getImageById($ad['image']) : null;
+                      if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                        $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+                      } else {
+                        $ad_image_url = null;
+                      }
+                  @endphp
+                  @if($ad_image_url)
+                    <div class="co-ad" data-ad-slot="detail-cover-{{ $loop->iteration }}">
+                      <!-- <span class="co-ad-tag">विज्ञापन</span> -->
+                        @php
+                          $adClasses = [
+                          0 => 'co-ad-box co-cr co-cr-h co-cr--novanet',
+                          1 => 'co-ad-box co-cr co-cr-h co-cr--pahadpay',
+                          2 => 'co-ad-box co-cr co-cr-h co-cr--skyyatra',
+                          ];
+                          $adClass = $adClasses[$index] ?? 'co-ad-box co-cr co-cr-h';
+                        @endphp
+                        <a href="{{ $ad['link'] ?? '#' }}" class="{{ $adClass }}" rel="sponsored noopener" target="_blank">
+                          <img class="co-cr-img" src="{{ $ad_image_url }}" alt="विज्ञापन" loading="lazy">
+                        </a>
+                    </div>
+                  @endif
+                @endforeach
               </div>
               <span class="co-ad-tag">विज्ञापन</span>
             </div>
-
+            @endif
           </div>
         </div>
       </header>
@@ -180,10 +208,24 @@
                     @endforeach
                 </div>
                 <!-- ads section -->
+                @php
+                  $websiteName = SettingHelper::get_field('site_title');
+                  $after_relatednews_long = SettingHelper::get_field('after_relatednews_long');
+                  $featuredmedia = $after_relatednews_long ? MediaHelper::getImageById($after_relatednews_long) : null;
+                  if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                    $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+                  }
+                  else {
+                  $ad_image_url = null;
+                  }
+                  $after_relatednews_long_url     = SettingHelper::get_field('after_relatednews_long_url');
+                @endphp
+                @if ($after_relatednews_long_url || $featuredmedia)
                 <div class="co-ad co-ad-sticky co-aside-sticky" data-ad-slot="article-aside-sticky">
                     <span class="co-ad-tag">विज्ञापन</span>
-                    <a href="#" class="co-ad-box co-cr co-cr-v co-cr--lakebreeze" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/resort.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-water"></i> Lake Breeze Resort</span><span class="co-cr-copy"><strong>पोखरामा परिवारसँग बिदा — २५% छुट</strong><small>नास्ता सहित · ३ रात बस्दा १ रात निःशुल्क</small></span><span class="co-cr-cta">बुक गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
+                    <a href="{{ $after_relatednews_long_url }}" class="co-ad-box co-cr co-cr-v co-cr--lakebreeze" rel="sponsored noopener"><img class="co-cr-img" src="{{ $ad_image_url }}" alt="" loading="lazy"></a>
                 </div>
+                @endif
 
             </aside>
           </div>
