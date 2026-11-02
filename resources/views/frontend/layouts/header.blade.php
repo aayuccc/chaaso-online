@@ -11,16 +11,31 @@
             <span class="co-date-full">असोज २६, २०८३</span>
           </div>
         </div>
-
+      @php
+          $websiteName = SettingHelper::get_field('site_title');
+      
+          $brandId = SettingHelper::get_field('navbar_img');
+          $brandmedia = $brandId ? MediaHelper::getImageById($brandId) : null;
+          if (!empty($brandmedia) && !empty($brandmedia->file_name)) {
+            $ad_image_url = MediaHelper::WsrvService($brandmedia);
+          }
+          else {
+            $ad_image_url = null;
+          }
+          $ad_link     = SettingHelper::get_field('navbar_url');
+      @endphp
+      
+      @if ($ad_link || $brandmedia)
         <div class="co-ad co-header-ad d-none d-lg-block" data-ad-slot="header">
-          <a href="#" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><span
-              class="co-ad-badge">विज्ञापन</span><img class="co-cr-img" src="{{ asset('assets/images/ads/router.jpg') }}" alt=""
-              loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-wifi"></i> NovaNet
-                फाइबर</span><span class="co-cr-copy"><strong>३०० Mbps इन्टरनेट, मासिक रु. ९९९
-                  मात्र</strong><small>निःशुल्क जडान · २४ घण्टा सेवा</small></span><span class="co-cr-cta">जडान
-                गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
+          <a href="{{ $ad_link }}" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><span
+              class="co-ad-badge">विज्ञापन</span>
+              <img class="co-cr-img" src="{{ $ad_image_url ?? asset('assets/images/ads/router.jpg') }}" alt=""
+              loading="lazy">
+            </a>
         </div>
+      @endif
 
+      <!-- mode toolbar -->
         <div class="co-header-tools d-lg-none">
           <button class="co-theme-switch" type="button" role="switch" aria-checked="false" aria-label="डार्क मोड"
             title="लाइट / डार्क मोड" data-theme-toggle>

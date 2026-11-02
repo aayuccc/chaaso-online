@@ -78,47 +78,25 @@
     @endif
 
 @php
-    $websiteName = SettingHelper::get_field('site_title');
- 
-    $brandId = SettingHelper::get_field('after_featured_news_brand');
-    $brandmedia = $brandId ? MediaHelper::getImageById($brandId) : null;
- 
-    $adImageId = SettingHelper::get_field('after_featured_news');
-    $media = $adImageId ? MediaHelper::getImageById($adImageId) : null;
-
-    // separate variables so the brand logo no longer overwrites the ad image
-    if (!empty($brandmedia) && !empty($brandmedia->file_name)) {
-      $brand_url = MediaHelper::WsrvService($brandmedia);
-    }
-    else {
-      $brand_url = null;
-    }
-    if (!empty($media) && !empty($media->file_name)) {
-      $ad_image_url = MediaHelper::WsrvService($media);
-    }
-    else {
-      $ad_image_url = null;
-    }
- 
-    $ad_title    = SettingHelper::get_field('after_featured_news_ad_title');
-    $ad_subtitle = SettingHelper::get_field('after_featured_news_ad_subtitle');
-    $ad_link     = SettingHelper::get_field('after_featured_news_url');
-    $ad_cta      = SettingHelper::get_field('after_featured_news_cta_text');
+  $websiteName = SettingHelper::get_field('site_title');
+  $after_featured_news = SettingHelper::get_field('after_featured_news');
+  $featuredmedia = $after_featured_news ? MediaHelper::getImageById($after_featured_news) : null;
+  if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+  $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+  }
+  else {
+  $ad_image_url = null;
+  }
+  $after_featured_news_url     = SettingHelper::get_field('after_featured_news_url');
 @endphp
- 
-@if ($ad_title || $ad_subtitle || $ad_link || $ad_cta || $brandmedia || $media)
+@if ($after_featured_news_url || $featuredmedia)
     <!-- Ad row -->
     <div class="co-ad-row">
       <div class="container co-container">
         <div class="co-ad co-ad-leader" data-ad-slot="category-top">
           <span class="co-ad-tag">विज्ञापन</span>
-          <a href="{{$ad_link}}" class="co-ad-box co-cr co-cr-h co-cr--sunrise" rel="sponsored noopener">
+          <a href="{{$after_featured_news_url}}" class="co-ad-box co-cr co-cr-h co-cr--sunrise" rel="sponsored noopener">
             <img class="co-cr-img" src="{{$ad_image_url}}" alt="" loading="lazy">
-            <span class="co-cr-in">
-              <span class="co-cr-brand"><i class="bi bi-house-heart-fill"></i> Sunrise Homes</span>
-              <span class="co-cr-copy"><strong>{{$ad_title}}</strong><small>{{$ad_subtitle}}</small></span>
-              <span class="co-cr-cta">{{$ad_cta}} <i class="bi bi-arrow-right"></i></span>
-            </span>
           </a>
         </div>
       </div>
@@ -145,10 +123,24 @@
                 </article>
 
                 @if ($loop->iteration === 6)
+                @php
+                  $websiteName = SettingHelper::get_field('site_title');
+                  $between_category_news = SettingHelper::get_field('between_category_news');
+                  $featuredmedia = $between_category_news ? MediaHelper::getImageById($between_category_news) : null;
+                  if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                  $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+                  }
+                  else {
+                  $ad_image_url = null;
+                  }
+                  $between_category_news_url     = SettingHelper::get_field('between_category_news_url');
+                @endphp
+                @if ($between_category_news_url || $featuredmedia)
                 <div class="co-ad co-ad-infeed" data-ad-slot="category-infeed">
                   <span class="co-ad-tag">विज्ञापन</span>
-                  <a href="#" class="co-ad-box co-cr co-cr-h co-cr--pahadpay" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/phone.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-phone-fill"></i> PahadPay</span><span class="co-cr-copy"><strong>बिल भुक्तानीमा ५% क्यासब्याक</strong><small>बिजुली, पानी, इन्टरनेट — सबै एकै एपमा</small></span><span class="co-cr-cta">एप डाउनलोड <i class="bi bi-arrow-right"></i></span></span></a>
+                  <a href="{{ $between_category_news_url }}" class="co-ad-box co-cr co-cr-h co-cr--pahadpay" rel="sponsored noopener"><img class="co-cr-img" src="{{ $ad_image_url }}" alt="" loading="lazy"></a>
                 </div>
+                @endif
                 @endif
               @endforeach
             </div>
@@ -167,26 +159,84 @@
           </div>
 
           <aside class="co-split-aside">
-            <div class="co-ad co-ad-square" data-ad-slot="category-aside-sq-1">
-              <span class="co-ad-tag">विज्ञापन</span>
-              <a href="#" class="co-ad-box co-cr co-cr-v co-cr--voltride" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/ev.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-lightning-charge-fill"></i> VoltRide EV</span><span class="co-cr-copy"><strong>दशैं अफर: ०% ब्याजमा इलेक्ट्रिक कार</strong><small>५ वर्ष ब्याट्री वारेन्टी · निःशुल्क होम चार्जर</small></span><span class="co-cr-cta">टेस्ट ड्राइभ <i class="bi bi-arrow-right"></i></span></span></a>
-            </div>
+            @php
+                $belowMastheadAds = SettingHelper::get_field('below_masthead_ads');
 
-            <div class="co-ad co-ad-square" data-ad-slot="category-aside-sq-2">
-              <span class="co-ad-tag">विज्ञापन</span>
-              <a href="#" class="co-ad-box co-cr co-cr-v co-cr--techhub" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/laptop.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-laptop"></i> TechHub</span><span class="co-cr-copy"><strong>ल्यापटपमा १५% सम्म छुट</strong><small>सजिलो किस्ता · २ वर्ष वारेन्टी</small></span><span class="co-cr-cta">अहिले किन्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
-            </div>
+                $belowMastheadAds = $belowMastheadAds
+                    ? (is_string($belowMastheadAds) ? unserialize($belowMastheadAds) : $belowMastheadAds)
+                    : [];
 
-            <div class="co-ad co-ad-rect" data-ad-slot="category-aside">
-              <span class="co-ad-tag">विज्ञापन</span>
-              <a href="#" class="co-ad-box co-cr co-cr-v co-cr--skyyatra" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/plane.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-airplane-fill"></i> Sky Yatra</span><span class="co-cr-copy"><strong>काठमाडौं–पोखरा रु. ३,९९९ बाट</strong><small>सीमित सिट · अहिले नै बुक गर्नुहोस्</small></span><span class="co-cr-cta">टिकट बुक गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
-            </div>
+                $belowMastheadAds = is_array($belowMastheadAds) ? $belowMastheadAds : [];
+            @endphp
+
+            @if(count($belowMastheadAds))
+                @foreach($belowMastheadAds as $index => $ad)
+
+                    @php
+                        $featuredmedia = !empty($ad['image'])
+                            ? MediaHelper::getImageById($ad['image'])
+                            : null;
+
+                        if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                            $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+                        } else {
+                            $ad_image_url = null;
+                        }
+                    @endphp
+
+                    @if($ad_image_url)
+                        <div class="co-ad {{ $loop->iteration <= 2 ? 'co-ad-square' : 'co-ad-rect' }}"
+                            data-ad-slot="category-aside-{{ $loop->iteration }}">
+
+                            <span class="co-ad-tag">विज्ञापन</span>
+
+                            @php
+                                $adClasses = [
+                                    0 => 'co-ad-box co-cr co-cr-v co-cr--voltride',
+                                    1 => 'co-ad-box co-cr co-cr-v co-cr--techhub',
+                                    2 => 'co-ad-box co-cr co-cr-v co-cr--skyyatra',
+                                ];
+
+                                $adClass = $adClasses[$index] ?? 'co-ad-box co-cr co-cr-v';
+                            @endphp
+
+                            <a href="{{ $ad['link'] ?? '#' }}"
+                              class="{{ $adClass }}"
+                              rel="sponsored noopener"
+                              target="_blank">
+
+                                <img
+                                    class="co-cr-img"
+                                    src="{{ $ad_image_url }}"
+                                    alt="विज्ञापन"
+                                    loading="lazy">
+                            </a>
+                        </div>
+                    @endif
+
+                @endforeach
+            @endif
 
             <!-- fills the rest of the sidebar: stays in view while the list scrolls -->
+            @php
+              $websiteName = SettingHelper::get_field('site_title');
+              $sidebar_category_long = SettingHelper::get_field('sidebar_category_long');
+              $featuredmedia = $sidebar_category_long ? MediaHelper::getImageById($sidebar_category_long) : null;
+              if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+              }
+              else {
+              $ad_image_url = null;
+              }
+              $sidebar_category_long_url     = SettingHelper::get_field('sidebar_category_long_url');
+            @endphp
+            @if ($sidebar_category_long_url || $featuredmedia)
             <div class="co-ad co-ad-sticky co-aside-sticky" data-ad-slot="category-aside-sticky">
               <span class="co-ad-tag">विज्ञापन</span>
-              <a href="#" class="co-ad-box co-cr co-cr-v co-cr--lakebreeze" rel="sponsored noopener"><img class="co-cr-img" src="assets/images/ads/resort.jpg" alt="" loading="lazy"><span class="co-cr-in"><span class="co-cr-brand"><i class="bi bi-water"></i> Lake Breeze Resort</span><span class="co-cr-copy"><strong>पोखरामा परिवारसँग बिदा — २५% छुट</strong><small>नास्ता सहित · ३ रात बस्दा १ रात निःशुल्क</small></span><span class="co-cr-cta">बुक गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
+              <a href="{{ $sidebar_category_long_url }}" class="co-ad-box co-cr co-cr-v co-cr--lakebreeze" rel="sponsored noopener"><img class="co-cr-img" src="{{ $ad_image_url }}" alt="" loading="lazy"><span class="co-cr-in"></a>
             </div>
+            @endif
+
           </aside>
         </div>
       </div>
