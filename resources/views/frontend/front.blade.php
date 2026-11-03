@@ -316,49 +316,7 @@
     </section>
 
     <!-- ================= 11. छुटाउनुभयो कि ? ================= -->
-    <section class="co-section co-missed">
-      <div class="container co-container">
-        <div class="co-section-head">
-          <h2 class="co-section-title">छुटाउनुभयो कि ?</h2><span class="co-hatch"></span>
-        </div>
-        <div class="row g-4">
-          <div class="col-12 col-sm-6 col-lg-3">
-            <article class="co-card">
-              <a href="#" class="co-card-media co-img"><img src="{{ asset('assets/images/np/group.jpg') }}"
-                  alt="आदिवासी जनजातिको जलवायु तथा वन शासनमा सहभागिता विषयक प्रदेशस्तरीय कार्यशाला सम्पन्न"><span
-                  class="co-tag co-tag-green co-tag-abs">समाज</span></a>
-              <h3 class="co-title-md"><a href="#">आदिवासी जनजातिको जलवायु तथा वन शासनमा सहभागिता विषयक प्रदेशस्तरीय
-                  कार्यशाला सम्पन्न</a></h3>
-            </article>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <article class="co-card">
-              <a href="#" class="co-card-media co-img"><img src="{{ asset('assets/images/np/man1.jpg') }}"
-                  alt="खै कहाँ छन् जिवी राई ? किन खोज्दैनन् सरकार ?"><span
-                  class="co-tag co-tag-red co-tag-abs">समाचार</span></a>
-              <h3 class="co-title-md"><a href="#">खै कहाँ छन् जिवी राई ? किन खोज्दैनन् सरकार ?</a></h3>
-            </article>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <article class="co-card">
-              <a href="#" class="co-card-media co-img"><img src="{{ asset('assets/images/np/flood.jpg') }}"
-                  alt="२० जिल्लामा बाढीको ‘रेड अलर्ट’, उच्च सतर्कता अपनाउन आग्रह"><span
-                  class="co-tag co-tag-blue co-tag-abs">मौसम</span></a>
-              <h3 class="co-title-md"><a href="#">२० जिल्लामा बाढीको ‘रेड अलर्ट’, उच्च सतर्कता अपनाउन आग्रह</a></h3>
-            </article>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <article class="co-card">
-              <a href="#" class="co-card-media co-img"><img src="{{ asset('assets/images/np/hotelnight.jpg') }}"
-                  alt="पारिवारिक तथा पर्यटकको आकर्षक गन्तव्य बन्दै, रोयल भिल्ला रिर्सोट"><span
-                  class="co-tag co-tag-amber co-tag-abs">पर्यटन</span></a>
-              <h3 class="co-title-md"><a href="#">पारिवारिक तथा पर्यटकको आकर्षक गन्तव्य बन्दै, रोयल भिल्ला रिर्सोट</a>
-              </h3>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
+    @include('frontend.home.left-out-tab')
     
     @php
       $websiteName = SettingHelper::get_field('site_title');

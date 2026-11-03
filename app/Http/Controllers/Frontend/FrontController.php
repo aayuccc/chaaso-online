@@ -26,6 +26,7 @@ class FrontController extends Controller
         'share_cat'       => 4,
         'auto_cat'        => 4,
         'agriculture_cat' => 4,
+        'left_out_cat'    => 4,
     ];
 
     public function index()

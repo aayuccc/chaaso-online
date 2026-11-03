@@ -25,6 +25,7 @@ class HomeRepository
         $data['share_cat'] = isset($request->share_cat) ? $request->share_cat : NULL;
         $data['auto_cat'] = isset($request->auto_cat) ? $request->auto_cat : NULL;
         $data['agriculture_cat'] = isset($request->agriculture_cat) ? $request->agriculture_cat : NULL;
+        $data['left_out_cat'] = isset($request->left_out_cat) ? $request->left_out_cat : NULL;
 
         // add more meta data
         return $data;

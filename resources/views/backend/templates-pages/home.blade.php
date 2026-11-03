@@ -61,6 +61,12 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="#left-out" data-bs-toggle="tab"
+                            class="nav-link {{ request()->query('tab', 'left-out') === 'left-out' ? 'active' : '' }}">
+                            छुटाउनुभयो कि ?
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -73,7 +79,7 @@
                 @include('backend.templates-pages.home.interview-tab')
                 @include('backend.templates-pages.home.video-tab')
                 @include('backend.templates-pages.home.share-tab')
-
+                @include('backend.templates-pages.home.left-out-tab')
             </div>
         </div>
     </div>

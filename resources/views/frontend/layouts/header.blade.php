@@ -111,65 +111,56 @@
 
 
   <!-- Search overlay -->
+  @php
+    $searchRepo = app(\App\Repositories\SearchRepository::class);
+    $searchTrending = $searchRepo->trending();
+    $searchCats = $searchRepo->overlayCategories();
+  @endphp
   <div class="co-so" id="coSearch" hidden>
     <div class="co-so-backdrop" data-search-close></div>
     <div class="co-so-panel" role="dialog" aria-modal="true" aria-label="खोज्नुहोस्">
-      <form class="co-so-form" role="search" action="#">
+      <form class="co-so-form" role="search" action="{{ route('frontend.search.store') }}" method="POST">
+        @csrf
         <i class="bi bi-search"></i>
-        <input class="co-so-input" type="search" placeholder="समाचार, विषय वा व्यक्ति खोज्नुहोस्..."
-          aria-label="खोज्नुहोस्" autocomplete="off">
+        <input class="co-so-input" type="search" name="q" value="{{ request()->routeIs('frontend.search') ? session('search_term') : '' }}"
+          placeholder="समाचार, विषय वा व्यक्ति खोज्नुहोस्..." aria-label="खोज्नुहोस्" autocomplete="off" maxlength="100" required>
         <button class="co-so-close" type="button" data-search-close aria-label="बन्द गर्नुहोस्"><kbd>Esc</kbd><i
             class="bi bi-x-lg"></i></button>
       </form>
 
       <div class="co-so-body">
-        <div class="co-so-group">
-          <span class="co-so-label"><i class="bi bi-fire"></i> ट्रेन्डिङ</span>
-          <div class="co-so-chips">
-            <a href="#">दशैं २०८३</a>
-            <a href="#">एनपीएल</a>
-            <a href="#">सेयर बजार</a>
-            <a href="#">बाढी पहिरो</a>
-            <a href="#">बजेट</a>
-            <a href="#">विश्वकप छनोट</a>
+        @if (count($searchTrending))
+          <div class="co-so-group">
+            <span class="co-so-label"><i class="bi bi-fire"></i> ट्रेन्डिङ</span>
+            <div class="co-so-chips">
+              @foreach ($searchTrending as $trend)
+                <a href="{{ route('frontend.search.term', $trend) }}">{{ $trend }}</a>
+              @endforeach
+            </div>
           </div>
-        </div>
+        @endif
 
-        <div class="co-so-group">
-          <span class="co-so-label"><i class="bi bi-grid"></i> श्रेणी</span>
-          <div class="co-so-links">
-            <a href="category.html">राजनीति</a>
-            <a href="#">अर्थ / वाणिज्य</a>
-            <a href="#">विचार</a>
-            <a href="#">खेलकुद</a>
-            <a href="#">मनोरञ्जन</a>
-            <a href="#">अन्तर्वार्ता</a>
-            <a href="#">फिचर</a>
-            <a href="#">विश्व</a>
-            <a href="#">कोसेली</a>
-            <a href="#">प्रवास</a>
-            <a href="#">स्वास्थ्य</a>
-            <a href="#">जीवनशैली</a>
-            <a href="#">साहित्य/विविध</a>
-            <a href="#">विज्ञान र प्रविधि</a>
-            <a href="#">शिक्षा</a>
-            <a href="#">भिडियो</a>
-            <a href="#">फोटोफिचर</a>
+        @if ($searchCats['categories']->isNotEmpty())
+          <div class="co-so-group">
+            <span class="co-so-label"><i class="bi bi-grid"></i> श्रेणी</span>
+            <div class="co-so-links">
+              @foreach ($searchCats['categories'] as $cat)
+                <a href="{{ route('frontend.category.index', $cat->slug) }}">{{ $cat->name }}</a>
+              @endforeach
+            </div>
           </div>
-        </div>
+        @endif
 
-        <div class="co-so-group">
-          <span class="co-so-label"><i class="bi bi-geo-alt"></i> प्रदेश</span>
-          <div class="co-so-links">
-            <a href="#">कोशी</a>
-            <a href="#">मधेश</a>
-            <a href="#">बागमती</a>
-            <a href="#">गण्डकी</a>
-            <a href="#">लुम्बिनी</a>
-            <a href="#">कर्णाली</a>
-            <a href="#">सुदूरपश्चिम</a>
+        @if ($searchCats['provinces']->isNotEmpty())
+          <div class="co-so-group">
+            <span class="co-so-label"><i class="bi bi-geo-alt"></i> प्रदेश</span>
+            <div class="co-so-links">
+              @foreach ($searchCats['provinces'] as $cat)
+                <a href="{{ route('frontend.category.index', $cat->slug) }}">{{ $cat->name }}</a>
+              @endforeach
+            </div>
           </div>
-        </div>
+        @endif
       </div>
     </div>
   </div>
@@ -183,8 +174,9 @@
           class="bi bi-x-lg"></i></button>
     </div>
     <div class="co-oc-body">
-      <form class="co-search co-oc-search" role="search" action="#">
-        <input class="co-search-input" type="search" placeholder="खोज्नुहोस्..." aria-label="खोज्नुहोस्">
+      <form class="co-search co-oc-search" role="search" action="{{ route('frontend.search.store') }}" method="POST">
+        @csrf
+        <input class="co-search-input" type="search" name="q" placeholder="खोज्नुहोस्..." aria-label="खोज्नुहोस्" maxlength="100" required>
         <button class="co-search-btn" type="submit" aria-label="खोज्नुहोस्"><i class="bi bi-search"></i></button>
       </form>
 
@@ -234,23 +226,27 @@
     </div>
   </div>
 
-  <!-- Breaking ticker -->
-  <div class="co-breaking" role="region" aria-label="ताजा समाचार">
-    <div class="container co-container co-breaking-inner">
-      <span class="co-breaking-label"><span class="co-live-dot"></span>ताजा</span>
-      <div class="co-ticker">
-        <div class="co-ticker-track">
-          <div class="co-ticker-group">
-            <a href="#" class="co-ticker-item">२० जिल्लामा बाढीको ‘रेड अलर्ट’, उच्च सतर्कता अपनाउन आग्रह <span
-                class="co-ticker-time">१ घण्टा अघि</span></a>
-            <a href="#" class="co-ticker-item">सेयर बजार २६०० विन्दु पार, ६ अर्ब २८ करोडभन्दा बढीको कारोबार <span
-                class="co-ticker-time">२ घण्टा अघि</span></a>
-            <a href="#" class="co-ticker-item">एनपीएलमा काठमान्डु गोर्खाज प्लेअफमा प्रवेश <span class="co-ticker-time">३
-                घण्टा अघि</span></a>
-            <a href="#" class="co-ticker-item">सामान्य प्रशासनमन्त्री राजकुमार गुप्ताद्वारा राजीनामा <span
-                class="co-ticker-time">५ घण्टा अघि</span></a>
-          </div>
+@if (!empty($recent_posts) && $recent_posts->isNotEmpty())
+    <div class="co-breaking" role="region" aria-label="ताजा समाचार">
+        <div class="container co-container co-breaking-inner">
+            <span class="co-breaking-label">
+                <span class="co-live-dot"></span>ताजा
+            </span>
+
+            <div class="co-ticker">
+                <div class="co-ticker-track">
+                    <div class="co-ticker-group">
+                        @foreach ($recent_posts as $post)
+                            <a href="{{ route('frontend.post.index', $post->id) }}" class="co-ticker-item">
+                                {{ $post->post_title }}
+                                <span class="co-ticker-time">
+                                    {{ $post->created_at->diffForHumans() }}
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+@endif
