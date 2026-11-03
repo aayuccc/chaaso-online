@@ -19,15 +19,17 @@
       <div class="container co-container">
         <!-- Highlights: any number of [headline][optional image] pairs. Desktop: each headline pins, its image slides away behind it, the next headline covers it -->
         <div class="co-lead-stack" id="coLeadStack">
-          @foreach ($recent_posts->take(3) as $p)
+          @foreach ($front_posts as $p)
             <article class="co-lead">
               <span class="co-tag co-tag-red">मुख्य समाचार</span>
               <{{ $loop->first ? 'h1' : 'h2' }} class="co-lead-title"><a href="{{ $url($p) }}">{{ $p->post_title }}</a></{{ $loop->first ? 'h1' : 'h2' }}>
-              <div class="co-meta co-meta-center"><span class="co-meta-author"><i class="bi bi-person"></i> {{ $author($p) }}</span><span><i class="bi bi-clock-history"></i> {{ $date($p) }}</span></div>
+              <div class="co-meta co-meta-center"><span class="co-meta-author"><i class="bi bi-person"></i> {{ $p->authors->first()?->name ?? '' }}</span><span><i class="bi bi-clock-history"></i> {{ $date($p) }}</span></div>
             </article>
-            <a href="{{ $url($p) }}" class="co-lead-media co-img">
-              <img src="{{ $img($p) }}" alt="{{ $p->post_title }}" @unless ($loop->first) loading="lazy" @endunless>
-            </a>
+            @if ($p->postMeta->firstWhere('meta_key', 'show_banner')?->meta_value == 1)
+              <a href="{{ $url($p) }}" class="co-lead-media co-img">
+                <img src="{{ $img($p) }}" alt="{{ $p->post_title }}" @unless ($loop->first) loading="lazy" @endunless>
+              </a>
+            @endif
           @endforeach
         </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Helpers\SettingHelper;
 use App\Enums\CategoryType;
 use App\Enums\TemplateType;
 use Illuminate\Http\Request;
@@ -22,8 +23,13 @@ class PostController extends Controller
     public function index($slug)
     {
         $post = Post::where('slug',  $slug)->first();
-
+        
         if ( $post ) {
+
+            // the front page lives at the site root, not at /{slug}
+            if ( $post->post_type === 'page' && $post->id == SettingHelper::get_home_id() ) {
+                return redirect()->route('frontend.home', [], 301);
+            }
 
             $metaDatas = $post->GetAllMetaData();
 

@@ -6,6 +6,7 @@ use App\Helpers\SettingHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostMeta;
 use Illuminate\Support\Facades\Cache;
 
 class FrontController extends Controller
@@ -90,7 +91,7 @@ class FrontController extends Controller
                 $sectionData[$key] = $getCategoryWithPosts($sectionCatIds[$key], $take);
             }
 
-            // latest posts for the headline / banner section
+            // latest posts for the headline section
             $recentPosts = Post::select('id', 'user_id', 'post_title', 'slug', 'post_excerpt', 'created_at')
                 ->where('post_type', 'post')
                 ->where('post_status', 'publish')
@@ -103,10 +104,33 @@ class FrontController extends Controller
                 ->take(10)
                 ->get();
 
+            // 3 most recently enabled "Show On Front" posts for the मुख्य समाचार section, shown oldest first
+            $frontPosts = Post::select('id', 'user_id', 'post_title', 'slug', 'post_excerpt', 'created_at')
+                ->where('post_type', 'post')
+                ->where('post_status', 'publish')
+                ->whereHas('postMeta', fn($q) => $q->where('meta_key', 'show_front')->where('meta_value', 1))
+                ->with([
+                    'authors:id,name',
+                    'postMeta',
+                    'categories:id,name,slug',
+                ])
+                ->orderByDesc(
+                    PostMeta::select('meta_value')
+                        ->whereColumn('post_metas.post_id', 'posts.id')
+                        ->where('meta_key', 'show_front_at')
+                        ->limit(1)
+                )
+                ->latest()
+                ->take(3)
+                ->get()
+                ->reverse()
+                ->values();
+
             return [
                 'post' => $post,
                 'postMeta' => $postMeta,
                 'recent_posts' => $recentPosts,
+                'front_posts' => $frontPosts,
                 'sections' => $sectionData,
             ];
         });
@@ -116,6 +140,7 @@ class FrontController extends Controller
             'post' => $cached['post'],
             'postMeta' => $cached['postMeta'],
             'recent_posts' => $cached['recent_posts'],
+            'front_posts' => $cached['front_posts'] ?? collect(),
         ];
         foreach ($this->sections as $key => $take) {
             $prefix = str_replace('_cat', '', $key);

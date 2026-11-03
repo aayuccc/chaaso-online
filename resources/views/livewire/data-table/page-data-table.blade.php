@@ -91,7 +91,7 @@
                                     @if ($p->post_status == 'publish' && $siteURL)
                                         <span class="view">
                                             |
-                                            <a href="{{ $siteURL . '/' . $p->slug }}" target="_blank"
+                                            <a href="{{ $homeId == $p->id ? $siteURL : $siteURL . '/' . $p->slug }}" target="_blank"
                                                 class="text-primary">View</a>
                                         </span>
                                     @endif

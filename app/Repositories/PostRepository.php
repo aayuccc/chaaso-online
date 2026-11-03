@@ -11,6 +11,8 @@ use App\Traits\ImageFieldTrait;
 use App\Traits\SlugGenerateTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use App\Helpers\SettingHelper;
 
 class PostRepository
 {
@@ -98,6 +100,14 @@ class PostRepository
         $metaDatas['summary'] = isset($request->summary) ? $request->summary : NULL;
         $metaDatas['short_desc'] = isset($request->short_desc) ? $request->short_desc : NULL;
 
+        // remember when show_front was switched on, so the home page shows the most recently enabled posts
+        $wasFront = $payload->postMeta()->where('meta_key', 'show_front')->value('meta_value') == 1;
+        if ($metaDatas['show_front'] != 1) {
+            $metaDatas['show_front_at'] = NULL;
+        } elseif (!$wasFront) {
+            $metaDatas['show_front_at'] = now()->toDateTimeString();
+        }
+
 
 
         // add meta data as per form data
@@ -110,6 +120,9 @@ class PostRepository
             );
         }
         // $this->bulkInserOrUpdate($payload, $metaDatas);
+
+        // refresh home page so show_front / show_banner changes appear immediately
+        Cache::forget('home_page_data_' . (SettingHelper::get_home_id() ?? 1));
     }
 
     // update or create post meta

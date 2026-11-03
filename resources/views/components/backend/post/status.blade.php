@@ -66,8 +66,16 @@
                 @endif
 
                 @if ($status == 'publish' && $siteURL && $route)
+                    @php
+                        // pages are served by slug (front page at site root), posts by id
+                        if ($post->post_type == 'page') {
+                            $viewPath = $post->id == SettingHelper::get_home_id() ? '' : $route . $post->slug;
+                        } else {
+                            $viewPath = $route . $post->id;
+                        }
+                    @endphp
                     <div class="d-grid mt-2">
-                        <a target="_blank" href="{{ $siteURL . $route . $post->id }}"
+                        <a target="_blank" href="{{ $siteURL . $viewPath }}"
                             class="btn btn-sm btn-dark">View</a>
                     </div>
                 @endif

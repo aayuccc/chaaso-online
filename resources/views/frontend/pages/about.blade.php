@@ -134,6 +134,10 @@
     </section>
     @endif
 
+    @php
+        $categories = \App\Models\Category::where('type', 'category')
+            ->get();
+    @endphp
     <!-- ================= COVERAGE ================= -->
     <section class="co-section">
       <div class="container co-container">
@@ -141,16 +145,13 @@
           <h2 class="co-section-title">हामी के कभर गर्छौं</h2><span class="co-hatch"></span>
         </div>
         <div class="co-ab-cover">
-          <a href="#"><i class="bi bi-newspaper"></i><span>समाचार</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="category.html"><i class="bi bi-bank"></i><span>राजनीति</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-graph-up-arrow"></i><span>अर्थ वाणिज्य</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-cup-hot"></i><span>जीवनशैली</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-globe2"></i><span>विश्वव्यापी</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-heart-pulse"></i><span>स्वास्थ्य</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-cpu"></i><span>प्रविधि</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-mortarboard"></i><span>शिक्षा</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-trophy"></i><span>खेलकुद</span><i class="bi bi-arrow-up-right"></i></a>
-          <a href="#"><i class="bi bi-grid"></i><span>विविध</span><i class="bi bi-arrow-up-right"></i></a>
+          @foreach ($categories as $category)
+          <a href="{{ route('frontend.category.index', $category->slug) }}">
+            <i class="bi bi-newspaper"></i>
+            <span>{{ $category->name }}</span>
+            <i class="bi bi-arrow-up-right"></i>
+          </a>
+          @endforeach
         </div>
       </div>
     </section>
