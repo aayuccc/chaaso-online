@@ -11,52 +11,20 @@ class HomeRepository
     {
         // dd( $request->all() );
         $data = [];
-        // $data['breaking_news_title'] = $request->breaking_news_title ?? null;
-        // // $data['breaking_news_counter'] = $request->breaking_news_counter ?? 1;
-        // $data['breaking_news_counter'] = max($request->breaking_news_counter ?? 1, 1);
-
-        // $data['banner_news_counter'] = max($request->banner_news_counter ?? 1, 1);
-
-        // $data['main_news_title'] = $request->main_news_title ?? null;
-        // $data['poll_title'] = $request->poll_title ?? null;
-        // $data['choose_poll'] = $request->choose_poll ?? null;
-
-        // $data['choose_event'] = $request->choose_event ?? null;
-
-        // $data['business_title'] = $request->business_title ?? null;
-        // $data['choose_business'] = $request->choose_business ?? null;
-
-        // $data['video_title'] = $request->video_title ?? null;
-
-        // // two column with ads
-        // $data['two_col_first_title'] = $request->two_col_first_title ?? null;
-        // $data['two_col_first_category'] = $request->two_col_first_category ?? null;
-        // $data['two_col_second_title'] = $request->two_col_second_title ?? null;
-        // $data['two_col_second_category'] = $request->two_col_second_category ?? null;
-        
-        // // pradesh
-        // $data['pradesh_title'] = $request->pradesh_title ?? null;
-
-        // // three column
-        // $data['three_col_first_title'] = $request->three_col_first_title ?? null;
-        // $data['three_col_first_choose_category'] = $request->three_col_first_choose_category ?? null;
-
-        // $data['three_col_second_title'] = $request->three_col_second_title ?? null;
-        // $data['three_col_second_choose_category'] = $request->three_col_second_choose_category ?? null;
-
-        // $data['three_col_third_title'] = $request->three_col_third_title ?? null;
-        // $data['three_col_third_choose_category'] = $request->three_col_third_choose_category ?? null;
-        
-        // // entertainment
-        // if (isset($request->entertainment_cats)) {
-        //     $filteredSidebarContent = array_filter($request->entertainment_cats, function ($item) {
-        //         return !(is_null($item['category']));
-        //         // return !(is_null($item['title']) && is_null($item['category']));
-        //     });
-        //     $data['entertainment_cats'] = serialize($filteredSidebarContent);
-        // } else {
-        //     $data['entertainment_cats'] = null;
-        // }        
+        $data['rajniti_cat'] = isset($request->rajniti_cat) ? $request->rajniti_cat : NULL;
+        $data['commerce_cat'] = isset($request->commerce_cat) ? $request->commerce_cat : NULL;
+        $data['lifestyle_cat'] = isset($request->lifestyle_cat) ? $request->lifestyle_cat : NULL;
+        $data['sports_cat'] = isset($request->sports_cat) ? $request->sports_cat : NULL;
+        $data['education_cat'] = isset($request->education_cat) ? $request->education_cat : NULL;
+        $data['province_cat'] = isset($request->province_cat) ? $request->province_cat : NULL;
+        $data['tourism_cat'] = isset($request->tourism_cat) ? $request->tourism_cat : NULL;
+        $data['it_tech_cat'] = isset($request->it_tech_cat) ? $request->it_tech_cat : NULL;
+        $data['interview_cat'] = isset($request->interview_cat) ? $request->interview_cat : NULL;
+        $data['idea_cat'] = isset($request->idea_cat) ? $request->idea_cat : NULL;
+        $data['video_cat'] = isset($request->video_cat) ? $request->video_cat : NULL;
+        $data['share_cat'] = isset($request->share_cat) ? $request->share_cat : NULL;
+        $data['auto_cat'] = isset($request->auto_cat) ? $request->auto_cat : NULL;
+        $data['agriculture_cat'] = isset($request->agriculture_cat) ? $request->agriculture_cat : NULL;
 
         // add more meta data
         return $data;
