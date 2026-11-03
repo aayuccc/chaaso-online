@@ -12,6 +12,7 @@ use App\Repositories\PostRepository;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\Post\PostStoreRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
+use App\Models\Category;
 
 class PageController extends Controller
 {
@@ -94,7 +95,7 @@ class PageController extends Controller
 
             session()->flash('success', 'Page Created.');
 
-            return redirect()->route('backend.page.edit', $post->ulid);
+            return redirect()->route('backend.page.edit', $post->id);
 
         } catch (\Exception $e) {
 
@@ -107,11 +108,13 @@ class PageController extends Controller
 
     public function edit($id)
     {
-        $post = Post::with(['categories', 'postMeta'])->where('post_type', $this->postType)->where('ulid', $id)->firstOrFail();
+        $post = Post::with(['categories', 'postMeta'])->where('post_type', $this->postType)->findOrFail($id);
 
         $metaDatas = $this->postRepository->getMetaDatas($post);
 
         $pageTemplate = isset( $metaDatas['page_template'] ) ? $metaDatas['page_template'] : NULL;
+
+        $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
 
         if ( $pageTemplate ) {
 
@@ -121,9 +124,15 @@ class PageController extends Controller
 
                     $viewName = "backend.templates-pages.$pageTemplate";
 
+
                     if (View::exists($viewName)) {
 
-                        $view = View::make($viewName)->with('metaDatas', $metaDatas)->render();
+                        $view = View::make($viewName)->with(
+                            [
+                            'metaDatas' => $metaDatas,
+                            'categories' => $categories
+                            ])->render();
+
                     } else {
                         $view = NULL;
                     }
@@ -147,11 +156,14 @@ class PageController extends Controller
         ->orderBy('post_title', 'ASC')
         ->get();
 
+      
+
         return view('backend.pages.edit-page', [
             'post' => $post,
             'metaDatas' => $metaDatas,
             'view' => $view,
             'pages' => $pages,
+            'categories' => $categories,
         ]);
     }
 

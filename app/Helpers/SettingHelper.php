@@ -36,6 +36,7 @@ class SettingHelper
         return $pageId;
     }
 
+
     public static function get_select_key_value($selector)
     {
         $fieldName = trim( $selector );
