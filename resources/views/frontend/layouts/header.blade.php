@@ -5,7 +5,18 @@
     <div class="container co-container">
       <div class="co-header-top">
         <div class="co-brand">
-          <a href="{{ route('frontend.home') }}" class="co-logo"><img src="{{ asset('assets/images/logo.png') }}" alt="चासो अनलाइन" width="200" height="100"></a>
+            @php
+            $footer_logo = SettingHelper::get_field('footer_logo');
+            $media = $footer_logo ? MediaHelper::getImageById($footer_logo) : null;
+            if (!empty($media) && !empty($media->file_name)) {
+              $ad_image_url = MediaHelper::WsrvService($media);
+            }
+            else {
+              $ad_image_url = null;
+            }
+            @endphp
+            @if ($ad_image_url)
+            <a href="{{ route('frontend.home') }}" class="co-logo"><img src="{{ $ad_image_url }}" alt="चासो अनलाइन" width="200" height="100"></a>@endif
           <div class="co-header-date d-none d-lg-flex">
             <span class="co-date-day">सोमबार</span>
             <span class="co-date-full">असोज २६, २०८३</span>
@@ -68,8 +79,19 @@
   <div class="co-navbar d-none d-lg-block" id="coNavbar">
     <div class="container co-container">
       <nav class="co-nav" id="coMainNav">
-        <a href="{{ route('frontend.home') }}" class="co-nav-logo" aria-label="चासो अनलाइन — गृहपृष्ठ" tabindex="-1"><img
-            src="{{ asset('assets/images/sticky-logo.png') }}" alt="" width="67" height="66"></a>
+        @php
+          $header_logo = SettingHelper::get_field('header_logo');
+          $media = $header_logo ? MediaHelper::getImageById($header_logo) : null;
+          if (!empty($media) && !empty($media->file_name)) {
+            $header_url = MediaHelper::WsrvService($media);
+          }
+          else {
+            $header_url = null;
+          }
+        @endphp
+        @if ($header_url)
+        <a href="{{ route('frontend.home') }}" class="co-nav-logo" aria-label="चासो अनलाइन — गृहपृष्ठ" tabindex="-1"><img src="{{ $header_url }}" alt="" width="67" height="66"></a>
+        @endif
         <ul class="co-nav-list">
           <li><a href="{{ route('frontend.home') }}" class="co-nav-link co-nav-home {{ request()->is('/') ? 'is-active' : '' }}"
               aria-label="गृहपृष्ठ"><i class="bi bi-house-door"></i></a></li>
