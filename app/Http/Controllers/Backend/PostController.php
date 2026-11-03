@@ -51,12 +51,12 @@ class PostController extends Controller
         $type = $this->postRepository->encodeType($this->postType);
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
-        // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
+        $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
         return view('backend.posts.create-post', [
             'categories' => $categories,
             'authors' => $authors,
-            // 'tags' => $tags,
+            'tags' => $tags,
             'type' => $type,
         ]);
     }
@@ -86,7 +86,7 @@ class PostController extends Controller
             $categories = isset( $request->categories ) ? $request->categories : [];
             $authors = isset( $request->authors ) ? $request->authors : [];
             $tags = isset( $request->tags ) ? $request->tags : [];
-            // $tags = isset( $request->tags ) ? $this->categoryPostRepository->createCustomCategory('tag', $request->tags) : [];
+            $tags = isset( $request->tags ) ? $this->categoryPostRepository->createCustomCategory('tag', $request->tags) : [];
 
             $cats = array_unique( array_merge($categories, $authors, $tags) );
             $this->categoryPostRepository->assignCategory($post, $cats);
@@ -116,7 +116,7 @@ class PostController extends Controller
 
         $categories = $this->postRepository->getPostByCategory('category')->orderBy('name', 'ASC')->get();
         $authors = $this->postRepository->getPostByCategory('author')->orderBy('name', 'ASC')->get();
-        // $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
+        $tags = $this->postRepository->getPostByCategory('tag')->orderBy('name', 'ASC')->get();
 
         $metaDatas = $this->postRepository->getMetaDatas($post);
 
@@ -124,7 +124,7 @@ class PostController extends Controller
             'post' => $post,
             'categories' => $categories,
             'authors' => $authors,
-            // 'tags' => $tags,
+            'tags' => $tags,
             'metaDatas' => $metaDatas,
         ]);
     }
@@ -151,7 +151,7 @@ class PostController extends Controller
                 // get all categories
                 $categories = isset( $request->categories ) ? $request->categories : [];
                 $authors = isset( $request->authors ) ? $request->authors : [];
-                // $tags = isset( $request->tags ) ? $request->tags : [];
+                $tags = isset( $request->tags ) ? $request->tags : [];
                 $tags = isset( $request->tags ) ? $this->categoryPostRepository->createCustomCategory('tag', $request->tags) : [];
 
                 $cats = array_unique( array_merge($categories, $authors, $tags) );

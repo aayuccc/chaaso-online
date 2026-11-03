@@ -42,8 +42,8 @@
                                     :categories="$authors" />
 
                                 {{-- tags --}}
-                                {{-- <x-backend.post.category title="Tags" name="tags[]" type="multiple"
-                                    :categories="$tags" custom="create_custom" /> --}}
+                                <x-backend.post.category title="Tags" name="tags[]" type="multiple"
+                                    :categories="$tags" custom="create_custom" />
                             </div>
                         </div>
                     </form>

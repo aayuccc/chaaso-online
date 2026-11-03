@@ -104,6 +104,8 @@ class PostController extends Controller
                 // first selected author, shown in the byline and author box
                 $author = $post->categories()->where('type', CategoryType::AUTHOR)->first();
 
+                $tags = $post->categories()->where('type', CategoryType::TAG)->get();
+
                 $relatedPosts = $this->postRepository->getRelatedPosts($post->id, 'post');
 
                 // latest posts from any category, skipping the ones already shown as related
@@ -115,7 +117,7 @@ class PostController extends Controller
                     ->take(4)
                     ->get();
 
-                return view('frontend.single-post', compact('post', 'latestNews', 'relatedPosts', 'postMeta', 'category', 'category_name', 'author'));
+                return view('frontend.single-post', compact('post', 'latestNews', 'relatedPosts', 'postMeta', 'category', 'category_name', 'author', 'tags'));
             }
 
             if ( $isDraft && !auth()->check() ) {

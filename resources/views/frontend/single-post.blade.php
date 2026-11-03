@@ -157,12 +157,12 @@
               </div>
 
               <div class="co-art-foot">
+                @if ($tags->isNotEmpty())
                 <div class="co-art-tags">
                   <span><i class="bi bi-tags"></i> विषय</span>
-                  <a href="#">#कांग्रेस</a>
-                  <a href="#">#वडा_अधिवेशन</a>
-                  <a href="#">#महाधिवेशन</a>
+                  @foreach ($tags as $tag)<a href="{{ route('frontend.tag.index', $tag->slug) }}">#{{ $tag->name }}</a>@endforeach
                 </div>
+                @endif
               </div>
 
                 @php

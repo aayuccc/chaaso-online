@@ -131,13 +131,12 @@
                                     <a href="{{ route('backend.author') }}">Authors</a>
                                 </li>
                             @endcan
-                            {{-- 
                             @can(['create_tag', 'read_tag'])
                                 <li
                                     class="{{ request()->segment(3) === 'tag' && request()->segment(2) === 'post' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('backend.tag') }}">Tags</a>
                                 </li>
-                            @endcan --}}
+                            @endcan
                         </ul>
                     </div>
                 </li>

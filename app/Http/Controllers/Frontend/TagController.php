@@ -16,14 +16,23 @@ class TagController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index($id)
+    public function index($slug)
     {
-        $cat = Category::where([ 'id' => $id, 'type' => 'tag' ])->firstOrFail();
+        $cat = Category::where(['slug' => $slug, 'type' => 'tag'])->firstOrFail();
 
         $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
-        $posts = $cat->posts()->orderBy('created_at', 'desc')->get();
+        // 3 featured + 12 in the list
+        $posts = $cat->posts()
+            ->with(['postMeta:id,post_id,meta_key,meta_value', 'user:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
-        return view('frontend.category-tag', compact(['cat', 'posts', 'catMeta']) );
+        $items         = $posts->getCollection();
+        $featuredPosts = $items->take(3);
+        $listPosts     = $items->slice(3);
+
+        // same layout as the category page
+        return view('frontend.category-tag', compact('cat', 'posts', 'catMeta', 'featuredPosts', 'listPosts'));
     }
 }

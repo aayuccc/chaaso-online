@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\AuthorController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\SearchController;
+use App\Http\Controllers\Frontend\TagController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,9 @@ Route::match(['get', 'post'], '{slug}', [PostController::class, 'index'])->name(
 
 // category
 Route::get('category/{category_slug}/', [CategoryController::class, 'index'])->name('frontend.category.index');
+
+// tag
+Route::get('tag/{tag_slug}/', [TagController::class, 'index'])->name('frontend.tag.index');
 
 // author
 Route::get('author/{author_slug}/', [AuthorController::class, 'index'])->name('frontend.author.index');
