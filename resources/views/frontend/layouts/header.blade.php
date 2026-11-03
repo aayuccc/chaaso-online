@@ -236,15 +236,25 @@
         @endforeach
       </ul>
     </div>
+    @php
+      $facebook = SettingHelper::get_field('facebook');
+      $twitter = SettingHelper::get_field('twitter');
+      $instagram = SettingHelper::get_field('instagram');
+      $youtube = SettingHelper::get_field('youtube');
+      $address = SettingHelper::get_field('address');
+      $email_address = SettingHelper::get_field('email_address');
+    @endphp
     <div class="co-oc-foot">
       <div class="co-social">
-        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+        @if($facebook)<a href="{{ $facebook }}" aria-label="Facebook"><i class="bi bi-facebook"></i></a>@endif
+        @if($twitter)<a href="{{ $twitter }}" aria-label="X"><i class="bi bi-twitter-x"></i></a>@endif
+        @if($instagram)<a href="{{ $instagram }}" aria-label="Instagram"><i class="bi bi-instagram"></i></a>@endif
+        @if($youtube)<a href="{{ $youtube }}" aria-label="YouTube"><i class="bi bi-youtube"></i></a>@endif
       </div>
-      <a href="mailto:chaasogobalmedia9@gmail.com" class="co-oc-mail"><i class="bi bi-envelope"></i>
-        chaasogobalmedia9@gmail.com</a>
+      @if($email_address)
+      <a href="mailto:{{ $email_address }}" class="co-oc-mail"><i class="bi bi-envelope"></i>
+        {{ $email_address }}</a>
+      @endif
     </div>
   </div>
 
