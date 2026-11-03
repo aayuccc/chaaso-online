@@ -12,28 +12,28 @@ class FrontController extends Controller
 {
     // home page meta key (saved by HomeRepository) => number of posts to load
     protected array $sections = [
-        'rajniti_cat'     => 10,
-        'commerce_cat'    => 10,
-        'lifestyle_cat'   => 8,
-        'sports_cat'      => 10,
-        'education_cat'   => 6,
-        'province_cat'    => 10,
-        'tourism_cat'     => 6,
-        'it_tech_cat'     => 8,
-        'interview_cat'   => 5,
-        'idea_cat'        => 5,
-        'video_cat'       => 8,
-        'share_cat'       => 8,
-        'auto_cat'        => 6,
-        'agriculture_cat' => 6,
+        'rajniti_cat'     => 8,
+        'commerce_cat'    => 9,
+        'lifestyle_cat'   => 7,
+        'sports_cat'      => 6,
+        'education_cat'   => 4,
+        'province_cat'    => 8,
+        'tourism_cat'     => 4,
+        'it_tech_cat'     => 4,
+        'interview_cat'   => 1,
+        'idea_cat'        => 4,
+        'video_cat'       => 5,
+        'share_cat'       => 4,
+        'auto_cat'        => 4,
+        'agriculture_cat' => 4,
     ];
 
     public function index()
     {
         $homeId = SettingHelper::get_home_id() ?? 1;
 
-        $cached = Cache::remember("home_page_data_{$homeId}", now()->addHour(), function () use ($homeId) {
-            $post = Post::with(['user:id,name', 'postMeta'])
+        $cached = Cache::remember("home_page_data_{$homeId}", now()->addMinutes(5), function () use ($homeId) {
+                $post = Post::with(['authors:id,name', 'postMeta'])
                 ->select(['id', 'user_id', 'post_title', 'slug'])
                 ->where('post_type', 'page')
                 ->where('post_status', 'publish')
@@ -73,7 +73,7 @@ class FrontController extends Controller
                     ->where('posts.post_type', 'post')
                     ->where('posts.post_status', 'publish')
                     ->with([
-                        'user:id,name',
+                        'authors:id,name',
                         'postMeta',
                         'categories:id,name,slug',
                     ])
@@ -94,7 +94,7 @@ class FrontController extends Controller
                 ->where('post_type', 'post')
                 ->where('post_status', 'publish')
                 ->with([
-                    'user:id,name',
+                    'authors:id,name',
                     'postMeta',
                     'categories:id,name,slug',
                 ])
