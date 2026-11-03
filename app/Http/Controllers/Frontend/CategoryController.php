@@ -26,11 +26,11 @@ class CategoryController extends Controller
         $posts = $cat->posts()
             ->with(['postMeta:id,post_id,meta_key,meta_value', 'user:id,name'])
             ->orderBy('created_at', 'desc')
-            ->take(15)
-            ->get();
+            ->paginate(15);
 
-        $featuredPosts = $posts->take(3);
-        $listPosts     = $posts->slice(3);
+        $items         = $posts->getCollection();
+        $featuredPosts = $items->take(3);
+        $listPosts     = $items->slice(3);
 
         return view('frontend.category', compact('cat', 'posts', 'catMeta', 'featuredPosts', 'listPosts'));
     }

@@ -141,16 +141,16 @@
         <div class="container co-container">
           <div class="co-read">
             <div class="co-read-main">
-                
+              @php
+                  $summary = $metaData['summary'] ?? '';
+              @endphp
+              @if($summary)
                 <!-- summary -->
               <details class="co-summary" open>
                 <summary><span class="co-summary-label"><span class="co-summary-ic"><i class="bi bi-stars"></i></span> समाचार सारांश <small>३० सेकेन्डमा</small></span><i class="bi bi-chevron-down co-summary-caret"></i></summary>
-                <ul>
-                  <li>देशभरका ६ हजारभन्दा बढी वडामा एकैसाथ अधिवेशन सुरु भएको छ।</li>
-                  <li>पहिलो दिन ७० प्रतिशतभन्दा बढी सक्रिय सदस्यले सहभागिता जनाए।</li>
-                  <li>नेतृत्वले गुटबन्दी त्यागी पार्टी एकतामा जोड दिन आग्रह गरेको छ।</li>
-                </ul>
+                {!! $summary !!}
               </details>
+              @endif
 
               <div class="co-art-body" id="coArtBody">
                 {!!$post->post_content!!}

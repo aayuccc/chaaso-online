@@ -101,6 +101,83 @@
                 <p class="co-excerpt">यस लेखकका समाचार अहिलेसम्म उपलब्ध छैन।</p>
               @endforelse
             </div>
+             @if ($posts->lastPage() > 1)
+              @php
+                  $currentPage = $posts->currentPage();
+                  $lastPage = $posts->lastPage();
+
+                  $startPage = max(1, $currentPage - 2);
+                  $endPage = min($lastPage, $currentPage + 2);
+
+                  // Convert English numbers into Nepali numbers
+                  $toNepali = fn($number) => strtr((string) $number, [
+                      '0' => '०',
+                      '1' => '१',
+                      '2' => '२',
+                      '3' => '३',
+                      '4' => '४',
+                      '5' => '५',
+                      '6' => '६',
+                      '7' => '७',
+                      '8' => '८',
+                      '9' => '९',
+                  ]);
+              @endphp
+
+              <nav class="co-pager" aria-label="पृष्ठहरू">
+
+                  {{-- Previous --}}
+                  <a href="{{ $posts->previousPageUrl() ?: '#' }}"
+                      class="co-pager-btn {{ $posts->onFirstPage() ? 'is-disabled' : '' }}"
+                      @if ($posts->onFirstPage()) aria-disabled="true" @endif>
+                      <i class="bi bi-arrow-left"></i> अघिल्लो
+                  </a>
+
+                  {{-- Page Numbers --}}
+                  <div class="co-pager-pages">
+
+                      {{-- First Page --}}
+                      @if ($startPage > 1)
+                          <a href="{{ $posts->url(1) }}">
+                              {{ $toNepali(1) }}
+                          </a>
+
+                          @if ($startPage > 2)
+                              <span class="dots">...</span>
+                          @endif
+                      @endif
+
+                      {{-- Middle Pages --}}
+                      @for ($page = $startPage; $page <= $endPage; $page++)
+                          <a href="{{ $posts->url($page) }}"
+                              class="{{ $page === $currentPage ? 'is-active' : '' }}"
+                              @if ($page === $currentPage) aria-current="page" @endif>
+                              {{ $toNepali($page) }}
+                          </a>
+                      @endfor
+
+                      {{-- Last Page --}}
+                      @if ($endPage < $lastPage)
+                          @if ($endPage < $lastPage - 1)
+                              <span class="dots">...</span>
+                          @endif
+
+                          <a href="{{ $posts->url($lastPage) }}">
+                              {{ $toNepali($lastPage) }}
+                          </a>
+                      @endif
+
+                  </div>
+
+                  {{-- Next --}}
+                  <a href="{{ $posts->nextPageUrl() ?: '#' }}"
+                      class="co-pager-btn {{ !$posts->hasMorePages() ? 'is-disabled' : '' }}"
+                      @if (!$posts->hasMorePages()) aria-disabled="true" @endif>
+                      अर्को <i class="bi bi-arrow-right"></i>
+                  </a>
+
+              </nav>
+          @endif
 
           </div>
 

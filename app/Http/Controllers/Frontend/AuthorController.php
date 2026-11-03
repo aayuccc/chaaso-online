@@ -22,7 +22,10 @@ class AuthorController extends Controller
 
         $catMeta = $this->categoryRepository->getMetaDatas($cat);
 
-        $posts = $cat->posts()->orderBy('created_at', 'desc')->get();
+        $posts = $cat->posts()
+            ->with(['postMeta:id,post_id,meta_key,meta_value', 'user:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
         return view('frontend.category-author', compact(['cat', 'posts', 'catMeta']) );
     }

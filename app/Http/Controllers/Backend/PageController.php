@@ -95,7 +95,7 @@ class PageController extends Controller
 
             session()->flash('success', 'Page Created.');
 
-            return redirect()->route('backend.page.edit', $post->id);
+            return redirect()->route('backend.page.edit', $post->ulid);
 
         } catch (\Exception $e) {
 
@@ -108,7 +108,7 @@ class PageController extends Controller
 
     public function edit($id)
     {
-        $post = Post::with(['categories', 'postMeta'])->where('post_type', $this->postType)->findOrFail($id);
+        $post = Post::with(['categories', 'postMeta'])->where('post_type', $this->postType)->where('ulid', $id)->firstOrFail();
 
         $metaDatas = $this->postRepository->getMetaDatas($post);
 

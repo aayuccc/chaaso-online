@@ -91,9 +91,11 @@ class PostRepository
         $metaDatas['page_keywords'] = isset($request->page_keywords) ? $request->page_keywords : NULL;
         $metaDatas['featured_image'] = isset($request->featured_image) ? $request->featured_image : NULL;
         $metaDatas['show_banner'] = isset($request->show_banner) ? $request->show_banner : 0;
+        $metaDatas['show_front'] = isset($request->show_front) ? $request->show_front : 0;
+        $metaDatas['use_video'] = isset($request->use_video) ? $request->use_video : 0;
         // $metaDatas['is_breaking_news'] = isset($request->is_breaking_news) ? $request->is_breaking_news : 0;
         $metaDatas['youtube_video_id'] = isset($request->youtube_video_id) ? $request->youtube_video_id : NULL;
-        // $metaDatas['ai_summary'] = isset($request->ai_summary) ? $request->ai_summary : NULL;
+        $metaDatas['summary'] = isset($request->summary) ? $request->summary : NULL;
         $metaDatas['short_desc'] = isset($request->short_desc) ? $request->short_desc : NULL;
 
 
