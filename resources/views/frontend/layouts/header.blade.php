@@ -100,7 +100,7 @@
               <li class="co-nav-dropdown">
                 <button class="co-nav-link co-nav-dropdown-toggle {{ $item['classes'] }} {{ $item['is_active'] || collect($item['children'])->contains('is_active', true) ? 'is-active' : '' }}"
                   type="button" aria-expanded="false" aria-haspopup="true">
-                  @if ($item['icon'])<i class="bi {{ $item['icon'] }}"></i>@endif {{ $item['title'] }} <i class="bi bi-chevron-down"></i>
+                  {{ $item['title'] }} <i class="bi bi-chevron-down"></i>
                 </button>
                 <ul class="co-nav-submenu">
                   @foreach ($item['children'] as $child)
@@ -111,7 +111,7 @@
               </li>
             @else
               <li><a href="{{ $item['link'] }}" class="co-nav-link {{ $item['classes'] }} {{ $item['is_active'] ? 'is-active' : '' }}"
-                  target="{{ $item['target'] }}" @if ($item['attr']) title="{{ $item['attr'] }}" @endif>@if ($item['icon'])<i class="bi {{ $item['icon'] }}"></i> @endif{{ $item['title'] }}</a></li>
+                  target="{{ $item['target'] }}" @if ($item['attr']) title="{{ $item['attr'] }}" @endif>{{ $item['title'] }}</a></li>
             @endif
           @endforeach
         </ul>
@@ -220,7 +220,7 @@
             <li>
               <button class="co-oc-link co-oc-toggle collapsed {{ $item['classes'] }}" type="button" data-bs-toggle="collapse"
                 data-bs-target="#coOcSub{{ $item['id'] }}" aria-expanded="false" aria-controls="coOcSub{{ $item['id'] }}">
-                <span><i class="bi {{ $item['icon'] ?? 'bi-grid' }}"></i> {{ $item['title'] }}</span><i
+                <span><i class="bi d-lg-none {{ $item['icon'] ?? 'bi-grid' }}"></i> {{ $item['title'] }}</span><i
                   class="bi bi-chevron-down co-oc-caret"></i>
               </button>
               <ul class="collapse co-oc-sub" id="coOcSub{{ $item['id'] }}">
@@ -231,7 +231,7 @@
             </li>
           @else
             <li><a href="{{ $item['link'] }}" class="co-oc-link {{ $item['classes'] }} {{ $item['is_active'] ? 'is-active' : '' }}"
-                target="{{ $item['target'] }}"><i class="bi {{ $item['icon'] ?? 'bi-newspaper' }}"></i> {{ $item['title'] }}</a></li>
+                target="{{ $item['target'] }}"><i class="bi d-lg-none {{ $item['icon'] ?? 'bi-newspaper' }}"></i> {{ $item['title'] }}</a></li>
           @endif
         @endforeach
       </ul>

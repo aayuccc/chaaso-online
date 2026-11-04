@@ -97,6 +97,10 @@ class PostController extends Controller
             if ( $isPublished || ( $isDraft && auth()->check()) ) {
                 $postMeta = $post->GetAllMetaData();
 
+                if ( $isPublished ) {
+                    $this->countView($post);
+                }
+
                 // first assigned category, used for the breadcrumb and "more" link
                 $category = $post->categories()->where('type', CategoryType::CATEGORY)->first();
                 $category_name = $category->name ?? null;
@@ -125,5 +129,21 @@ class PostController extends Controller
             }
         }
         abort(404, 'Post not found');
+    }
+
+    // one view per post per visitor session, so refreshing doesn't inflate the count
+    private function countView(Post $post)
+    {
+        $viewed = session('viewed_posts', []);
+
+        if ( in_array($post->id, $viewed) ) {
+            return;
+        }
+
+        // query-level increment: skips the observer (last_updated_by) and leaves updated_at alone
+        Post::whereKey($post->id)->toBase()->increment('views');
+        $post->views = ($post->views ?? 0) + 1;
+
+        session()->push('viewed_posts', $post->id);
     }
 }

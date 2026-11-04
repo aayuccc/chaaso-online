@@ -134,7 +134,7 @@
                 <span class="co-art-av" aria-hidden="true">चा</span>
                 <div>
                   <strong>चासो संवाददाता</strong>
-                  <span class="co-art-meta"><span>{{ $post->created_at->format('M d, Y h:i A') }}</span><span>६ मिनेट पढाइ</span><span><i class="bi bi-eye"></i> २,४१२</span></span>
+                  <span class="co-art-meta"><span>{{ $post->created_at->format('M d, Y h:i A') }}</span><span>६ मिनेट पढाइ</span><span><i class="bi bi-eye"></i> {{ strtr(number_format($post->views ?? 0), ['0' => '०', '1' => '१', '2' => '२', '3' => '३', '4' => '४', '5' => '५', '6' => '६', '7' => '७', '8' => '८', '9' => '९']) }}</span></span>
                 </div>
               </div>
 
