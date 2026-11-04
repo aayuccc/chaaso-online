@@ -255,13 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Province tabs (demo: rotates the stories; wire to real data per province)
-  const province = document.getElementById("coProvince");
-  const tabs = document.querySelectorAll(".co-tab");
-  if (province && tabs.length) {
-    const more = document.getElementById("coProvinceMore");
-    const labels = document.querySelectorAll(".co-province-label");
-    const list = province.querySelector(".co-mini-list");
+  // Province tabs: each tab shows its own province category panel
+  const tabs = document.querySelectorAll(".co-tab[aria-controls]");
+  if (tabs.length) {
     const pill = document.querySelector(".co-tabs-pill");
     const movePill = () => {
       const active = document.querySelector(".co-tab.is-active");
@@ -275,20 +271,18 @@ document.addEventListener("DOMContentLoaded", () => {
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         if (tab.classList.contains("is-active")) return;
-        tabs.forEach((t) => { t.classList.remove("is-active"); t.setAttribute("aria-selected", "false"); });
+        tabs.forEach((t) => {
+          t.classList.remove("is-active");
+          t.setAttribute("aria-selected", "false");
+          const panel = document.getElementById(t.getAttribute("aria-controls"));
+          if (panel) panel.hidden = true;
+        });
         tab.classList.add("is-active");
         tab.setAttribute("aria-selected", "true");
+        const panel = document.getElementById(tab.getAttribute("aria-controls"));
+        if (panel) panel.hidden = false;
         movePill();
         tab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-        province.classList.add("is-switching");
-        if (more) more.classList.add("is-switching");
-        setTimeout(() => {
-          labels.forEach((l) => { l.textContent = tab.textContent; });
-          list.appendChild(list.firstElementChild);
-          if (more) more.appendChild(more.firstElementChild);
-          province.classList.remove("is-switching");
-          if (more) more.classList.remove("is-switching");
-        }, 250);
       });
     });
   }

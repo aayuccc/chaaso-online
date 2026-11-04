@@ -19,6 +19,9 @@ class Category extends Model
 
     // public $timestamps = false;
 
+    // province categories (in tab order) shown on the home page and in the search overlay
+    public const PROVINCE_SLUGS = ['koshi', 'madesh', 'bagmati', 'gandaki', 'lumbini', 'karnali', 'sudurpashchim'];
+
     protected $fillable = ['user_id', 'name', 'slug', 'type', 'description', 'parent', 'parent_id_backup', 'menu_order', 'last_updated_by'];
 
     /**

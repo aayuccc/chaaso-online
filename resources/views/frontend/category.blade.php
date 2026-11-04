@@ -53,7 +53,7 @@
                 @endif
                 <div class="co-meta">
                   <span class="co-meta-author">{{ $lead->authors->first()?->name ?? 'चासो संवाददाता' }}</span>
-                  <span>{{ $lead->created_at->format('M d, Y') }}</span>
+                  <span>{{ NepaliDateHelper::format($lead->created_at) }}</span>
                 </div>
               </article>
 
@@ -71,7 +71,7 @@
                     </a>
                     @endif
                     <h3 class="co-title-md"><a href="{{ $item_url }}">{{ $post->post_title }}</a></h3>
-                    <div class="co-meta"><span>{{ $post->created_at->format('M d, Y') }}</span></div>
+                    <div class="co-meta"><span>{{ NepaliDateHelper::format($post->created_at) }}</span></div>
                   </article>
                 @endforeach
               </div>
@@ -123,7 +123,7 @@
                   <a href="{{ $item_url }}" class="co-card-media co-img"><img src="{{ $item_image }}" alt="{{ $post->post_title }}" loading="lazy"></a>
                   @endif
                   <h3 class="co-title-md"><a href="{{ $item_url }}">{{ $post->post_title }}</a></h3>
-                  <div class="co-meta"><span class="co-meta-author">{{ $post->authors->first()?->name ?? 'चासो संवाददाता' }}</span><span>{{ $post->created_at->format('M d, Y') }}</span></div>
+                  <div class="co-meta"><span class="co-meta-author">{{ $post->authors->first()?->name ?? 'चासो संवाददाता' }}</span><span>{{ NepaliDateHelper::format($post->created_at) }}</span></div>
                 </article>
 
                 @if ($loop->iteration === 6)

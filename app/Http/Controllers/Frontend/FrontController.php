@@ -18,7 +18,6 @@ class FrontController extends Controller
         'lifestyle_cat'   => 7,
         'sports_cat'      => 6,
         'education_cat'   => 4,
-        'province_cat'    => 8,
         'tourism_cat'     => 4,
         'it_tech_cat'     => 4,
         'interview_cat'   => 1,
@@ -91,6 +90,27 @@ class FrontController extends Controller
                 $sectionData[$key] = $getCategoryWithPosts($sectionCatIds[$key], $take);
             }
 
+            // province tabs: each province is its own category, looked up by slug
+            $provinces = Category::select('id', 'name', 'slug')
+                ->where('type', 'category')
+                ->whereIn('slug', Category::PROVINCE_SLUGS)
+                ->get()
+                ->sortBy(fn($cat) => array_search($cat->slug, Category::PROVINCE_SLUGS))
+                ->map(fn($cat) => (object) [
+                    'category' => $cat,
+                    'posts' => Post::select('posts.id', 'posts.user_id', 'posts.post_title', 'posts.slug', 'posts.post_excerpt', 'posts.created_at')
+                        ->whereIn('posts.id', function ($q) use ($cat) {
+                            $q->select('post_id')->from('category_post')->where('category_id', $cat->id);
+                        })
+                        ->where('posts.post_type', 'post')
+                        ->where('posts.post_status', 'publish')
+                        ->with(['authors:id,name', 'postMeta'])
+                        ->latest('posts.created_at')
+                        ->take(8)
+                        ->get(),
+                ])
+                ->values();
+
             // latest posts for the headline section
             $recentPosts = Post::select('id', 'user_id', 'post_title', 'slug', 'post_excerpt', 'created_at')
                 ->where('post_type', 'post')
@@ -132,6 +152,7 @@ class FrontController extends Controller
                 'recent_posts' => $recentPosts,
                 'front_posts' => $frontPosts,
                 'sections' => $sectionData,
+                'provinces' => $provinces,
             ];
         });
 
@@ -141,6 +162,7 @@ class FrontController extends Controller
             'postMeta' => $cached['postMeta'],
             'recent_posts' => $cached['recent_posts'],
             'front_posts' => $cached['front_posts'] ?? collect(),
+            'provinces' => $cached['provinces'] ?? collect(),
         ];
         foreach ($this->sections as $key => $take) {
             $prefix = str_replace('_cat', '', $key);

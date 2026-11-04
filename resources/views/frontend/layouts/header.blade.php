@@ -18,8 +18,8 @@
             @if ($ad_image_url)
             <a href="{{ route('frontend.home') }}" class="co-logo"><img src="{{ $ad_image_url }}" alt="चासो अनलाइन" width="200" height="100"></a>@endif
           <div class="co-header-date d-none d-lg-flex">
-            <span class="co-date-day">सोमबार</span>
-            <span class="co-date-full">असोज २६, २०८३</span>
+            <span class="co-date-day">{{ NepaliDateHelper::weekday() }}</span>
+            <span class="co-date-full">{{ NepaliDateHelper::format(now()) }}</span>
           </div>
         </div>
       @php
@@ -272,7 +272,7 @@
                             <a href="{{ route('frontend.post.index', $post->id) }}" class="co-ticker-item">
                                 {{ $post->post_title }}
                                 <span class="co-ticker-time">
-                                    {{ $post->created_at->diffForHumans() }}
+                                    {{ NepaliDateHelper::ago($post->created_at) }}
                                 </span>
                             </a>
                         @endforeach

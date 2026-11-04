@@ -1,53 +1,60 @@
-    @if ($province_posts->isNotEmpty() || $tourism_posts->isNotEmpty())
+    @if ($provinces->isNotEmpty() || $tourism_posts->isNotEmpty())
     <section class="co-section">
       <div class="container co-container">
         <div class="co-split">
           <div class="co-split-main">
-            @if ($province_posts->isNotEmpty())
-            @php
-              $feature = $province_posts->first();
-              $minis = $province_posts->slice(1, 4);
-              $trio = $province_posts->slice(5, 3);
-              $provinceTabs = $province_cat->children;
-              $provinceLabel = $provinceTabs->first()?->name ?? $province_cat->name;
-            @endphp
+            @if ($provinces->isNotEmpty())
             <div class="co-section-head co-section-head-tabs">
-              <h2 class="co-section-title">{{ $province_cat->name }}</h2><span class="co-hatch co-hatch-sm"></span>
-              @if ($provinceTabs->isNotEmpty())
+              <h2 class="co-section-title">प्रदेश</h2><span class="co-hatch co-hatch-sm"></span>
               <div class="co-tabs" role="tablist" aria-label="प्रदेश छान्नुहोस्">
                 <span class="co-tabs-pill" aria-hidden="true"></span>
-                @foreach ($provinceTabs as $child)
-                  <button class="co-tab {{ $loop->first ? 'is-active' : '' }}" type="button" role="tab" aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{ $child->name }}</button>
+                @foreach ($provinces as $province)
+                  <button class="co-tab {{ $loop->first ? 'is-active' : '' }}" type="button" role="tab" id="coProvinceTab-{{ $province->category->slug }}" aria-controls="coProvince-{{ $province->category->slug }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">{{ $province->category->name }}</button>
                 @endforeach
               </div>
-              @endif
             </div>
-            <div class="co-province" id="coProvince">
-              <article class="co-province-feature">
-                <a href="{{ $url($feature) }}" class="co-img co-province-media"><img src="{{ $img($feature) }}" alt="{{ $feature->post_title }}"><span class="co-tag co-tag-red co-tag-abs co-province-label">{{ $provinceLabel }}</span></a>
-                <h3 class="co-title-lg"><a href="{{ $url($feature) }}">{{ $feature->post_title }}</a></h3>
-                <div class="co-meta"><span class="co-meta-author">{{ $author($feature) }}</span><span>{{ $date($feature) }}</span></div>
-              </article>
-              <div class="co-mini-list">
-                @foreach ($minis as $p)
-                  <article class="co-mini">
-                    <a href="{{ $url($p) }}" class="co-mini-thumb co-img"><img src="{{ $img($p) }}" alt="{{ $p->post_title }}" loading="lazy"></a>
-                    <div>
-                      <h3 class="co-title-sm"><a href="{{ $url($p) }}">{{ $p->post_title }}</a></h3>
-                      <div class="co-meta"><span>{{ $date($p) }}</span></div>
-                    </div>
+            @foreach ($provinces as $province)
+              @php
+                $label = $province->category->name;
+                $feature = $province->posts->first();
+                $minis = $province->posts->slice(1, 4);
+                $trio = $province->posts->slice(5, 3);
+              @endphp
+              <div class="co-province-panel" id="coProvince-{{ $province->category->slug }}" role="tabpanel" aria-labelledby="coProvinceTab-{{ $province->category->slug }}" @unless ($loop->first) hidden @endunless>
+                @if ($feature)
+                <div class="co-province">
+                  <article class="co-province-feature">
+                    <a href="{{ $url($feature) }}" class="co-img co-province-media"><img src="{{ $img($feature) }}" alt="{{ $feature->post_title }}" @unless ($loop->first) loading="lazy" @endunless><span class="co-tag co-tag-red co-tag-abs co-province-label">{{ $label }}</span></a>
+                    <h3 class="co-title-lg"><a href="{{ $url($feature) }}">{{ $feature->post_title }}</a></h3>
+                    <div class="co-meta"><span class="co-meta-author">{{ $feature->authors->first()?->name ?? '' }}</span><span>{{ $date($feature) }}</span></div>
                   </article>
-                @endforeach
+                  <div class="co-mini-list">
+                    @foreach ($minis as $p)
+                      <article class="co-mini">
+                        <a href="{{ $url($p) }}" class="co-mini-thumb co-img"><img src="{{ $img($p) }}" alt="{{ $p->post_title }}" loading="lazy"></a>
+                        <div>
+                          <h3 class="co-title-sm"><a href="{{ $url($p) }}">{{ $p->post_title }}</a></h3>
+                          <div class="co-meta"><span>{{ $date($p) }}</span></div>
+                        </div>
+                      </article>
+                    @endforeach
+                  </div>
+                </div>
+                @if ($trio->isNotEmpty())
+                <div class="co-trio co-trio-sm co-province-more">
+                  @foreach ($trio as $p)
+                    <article class="co-card">
+                      <a href="{{ $url($p) }}" class="co-card-media co-img"><img src="{{ $img($p) }}" alt="{{ $p->post_title }}" loading="lazy"><span class="co-tag {{ $tagColors[($loop->index + 3) % 4] }} co-tag-abs co-province-label">{{ $label }}</span></a>
+                      <h3 class="co-title-sm"><a href="{{ $url($p) }}">{{ $p->post_title }}</a></h3>
+                    </article>
+                  @endforeach
+                </div>
+                @endif
+                @else
+                <p class="co-meta">{{ $label }} प्रदेशका समाचार छैनन्।</p>
+                @endif
               </div>
-            </div>
-            <div class="co-trio co-trio-sm co-province-more" id="coProvinceMore">
-              @foreach ($trio as $p)
-                <article class="co-card">
-                  <a href="{{ $url($p) }}" class="co-card-media co-img"><img src="{{ $img($p) }}" alt="{{ $p->post_title }}" loading="lazy"><span class="co-tag {{ $tagColors[($loop->index + 3) % 4] }} co-tag-abs co-province-label">{{ $provinceLabel }}</span></a>
-                  <h3 class="co-title-sm"><a href="{{ $url($p) }}">{{ $p->post_title }}</a></h3>
-                </article>
-              @endforeach
-            </div>
+            @endforeach
             @endif
           </div>
 

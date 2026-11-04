@@ -16,7 +16,6 @@ class HomeRepository
         $data['lifestyle_cat'] = isset($request->lifestyle_cat) ? $request->lifestyle_cat : NULL;
         $data['sports_cat'] = isset($request->sports_cat) ? $request->sports_cat : NULL;
         $data['education_cat'] = isset($request->education_cat) ? $request->education_cat : NULL;
-        $data['province_cat'] = isset($request->province_cat) ? $request->province_cat : NULL;
         $data['tourism_cat'] = isset($request->tourism_cat) ? $request->tourism_cat : NULL;
         $data['it_tech_cat'] = isset($request->it_tech_cat) ? $request->it_tech_cat : NULL;
         $data['interview_cat'] = isset($request->interview_cat) ? $request->interview_cat : NULL;

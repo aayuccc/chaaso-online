@@ -58,7 +58,7 @@
               <h3 class="co-title-md"><a href="{{ $item_url }}">{{ $post->post_title }}</a></h3>
               <div class="co-meta">
                 <span class="co-meta-author">{{ $post->authors->first()?->name ?? 'चासो संवाददाता' }}</span>
-                <span>{{ $post->created_at->format('M d, Y') }}</span>
+                <span>{{ NepaliDateHelper::format($post->created_at) }}</span>
               </div>
             </article>
           @endforeach

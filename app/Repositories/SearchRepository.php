@@ -4,9 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\PostMeta;
 use App\Models\SearchLog;
-use App\Helpers\SettingHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
@@ -70,7 +68,7 @@ class SearchRepository
         });
     }
 
-    // categories listed in the search overlay: top level categories + children of the home page province category
+    // categories listed in the search overlay: top level categories, with the province categories grouped separately
     public function overlayCategories(): array
     {
         return Cache::remember('search_overlay_categories', now()->addMinutes(30), function () {
@@ -81,21 +79,13 @@ class SearchRepository
                 ->orderBy('id', 'ASC')
                 ->get();
 
-            $homeId = SettingHelper::get_home_id() ?? 1;
-            $provinceCatId = PostMeta::where(['post_id' => $homeId, 'meta_key' => 'province_cat'])->value('meta_value');
+            $provinces = $categories
+                ->filter(fn ($cat) => in_array($cat->slug, Category::PROVINCE_SLUGS))
+                ->sortBy(fn ($cat) => array_search($cat->slug, Category::PROVINCE_SLUGS))
+                ->values();
 
-            $provinces = $provinceCatId
-                ? Category::select('id', 'name', 'slug')
-                    ->where('type', 'category')
-                    ->where('parent', $provinceCatId)
-                    ->orderBy('menu_order', 'ASC')
-                    ->get()
-                : collect();
-
-            // the province parent gets its own group, so drop it from the main list
-            if ( $provinces->isNotEmpty() ) {
-                $categories = $categories->reject(fn ($cat) => $cat->id == $provinceCatId)->values();
-            }
+            // provinces get their own group, so drop them from the main list
+            $categories = $categories->reject(fn ($cat) => in_array($cat->slug, Category::PROVINCE_SLUGS))->values();
 
             return ['categories' => $categories, 'provinces' => $provinces];
         });

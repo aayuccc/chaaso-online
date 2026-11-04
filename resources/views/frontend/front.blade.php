@@ -5,7 +5,7 @@
     $img = fn($p) => MediaHelper::WsrvService(MediaHelper::getImageById($p->postMeta->firstWhere('meta_key', 'featured_image')?->meta_value)) ?? asset('assets/images/hero.jpg');
     $url = fn($p) => route('frontend.news.show', $p->id);
     $catUrl = fn($c) => $c ? route('frontend.category.index', $c->slug) : '#';
-    $date = fn($p) => $p->created_at->format('M d, Y');
+    $date = fn($p) => NepaliDateHelper::format($p->created_at);
     $author = fn($p) => $p->user?->name ?? 'चासो संवाददाता';
     $tag = fn($p) => $p->categories->first()?->name;
     $excerpt = fn($p, $limit = 160) => \Illuminate\Support\Str::limit(strip_tags($p->post_excerpt ?: $p->postMeta->firstWhere('meta_key', 'short_desc')?->meta_value), $limit);

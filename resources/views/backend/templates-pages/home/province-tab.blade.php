@@ -4,21 +4,11 @@
 
                     <div class="row mb-3">
 
-                        <!-- LEFT CATEGORY -->
+                        <!-- LEFT: province tabs -->
                         <div class="col-md-6">
-                            <label class="form-label">Choose Left News Category</label>
-
-                            <select name="province_cat" class="form-control">
-                                <option value="">Select Category</option>
-
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ isset($metaDatas['province_cat']) && $metaDatas['province_cat'] == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-
-                            </select>
+                            <label class="form-label">Province News</label>
+                            <p class="form-text mb-0">Each tab is its own category, matched by slug:
+                                {{ implode(', ', \App\Models\Category::PROVINCE_SLUGS) }}</p>
                         </div>
 
                         <!-- RIGHT CATEGORY -->

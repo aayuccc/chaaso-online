@@ -2768,9 +2768,13 @@ a.co-oc-link {
     transition: opacity .25s ease;
 }
 
-.co-province.is-switching,
-.co-province-more.is-switching {
-    opacity: .25;
+.co-province-panel:not([hidden]) {
+    animation: co-province-in .3s ease;
+}
+
+@keyframes co-province-in {
+    from { opacity: .25; }
+    to { opacity: 1; }
 }
 
 .co-province-media {

@@ -134,7 +134,7 @@
                 <span class="co-art-av" aria-hidden="true">चा</span>
                 <div>
                   <strong>चासो संवाददाता</strong>
-                  <span class="co-art-meta"><span>{{ $post->created_at->format('M d, Y h:i A') }}</span><span>६ मिनेट पढाइ</span><span><i class="bi bi-eye"></i> {{ strtr(number_format($post->views ?? 0), ['0' => '०', '1' => '१', '2' => '२', '3' => '३', '4' => '४', '5' => '५', '6' => '६', '7' => '७', '8' => '८', '9' => '९']) }}</span></span>
+                  <span class="co-art-meta"><span>{{ NepaliDateHelper::format($post->created_at, true) }}</span><span>६ मिनेट पढाइ</span><span><i class="bi bi-eye"></i> {{ NepaliDateHelper::digits(number_format($post->views ?? 0)) }}</span></span>
                 </div>
               </div>
 
@@ -281,7 +281,7 @@
                         @if($item_image)
                         <a href="{{ $item_url }}" class="co-mini-thumb co-img"><img src="{{ $item_image }}" alt="{{ $item->post_title }}" loading="lazy"></a>
                         @endif
-                        <div><h3 class="co-title-sm"><a href="{{ $item_url }}">{{ $item->post_title }}</a></h3><div class="co-meta"><span>{{ $item->created_at->format('M d, Y') }}</span></div></div>
+                        <div><h3 class="co-title-sm"><a href="{{ $item_url }}">{{ $item->post_title }}</a></h3><div class="co-meta"><span>{{ NepaliDateHelper::format($item->created_at) }}</span></div></div>
                     </article>
                     @endforeach
                 </div>
@@ -334,7 +334,7 @@
                 @php
                     $author_name = $author->name ?? '';
                 @endphp
-                @if($author_name)<span class="co-meta-author">{{$author_name}}</span>@endif<span>{{ $item->created_at->format('M d, Y') }}</span></div>
+                @if($author_name)<span class="co-meta-author">{{$author_name}}</span>@endif<span>{{ NepaliDateHelper::format($item->created_at) }}</span></div>
           </article>
           @endforeach
         </div>

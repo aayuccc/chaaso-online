@@ -246,6 +246,7 @@ return [
         'MediaHelper' => \App\Helpers\MediaHelper::class,
         'UserHelper' => \App\Helpers\UserHelper::class,
         'CommentHelper' => \App\Helpers\CommentHelper::class,
+        'NepaliDateHelper' => \App\Helpers\NepaliDateHelper::class,
     ],
 
 ];
