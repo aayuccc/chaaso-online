@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>{{ url('/') }}</loc>
-        <lastmod>{{ now()->toIso8601String() }}</lastmod>
+        <lastmod>{{ \Carbon\Carbon::parse($homeLastMod)->toIso8601String() }}</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
-    {{-- @if ($tours->isNotEmpty())
-        @foreach ($tours as $tour)
+    @if ($posts->isNotEmpty())
+        @foreach ($posts as $post)
             <url>
-                <loc>{{ route('frontend.tour.index', $tour->slug) }}</loc>
-                <lastmod>{{ $tour->updated_at->toIso8601String() }}</lastmod>
+                <loc>{{ rtrim(route('frontend.post.index', $post->slug), '/') . '/' }}</loc>
+                <lastmod>{{ $post->updated_at->toIso8601String() }}</lastmod>
                 <priority>0.8</priority>
             </url>
         @endforeach
-    @endif --}}
+    @endif
     @if ($pages->isNotEmpty())
         @foreach ($pages as $page)
             <url>

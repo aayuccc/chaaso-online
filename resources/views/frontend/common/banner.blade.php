@@ -1,3 +1,8 @@
+@include('frontend.common.breadcrumb-schema', ['breadcrumbs' => [
+    'गृहपृष्ठ' => route('frontend.home'),
+    $post->post_title => url()->current(),
+]])
+
     <section class="co-cat-hero">
       <div class="container co-container">
         <nav class="co-crumbs" aria-label="ब्रेडक्रम्ब">

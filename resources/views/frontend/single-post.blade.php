@@ -1,5 +1,83 @@
 @extends('frontend.layouts.app', ['payload' => $post, 'payloadMeta' => $postMeta, 'title' => $post->post_title])
 
+@push('schema')
+@php
+  $schemaWebsiteName = $settings['site_title'] ?? '';
+  $schemaLogoId = $settings['header_logo'] ?? null;
+  $schemaLogoMedia = $schemaLogoId ? MediaHelper::getImageById($schemaLogoId) : null;
+  $schemaLogoUrl = ($schemaLogoMedia && !empty($schemaLogoMedia->file_name))
+      ? asset($schemaLogoMedia->file_name)
+      : '';
+
+  // Google's NewsArticle publisher logo does not accept SVG.
+  if ($schemaLogoUrl !== '' && str_ends_with(strtolower(parse_url($schemaLogoUrl, PHP_URL_PATH) ?: ''), '.svg')) {
+      $schemaLogoUrl = '';
+  }
+
+  $schemaFeaturedId = $postMeta['featured_image'] ?? null;
+  $schemaFeaturedMedia = MediaHelper::getImageById($schemaFeaturedId);
+  $schemaImageUrl = ($schemaFeaturedMedia && !empty($schemaFeaturedMedia->file_name))
+      ? asset($schemaFeaturedMedia->file_name)
+      : '';
+
+  $schemaAuthorType = $author ? 'Person' : 'Organization';
+  $schemaAuthorName = $author ? $author->name : ($schemaWebsiteName ?: 'चासो');
+  $schemaAuthorUrl = ($author && Route::has('frontend.author.index'))
+      ? route('frontend.author.index', $author->slug)
+      : url('/');
+  $schemaCanonicalUrl = url()->current();
+
+  $schemaData = [
+    '@context' => 'https://schema.org',
+    '@type'    => 'NewsArticle',
+    'headline' => $post->post_title,
+    'author'   => [
+      '@type' => $schemaAuthorType,
+      'name'  => $schemaAuthorName,
+      'url'   => $schemaAuthorUrl,
+    ],
+    'publisher' => [
+      '@type' => 'Organization',
+      'name'  => $schemaWebsiteName,
+    ],
+    'datePublished'   => $post->created_at->toIso8601String(),
+    'dateModified'    => $post->updated_at->toIso8601String(),
+    'mainEntityOfPage' => [
+      '@type' => 'WebPage',
+      '@id'   => $schemaCanonicalUrl,
+    ],
+  ];
+
+  if ($schemaLogoUrl !== '') {
+    $schemaData['publisher']['logo'] = [
+      '@type' => 'ImageObject',
+      'url'   => $schemaLogoUrl,
+    ];
+  }
+
+  if (!empty($postMeta['short_desc'])) {
+    $schemaData['description'] = $postMeta['short_desc'];
+  }
+
+  if ($schemaImageUrl !== '') {
+    $schemaData['image'] = $schemaImageUrl;
+  }
+
+  $schemaJson = json_encode($schemaData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+  $schemaCrumbs = [
+      'गृहपृष्ठ' => route('frontend.home'),
+  ];
+  if (!empty($category_name) && $category && Route::has('frontend.category.index')) {
+      $schemaCrumbs[$category_name] = route('frontend.category.index', $category->slug);
+  }
+  $schemaCrumbs[$post->post_title] = $schemaCanonicalUrl;
+@endphp
+<script type="application/ld+json">{!! $schemaJson !!}</script>
+@endpush
+
+@include('frontend.common.breadcrumb-schema', ['breadcrumbs' => $schemaCrumbs])
+
 @section('main-section')
   <main class="co-main">
     <!-- Floating reading bar (appears once the cover scrolls away) -->

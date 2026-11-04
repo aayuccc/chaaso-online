@@ -1,5 +1,10 @@
 @extends('frontend.layouts.app', ['payload' => $payload, 'payloadMeta' => $payloadMeta, 'title' => $term !== '' ? $term . ' - खोज' : 'खोज'])
 
+@include('frontend.common.breadcrumb-schema', ['breadcrumbs' => [
+    'गृहपृष्ठ' => route('frontend.home'),
+    'खोज' => route('frontend.search'),
+]])
+
 @php
     // Convert English numbers into Nepali numbers
     $toNepali = fn($number) => strtr((string) $number, ['0' => '०', '1' => '१', '2' => '२', '3' => '३', '4' => '४', '5' => '५', '6' => '६', '7' => '७', '8' => '८', '9' => '९']);

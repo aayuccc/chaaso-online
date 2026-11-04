@@ -1,5 +1,9 @@
 @extends('frontend.layouts.app', ['payload' => $cat, 'payloadMeta' => $catMeta, 'title' => $cat->name])
 
+@include('frontend.common.breadcrumb-schema', ['breadcrumbs' => [
+    'गृहपृष्ठ' => route('frontend.home'),
+    $cat->name => url()->current(),
+]])
 
 @section('main-section')
   <main class="co-main">

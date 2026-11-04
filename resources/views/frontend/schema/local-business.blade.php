@@ -1,36 +1,39 @@
 @php
-    $phone = SettingHelper::get_field('phone') ? SettingHelper::get_field('phone') : '';
-    if ($headerLogo) {
-        $logo = unserialize($headerLogo);
-        $logo = asset('storage/' . $logo[0]['file_name']);
-    } else {
-        $logo = asset('front/img/general/logo-1.svg');
-    }
+  $phone = SettingHelper::get_field('phone') ?: '';
+  $email = SettingHelper::get_field('email_address') ?: '';
+  $street = SettingHelper::get_field('address') ?: '';
+
+  $newsOrgSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'NewsMediaOrganization',
+    '@id' => rtrim(url('/'), '/') . '/#organization',
+    'name' => $websiteName,
+    'url' => url('/'),
+    'sameAs' => url('/'),
+  ];
+
+  if (!empty($logo)) {
+    $newsOrgSchema['image'] = $logo;
+  }
+
+  if ($phone !== '') {
+    $newsOrgSchema['telephone'] = $phone;
+  }
+
+  if ($email !== '') {
+    $newsOrgSchema['email'] = $email;
+  }
+
+  if ($street !== '') {
+    $newsOrgSchema['address'] = [
+      '@type' => 'PostalAddress',
+      'streetAddress' => $street,
+      'addressLocality' => 'Kathmandu',
+      'addressCountry' => 'NP',
+    ];
+  }
 @endphp
 
-{{-- <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "TravelAgency",
-      "name": "{{ $websiteName }}",
-      "image": "{{ $logo }}",
-      "@id": "{{ $logo }}",
-      "url": "{{ url('/') }}",
-      "telephone": "{{ $phone }}",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Lazimpat",
-        "addressLocality": "Kathmandu",
-        "postalCode": "44600",
-        "addressCountry": "NP"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 27.7236763,
-        "longitude": 85.3210589
-      } ,
-      "sameAs": "{{ url('/') }}"
-    }
-    </script> --}}
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TravelAgency","name":"{{ $websiteName }}","image":"{{ $logo }}","@id":"{{ $logo }}","url":"{{ url('/') }}","telephone":"{{ $phone }}","address":{"@type":"PostalAddress","streetAddress":"Lazimpat","addressLocality":"Kathmandu","postalCode":"44600","addressCountry":"NP"},"geo":{"@type":"GeoCoordinates","latitude":27.7236763,"longitude":85.3210589},"sameAs":"{{ url('/') }}"}</script>
+<script type="application/ld+json">
+{!! json_encode($newsOrgSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
