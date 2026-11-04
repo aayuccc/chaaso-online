@@ -48,7 +48,7 @@
               </div>
               @endif
               <div class="co-pf-actions">
-                <a href="story.html?s=0" class="co-pf-btn co-pf-btn-dark"><i class="bi bi-play-circle-fill"></i> स्टोरी मोडमा हेर्नुहोस्</a>
+                <!-- <a href="story.html?s=0" class="co-pf-btn co-pf-btn-dark"><i class="bi bi-play-circle-fill"></i> स्टोरी मोडमा हेर्नुहोस्</a> -->
                 <div class="co-share">
                   <a href="#" class="co-share-fb" aria-label="Facebook मा सेयर गर्नुहोस्"><i class="bi bi-facebook"></i></a>
                   <a href="#" class="co-share-x" aria-label="X मा सेयर गर्नुहोस्"><i class="bi bi-twitter-x"></i></a>
@@ -139,7 +139,7 @@
     <div class="co-pf-lb-top">
       <span class="co-pf-lb-count" id="pfLbCount"></span>
       <strong class="co-pf-lb-title">{{ $post->post_title }}</strong>
-      <a href="story.html?s=0" class="co-pf-lb-ic" aria-label="स्टोरी मोडमा हेर्नुहोस्" title="स्टोरी मोड"><i class="bi bi-play-circle"></i></a>
+      <!-- <a href="story.html?s=0" class="co-pf-lb-ic" aria-label="स्टोरी मोडमा हेर्नुहोस्" title="स्टोरी मोड"><i class="bi bi-play-circle"></i></a> -->
       <button type="button" class="co-pf-lb-ic" id="pfLbClose" aria-label="बन्द गर्नुहोस्"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="co-pf-lb-stage" id="pfLbStage">
