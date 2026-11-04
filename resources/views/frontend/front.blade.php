@@ -90,31 +90,45 @@
     <!-- ================= 3. अर्थ वाणिज्य + जीवनशैली ================= -->
     @include('frontend.home.commerce-tab')
 
-
+    @php
+      $before_sports = SettingHelper::get_field('before_sports');
+      $before_sports = $before_sports ? (is_string($before_sports) ? unserialize($before_sports) : $before_sports) : [];
+      $before_sports = is_array($before_sports) ? $before_sports : [];
+    @endphp
+    @if(count($before_sports))
     <!-- Ad row -->
     <div class="co-ad-row">
       <div class="container co-container">
         <div class="co-ad-pair">
-          <div class="co-ad co-ad-half" data-ad-slot="after-economy-1">
+          @foreach($before_sports as $index => $ad)
+            @php
+              $featuredmedia = !empty($ad['image']) ? MediaHelper::getImageById($ad['image']) : null;
+              if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+              } else {
+                $ad_image_url = null;
+              }
+            @endphp
+            @if($ad_image_url)
+          <div class="co-ad co-ad-half" data-ad-slot="before-video-1">
             <span class="co-ad-tag">विज्ञापन</span>
-            <a href="#" class="co-ad-box co-cr co-cr-h co-cr--pahadpay" rel="sponsored noopener"><img class="co-cr-img"
-                src="{{ asset('assets/images/ads/phone.jpg') }}" alt="" loading="lazy"><span class="co-cr-in"><span
-                  class="co-cr-brand"><i class="bi bi-wallet2"></i> PahadPay</span><span class="co-cr-copy"><strong>बिल
-                    भुक्तानीमा १०% क्यासब्याक</strong><small>बिजुली, पानी, इन्टरनेट — एकै एपमा</small></span><span
-                  class="co-cr-cta">एप डाउनलोड <i class="bi bi-arrow-right"></i></span></span></a>
+            @php
+              $adClasses = [
+              0 => 'co-ad-box co-cr co-cr-h co-cr--pahadpay',
+              1 => 'co-ad-box co-cr co-cr-h co-cr--sunrise',
+              ];
+              $adClass = $adClasses[$index] ?? 'co-ad-box co-cr co-cr-h';
+            @endphp
+            <a href="{{ $ad['link'] ?? '#' }}" class="{{ $adClass }}" rel="sponsored noopener"><img class="co-cr-img"
+                src="{{ $ad_image_url }}" alt="" loading="lazy"></a>
           </div>
-          <div class="co-ad co-ad-half" data-ad-slot="after-economy-2">
-            <span class="co-ad-tag">विज्ञापन</span>
-            <a href="#" class="co-ad-box co-cr co-cr-h co-cr--sunrise" rel="sponsored noopener"><img class="co-cr-img"
-                src="{{ asset('assets/images/ads/house.jpg') }}" alt="" loading="lazy"><span class="co-cr-in"><span
-                  class="co-cr-brand"><i class="bi bi-house-heart-fill"></i> Sunrise Homes</span><span
-                  class="co-cr-copy"><strong>काठमाडौंमा आफ्नै घर, किस्ताबन्दीमा</strong><small>२०% डाउन पेमेन्टमा बुकिङ
-                    खुला</small></span><span class="co-cr-cta">साइट भ्रमण <i
-                    class="bi bi-arrow-right"></i></span></span></a>
-          </div>
+          @endif
+          @endforeach
+          
         </div>
       </div>
     </div>
+    @endif
 
     <!-- ================= 4. खेलकुद + शिक्षा ================= -->
     @include('frontend.home.sports-tab')
@@ -178,31 +192,45 @@
     <!-- ================= 7. अन्तरवार्ता + विचार ================= -->
     @include('frontend.home.interview-tab')
 
-    
+    @php
+      $before_videos = SettingHelper::get_field('before_videos');
+      $before_videos = $before_videos ? (is_string($before_videos) ? unserialize($before_videos) : $before_videos) : [];
+      $before_videos = is_array($before_videos) ? $before_videos : [];
+    @endphp
+    @if(count($before_videos))
     <!-- Ad row -->
     <div class="co-ad-row">
       <div class="container co-container">
         <div class="co-ad-pair">
+          @foreach($before_videos as $index => $ad)
+            @php
+              $featuredmedia = !empty($ad['image']) ? MediaHelper::getImageById($ad['image']) : null;
+              if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+                $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+              } else {
+                $ad_image_url = null;
+              }
+            @endphp
+            @if($ad_image_url)
           <div class="co-ad co-ad-half" data-ad-slot="before-video-1">
             <span class="co-ad-tag">विज्ञापन</span>
-            <a href="#" class="co-ad-box co-cr co-cr-h co-cr--momo" rel="sponsored noopener"><img class="co-cr-img"
-                src="{{ asset('assets/images/ads/momo.jpg') }}" alt="" loading="lazy"><span class="co-cr-in"><span
-                  class="co-cr-brand"><i class="bi bi-fire"></i> MoMo Magic</span><span class="co-cr-copy"><strong>१
-                    प्लेट किन्दा १ प्लेट निःशुल्क</strong><small>हरेक शुक्रबार · सबै शाखामा</small></span><span
-                  class="co-cr-cta">अर्डर गर्नुहोस् <i class="bi bi-arrow-right"></i></span></span></a>
+            @php
+              $adClasses = [
+              0 => 'co-ad-box co-cr co-cr-h co-cr--momo',
+              1 => 'co-ad-box co-cr co-cr-h co-cr--yatra',
+              ];
+              $adClass = $adClasses[$index] ?? 'co-ad-box co-cr co-cr-h';
+            @endphp
+            <a href="{{ $ad['link'] ?? '#' }}" class="{{ $adClass }}" rel="sponsored noopener"><img class="co-cr-img"
+                src="{{ $ad_image_url }}" alt="" loading="lazy"></a>
           </div>
-          <div class="co-ad co-ad-half" data-ad-slot="before-video-2">
-            <span class="co-ad-tag">विज्ञापन</span>
-            <a href="#" class="co-ad-box co-cr co-cr-h co-cr--yatra" rel="sponsored noopener"><img class="co-cr-img"
-                src="{{ asset('assets/images/np/trek.jpg') }}" alt="" loading="lazy"><span class="co-cr-in"><span
-                  class="co-cr-brand"><i class="bi bi-compass"></i> Yatra Treks</span><span
-                  class="co-cr-copy"><strong>अन्नपूर्ण बेस क्याम्प — ७ दिने प्याकेज</strong><small>गाइड, बास र खाना
-                    सहित</small></span><span class="co-cr-cta">बुक गर्नुहोस् <i
-                    class="bi bi-arrow-right"></i></span></span></a>
-          </div>
+          @endif
+          @endforeach
+          
         </div>
       </div>
     </div>
+    @endif
 
     <!-- ================= 8. भिडियो (dark) ================= -->
     @include('frontend.home.video-tab')

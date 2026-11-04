@@ -65,7 +65,10 @@
         <label for="footer_title" class="form-label">Footer Title</label>
         <input type="text" class="form-control" id="footer_title" name="footer_title" value="{{ isset($settings['footer_title']) ? $settings['footer_title'] : '' }}" />
     </div>
-
+    <div class="mb-3">
+        <label for="main_editor" class="form-label">प्रधान सम्पदक</label>
+        <input type="text" class="form-control" id="main_editor" name="main_editor" value="{{ isset($settings['main_editor']) ? $settings['main_editor'] : '' }}" />
+    </div>
     <hr />
     <div class="row">
         <div class="col-md-12">

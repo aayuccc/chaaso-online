@@ -2,6 +2,7 @@
 @php
   $footer_logo = SettingHelper::get_field('footer_logo');
   $media = $footer_logo ? MediaHelper::getImageById($footer_logo) : null;
+  $main_editor = SettingHelper::get_field('main_editor');
   $facebook = SettingHelper::get_field('facebook');
   $twitter = SettingHelper::get_field('twitter$twitter');
   $instagram = SettingHelper::get_field('instagram');
@@ -134,24 +135,37 @@
                 </nav>
 
             @endif
-
+            @if($main_editor)
             <span class="co-ft-editor">
-                प्रधान सम्पादक : <strong>Amrita Bhandari</strong>
+                प्रधान सम्पादक : <strong>{{ $main_editor }}</strong>
             </span>
-
+            @endif
         </div>
     </div>
 
   </footer>
+    
+  @php
+    $websiteName = SettingHelper::get_field('site_title');
+    $before_footer_img = SettingHelper::get_field('before_footer_img');
+    $featuredmedia = $before_footer_img ? MediaHelper::getImageById($before_footer_img) : null;
 
+    if (!empty($featuredmedia) && !empty($featuredmedia->file_name)) {
+      $ad_image_url = MediaHelper::WsrvService($featuredmedia);
+    }
+    else {
+      $ad_image_url = null;
+    }
+    $before_footer_url     = SettingHelper::get_field('before_footer_url');
+  @endphp
+  @if ($before_footer_url || $featuredmedia)
   <!-- Mobile sticky bottom ad -->
   <div class="co-ad-sticky-bottom d-lg-none" id="coStickyAd" role="region" aria-label="विज्ञापन"
     data-ad-slot="mobile-sticky">
     <button class="co-ad-close" type="button" aria-label="विज्ञापन बन्द गर्नुहोस्"><i class="bi bi-x"></i></button>
-    <a href="#" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><span class="co-cr-in"><span
-          class="co-cr-brand"><i class="bi bi-wifi"></i> NovaNet</span><span class="co-cr-copy"><strong>३०० Mbps · रु.
-            ९९९/महिना</strong></span><span class="co-cr-cta">जडान <i class="bi bi-arrow-right"></i></span></span></a>
+    <a href="{{$before_footer_url}}" class="co-ad-box co-cr co-cr-h co-cr--novanet" rel="sponsored noopener"><img class="co-cr-img" src="{{ $ad_image_url }}" alt="" loading="lazy"></a>
   </div>
+  @endif
 
   <button class="co-to-top" id="coToTop" type="button" aria-label="माथि जानुहोस्"><i
       class="bi bi-arrow-up"></i></button>

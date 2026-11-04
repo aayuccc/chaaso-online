@@ -48,6 +48,9 @@ class AdsRepository
         }
 
         // Repeaters (single page short / category short). Each row: image, link. Whole array is serialized.
+        $metaDatas['before_sports'] = $request->before_sports ? serialize($request->before_sports) : null;
+        $metaDatas['before_videos'] = $request->before_videos ? serialize($request->before_videos) : null;
+
         $metaDatas['header_popup_ads'] = $request->header_popup_ads ? serialize($request->header_popup_ads) : null;
         $metaDatas['below_masthead_ads'] = $request->below_masthead_ads ? serialize($request->below_masthead_ads) : null;
 

@@ -29,6 +29,7 @@ class SettingRepository
         // Footer
         $metaDatas['footer_logo'] = $request->footer_logo ?? null;
         $metaDatas['footer_title'] = $request->footer_title ?? null;
+        $metaDatas['main_editor'] = $request->main_editor ?? null;
         $metaDatas['footer_widget_first'] = $request->footer_widget_first ?? null;
 
         // Info Section
