@@ -4,9 +4,10 @@
     @include('backend.ads.partials.ad-image-url', ['label' => 'Below Rajiniti News Ad', 'img' => 'below_rajniti_ad', 'url' => 'below_rajniti_ad_url'])
     
         <div class="col-md-12" style="margin-top:12px;">
-            <div class="mb-3" style="background-color: #b3b9c01c; padding: 20px; border-radius: 10px;">
+
+            <div>
                 <label class="form-label">Before Sports News</label>
-                <div class="table-responsive">
+                <div class="table-responsive" style="background-color: #b3b9c01c; padding: 20px; border-radius: 10px;">
                     <table class="table table-bordered mb-0">
                         <thead>
                             <tr>
@@ -58,6 +59,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
     
@@ -68,9 +70,9 @@
 
         <div class="col-md-12" style="margin-top:12px;">
 
-            <div class="mb-3" style="background-color: #b3b9c01c; padding: 20px; border-radius: 10px;">
+            <div>
                 <label class="form-label">Before Video News</label>
-                <div class="table-responsive">
+                <div class="table-responsive" style="background-color: #b3b9c01c; padding: 20px; border-radius: 10px;">
                     <table class="table table-bordered mb-0">
                         <thead>
                             <tr>
