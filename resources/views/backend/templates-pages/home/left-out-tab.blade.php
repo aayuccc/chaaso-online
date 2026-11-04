@@ -1,5 +1,5 @@
                 <!-- Rajniti NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'left-out') === 'left-out' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'left-out' ? 'show active' : '' }}"
                     id="left-out" role="tabpanel">
 
                     <div class="row mb-3">

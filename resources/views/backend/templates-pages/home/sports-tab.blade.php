@@ -1,5 +1,5 @@
                 <!-- SPORTS/EDUCATION NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'sports') === 'sports' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'sports' ? 'show active' : '' }}"
                     id="sports" role="tabpanel">
 
                     <div class="row mb-3">

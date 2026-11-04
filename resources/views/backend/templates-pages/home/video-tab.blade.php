@@ -1,5 +1,5 @@
                 <!-- VIDEO NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'video') === 'video' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'video' ? 'show active' : '' }}"
                     id="video" role="tabpanel">
 
                     <div class="row mb-3">

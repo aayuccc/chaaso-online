@@ -15,55 +15,55 @@
                     
                     <li class="nav-item">
                         <a href="#commerce" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'commerce') === 'commerce' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'commerce' ? 'active' : '' }}">
                             Commerce/Lifestyle
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="#sports" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'sports') === 'sports' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'sports' ? 'active' : '' }}">
                             Sports/Education
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="#province" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'province') === 'province' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'province' ? 'active' : '' }}">
                             Province/Tourism
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="#it-tech" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'it-tech') === 'it-tech' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'it-tech' ? 'active' : '' }}">
                             Information Technology
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="#interview" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'interview') === 'interview' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'interview' ? 'active' : '' }}">
                             Interview/Idea
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#video" data-bs-toggle="tab" class="nav-link {{ request()->query('tab', 'video') === 'video' ? 'active' : '' }}">
+                        <a href="#video" data-bs-toggle="tab" class="nav-link {{ request()->query('tab', 'rajniti') === 'video' ? 'active' : '' }}">
                             Video
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="#share" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'share') === 'share' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'share' ? 'active' : '' }}">
                             Share/Auto/Argiculture
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="#left-out" data-bs-toggle="tab"
-                            class="nav-link {{ request()->query('tab', 'left-out') === 'left-out' ? 'active' : '' }}">
+                            class="nav-link {{ request()->query('tab', 'rajniti') === 'left-out' ? 'active' : '' }}">
                             छुटाउनुभयो कि ?
                         </a>
                     </li>

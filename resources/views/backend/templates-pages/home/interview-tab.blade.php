@@ -1,5 +1,5 @@
                 <!-- INTERVIEW NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'interview') === 'interview' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'interview' ? 'show active' : '' }}"
                     id="interview" role="tabpanel">
 
                     <div class="row mb-3">

@@ -1,5 +1,5 @@
                 <!-- SHARE/SPORTS/EDUCATION NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'share') === 'share' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'share' ? 'show active' : '' }}"
                     id="share" role="tabpanel">
 
                     <div class="row mb-3">

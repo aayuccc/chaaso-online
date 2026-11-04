@@ -1,5 +1,5 @@
                 <!-- PROVINCE/TOURISM NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'province') === 'province' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'province' ? 'show active' : '' }}"
                     id="province" role="tabpanel">
 
                     <div class="row mb-3">

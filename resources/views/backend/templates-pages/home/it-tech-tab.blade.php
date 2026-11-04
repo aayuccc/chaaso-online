@@ -1,5 +1,5 @@
                 <!-- IT/TECH NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'it-tech') === 'it-tech' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'it-tech' ? 'show active' : '' }}"
                     id="it-tech" role="tabpanel">
 
                     <div class="row mb-3">

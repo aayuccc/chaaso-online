@@ -1,5 +1,5 @@
                 <!-- COMMERCE/TRADE NEWS -->
-                <div class="tab-pane fade {{ request()->query('tab', 'commerce') === 'commerce' ? 'show active' : '' }}"
+                <div class="tab-pane fade {{ request()->query('tab', 'rajniti') === 'commerce' ? 'show active' : '' }}"
                     id="commerce" role="tabpanel">
 
                     <div class="row mb-3">
