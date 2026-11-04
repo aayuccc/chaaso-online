@@ -70,20 +70,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <h4 class="header-title">Featured Image</h4>
-                                <div class="input-group open-media-manager" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" style="cursor: pointer;"
-                                    data-field="featured_image">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
-                                    </div>
-                                    <div class="form-control file-amount">Choose File</div>
-                                </div>
-                                <div class="preview-closer">
-                                    <input type="hidden" id="featured_image" name="featured_image"
-                                        class="selected-files" value="" />
-                                    <div id="featured_image_select" class="clearfix"></div>
-                                </div>
+                                <label for="category-icon" class="form-label">Icon</label>
+                                <input name="icon" type="text" class="form-control" id="category-icon" placeholder="bi-bank">
+                                <small class="form-text text-muted">Bootstrap icon class, see <a href="https://icons.getbootstrap.com/" target="_blank">icons.getbootstrap.com</a></small>
                             </div>
 
                             <button class="btn btn-primary" type="submit">Add New {{ ucfirst($categoryType) }}</button>

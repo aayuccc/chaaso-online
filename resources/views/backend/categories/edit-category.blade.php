@@ -55,64 +55,10 @@
                                                 <textarea name="description" class="form-control" id="category-description" rows="5">{{ $category->description }}</textarea>
                                             </div>
                                             <div class="mb-2">
-                                                <label for="excerpt" class="form-label">Featured Image<span
-                                                        class="form-text text-muted">
-                                                        {{-- <small><i>(Recommended Size: 768x450)</i></small> --}}
-                                                    </span>
-                                                </label>
-                                                <div class="image-wrapper">
-                                                    <div class="input-group open-media-manager" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal" style="cursor: pointer;"
-                                                        data-field="featured_image" data-select="single">
-                                                        <div class="input-group-prepend">
-                                                            <div
-                                                                class="input-group-text bg-soft-secondary font-weight-medium">
-                                                                Browse</div>
-                                                        </div>
-                                                        <div class="form-control file-amount">Choose File</div>
-                                                    </div>
-                                                    <div class="preview-closer">
-                                                        @if (isset($metaDatas['featured_image']) &&
-                                                                ($media = MediaHelper::getModel()->where('id', $metaDatas['featured_image'])->first()))
-                                                            <input type="hidden" id="featured_image" name="featured_image"
-                                                                class="selected-files"
-                                                                value="{{ $metaDatas['featured_image'] }}">
-                                                            <div id="featured_image_select">
-                                                                <div class="file-preview box sm">
-                                                                    <div
-                                                                        class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
-                                                                        <div
-                                                                            class="align-items-center align-self-stretch d-flex justify-content-center thumb">
-                                                                            <img class="img-fit"
-                                                                                src="{{ asset($media->file_name) }}"
-                                                                                alt="image" />
-                                                                        </div>
-                                                                        <div class="col body">
-                                                                            <h6 class="d-flex">
-                                                                                <span
-                                                                                    class="text-truncate title">{{ $media->file_original_name }}</span>
-                                                                                <span
-                                                                                    class="flex-shrink-0 ext">.{{ $media->extension }}</span>
-                                                                            </h6>
-                                                                            <p>{{ MediaHelper::getKBorMB($media->file_size) }}
-                                                                        </div>
-                                                                        <div class="remove"><button
-                                                                                data-id="{{ $media->id }}"
-                                                                                data-slug="featured_image"
-                                                                                class="btn btn-sm btn-link remove-attachment"
-                                                                                type="button"><i
-                                                                                    class="bi bi-x-circle"></i></button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @else
-                                                            <input type="hidden" id="featured_image" name="featured_image"
-                                                                class="selected-files" value="" />
-                                                            <div id="featured_image_select"></div>
-                                                        @endif
-                                                    </div>
-                                                </div>
+                                                <label for="category-icon" class="form-label">Icon</label>
+                                                <input name="icon" type="text" class="form-control" id="category-icon"
+                                                    placeholder="bi-bank" value="{{ $metaDatas['icon'] ?? '' }}">
+                                                <small class="form-text text-muted">Bootstrap icon class, see <a href="https://icons.getbootstrap.com/" target="_blank">icons.getbootstrap.com</a></small>
                                             </div>
                                         </div>
                                     </div>

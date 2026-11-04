@@ -49,6 +49,9 @@
                     document.querySelectorAll('input[name="_token"]').forEach(input => {
                         input.value = data.csrf_token;
                     });
+                    if (window.jQuery) {
+                        $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': data.csrf_token } });
+                    }
                     if (window.axios) {
                         axios.defaults.headers.common['X-CSRF-TOKEN'] = data.csrf_token;
                     }

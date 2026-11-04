@@ -28,7 +28,6 @@
           @if($post->post_content)
           <div class="co-ab-story-text">
             <span class="co-pg-eyebrow"><i class="bi bi-bookmark-star"></i> हाम्रो कथा</span>
-            <h2 class="co-pg-lead">समाचार केवल सूचना होइन, <em>सरोकार</em> हो।</h2>
             {!! $post->post_content !!}
             @if(!empty($editor_designation) || !empty($about_editor) || $editor_media)
             <div class="co-ab-sign">
@@ -137,6 +136,7 @@
     @php
         $categories = \App\Models\Category::where('type', 'category')
             ->get();
+        $categoryIcons = app(\App\Repositories\FrontMenuRepository::class)->getCategoryIcons();
     @endphp
     <!-- ================= COVERAGE ================= -->
     <section class="co-section">
@@ -147,7 +147,7 @@
         <div class="co-ab-cover">
           @foreach ($categories as $category)
           <a href="{{ route('frontend.category.index', $category->slug) }}">
-            <i class="bi bi-newspaper"></i>
+            <i class="bi {{ $categoryIcons[$category->id] ?? 'bi-newspaper' }}"></i>
             <span>{{ $category->name }}</span>
             <i class="bi bi-arrow-up-right"></i>
           </a>

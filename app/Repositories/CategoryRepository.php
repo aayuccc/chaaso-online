@@ -115,6 +115,10 @@ class CategoryRepository
         // $metaDatas['theme_color'] = $request->theme_color ?? null;
 
         // add meta data as per form data
+        // bootstrap icon class, e.g. "bi-bank" (only sent by the category form)
+        if ( $request->has('icon') ) {
+            $metaDatas['icon'] = trim($request->icon ?? '') ?: null;
+        }
 
         // insert or update meta data
         foreach ($metaDatas as $key => $value) {

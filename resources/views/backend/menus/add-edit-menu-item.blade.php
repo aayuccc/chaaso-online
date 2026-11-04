@@ -770,6 +770,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
+                    toastr.error(xhr.status == 419 ? 'Session expired, please reload the page' : 'Update failed');
                 }
             });
         });

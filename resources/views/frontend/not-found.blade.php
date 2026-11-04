@@ -69,8 +69,9 @@
     </section>
 
     @php
-        $categories = \App\Models\Category::where('type', 'category')
+      $categories = \App\Models\Category::where('type', 'category')
             ->get();
+      $categoryIcons = app(\App\Repositories\FrontMenuRepository::class)->getCategoryIcons();
     @endphp
     <!-- ================= CATEGORIES ================= -->
     <section class="co-section">
@@ -81,7 +82,7 @@
         <div class="co-ab-cover">
           @foreach ($categories as $category)
             <a href="{{ route('frontend.category.index', $category->slug) }}">
-                <i class="bi bi-newspaper"></i>
+                <i class="bi {{ $categoryIcons[$category->id] ?? 'bi-newspaper' }}"></i>
                 <span>{{ $category->name }}</span>
                 <i class="bi bi-arrow-up-right"></i>
             </a>

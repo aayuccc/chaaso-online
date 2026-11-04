@@ -30,12 +30,24 @@ class FrontMenuRepository
 
         // preload linked objects to avoid a query per item
         $objectIds = $items->pluck('meta.menu_item_object_id')->filter()->unique();
-        $categories = CategoryHelper::getModel()->whereIn('id', $objectIds)->get()->keyBy('id');
+        $categories = CategoryHelper::getModel()->whereIn('id', $objectIds)->with('categoryMeta')->get()->keyBy('id');
         $posts = PostHelper::getModel()->whereIn('id', $objectIds)->where('post_status', 'publish')->get()->keyBy('id');
 
         $grouped = $items->groupBy(fn ($row) => (int) ($row['meta']['menu_item_parent_id'] ?? 0));
 
         return $this->buildBranch($grouped, 0, $categories, $posts);
+    }
+
+    // [category_id => 'bi-...'] from the "icon" field of each category
+    public function getCategoryIcons()
+    {
+        return CategoryHelper::getModel()
+            ->where('type', 'category')
+            ->with('categoryMeta')
+            ->get()
+            ->mapWithKeys(fn ($category) => [$category->id => $category->categoryMeta->firstWhere('meta_key', 'icon')?->meta_value])
+            ->filter()
+            ->all();
     }
 
     private function buildBranch($grouped, $parentId, $categories, $posts)
@@ -50,6 +62,11 @@ class FrontMenuRepository
             // classes starting with "bi-" are used as bootstrap icons, the rest as css classes
             $classes = collect(preg_split('/\s+/', trim($row['meta']['menu_item_classes'] ?? '')))->filter();
             $icon = $classes->first(fn ($class) => str_starts_with($class, 'bi-'));
+
+            // category items fall back to the category's own icon field
+            if ( !$icon && ($row['meta']['menu_item_object'] ?? null) === 'category' ) {
+                $icon = $categories->get($row['meta']['menu_item_object_id'] ?? null)?->categoryMeta->firstWhere('meta_key', 'icon')?->meta_value;
+            }
 
             $branch[] = [
                 'id'        => $row['item']->id,
