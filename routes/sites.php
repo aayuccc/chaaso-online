@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Frontend\TagController;
+use App\Http\Controllers\Frontend\PhotoFeatureController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('search/term/{term}', [SearchController::class, 'term'])->name('frontend.search.term');
 });
 Route::get('/news/{id}', [PostController::class, 'newsIndex'])->name('frontend.news.show');
+
+// photo feature
+Route::get('photo-feature', [PhotoFeatureController::class, 'index'])->name('frontend.photo_feature.index');
+Route::get('photo-feature/{id}', [PhotoFeatureController::class, 'show'])->whereNumber('id')->name('frontend.photo_feature.show');
 
 // for all dynamic post and page
 Route::match(['get', 'post'], '{slug}', [PostController::class, 'index'])->name('frontend.post.index');

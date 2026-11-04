@@ -288,6 +288,7 @@
     </div>
     @endif
 
+
     <!-- ================= 10. फोटो फिचर (dark carousel) ================= -->
     <section class="co-section co-photo" id="photo-feature">
       <div class="container co-container">
@@ -301,46 +302,21 @@
           </div>
         </div>
         <div class="co-carousel" id="coPhotoCarousel">
-          <a href="story.html?s=0" class="co-overlay co-photo-card">
-            <img src="{{ asset('assets/images/np/hotel1.jpg') }}" alt="">
+          @forelse ($photoFeatures as $item)
+            @php
+            $item_image = MediaHelper::WsrvService(MediaHelper::getImageById($item->postMeta->firstWhere('meta_key', 'featured_image')?->meta_value));
+            $item_url = route('frontend.photo_feature.show', $item->id);
+            @endphp
+          <a href="{{$item_url}}" class="co-overlay co-photo-card">
+            <img src="{{ $item_image }}" alt="{{$item->post_title}}">
             <span class="co-photo-count"><i class="bi bi-images"></i> ५</span>
             <div class="co-overlay-body">
-              <h3 class="co-mark-title co-mark-sm"><span class="co-mark">"कुलेखानी ड्यामसाईड होटल: प्राकृतिक सौन्दर्य र
-                  पर्यटकको आकर्षणको केन्द्र"</span></h3>
+              <h3 class="co-mark-title co-mark-sm"><span class="co-mark">{{$item->post_title}}</span></h3>
             </div>
           </a>
-          <a href="story.html?s=1" class="co-overlay co-photo-card">
-            <img src="{{ asset('assets/images/np/hotel2.jpg') }}" alt="">
-            <span class="co-photo-count"><i class="bi bi-images"></i> ४</span>
-            <div class="co-overlay-body">
-              <h3 class="co-mark-title co-mark-sm"><span class="co-mark">आन्तरिक तथा बाह्य पर्यटकको रोजाई बन्दै -
-                  कुलेखानी ड्यामसाईड होटल</span></h3>
-            </div>
-          </a>
-          <a href="story.html?s=2" class="co-overlay co-photo-card">
-            <img src="{{ asset('assets/images/np/nepal1.jpg') }}" alt="">
-            <span class="co-photo-count"><i class="bi bi-images"></i> ५</span>
-            <div class="co-overlay-body">
-              <h3 class="co-mark-title co-mark-sm"><span class="co-mark">मुस्ताङ, म्याग्दी, बागलुङ र पर्वतमा पर्यटकको
-                  भीड</span></h3>
-            </div>
-          </a>
-          <a href="story.html?s=3" class="co-overlay co-photo-card">
-            <img src="{{ asset('assets/images/np/hotelnight.jpg') }}" alt="">
-            <span class="co-photo-count"><i class="bi bi-images"></i> ४</span>
-            <div class="co-overlay-body">
-              <h3 class="co-mark-title co-mark-sm"><span class="co-mark">पारिवारिक तथा पर्यटकको आकर्षक गन्तव्य बन्दै,
-                  रोयल भिल्ला रिर्सोट</span></h3>
-            </div>
-          </a>
-          <a href="story.html?s=4" class="co-overlay co-photo-card">
-            <img src="{{ asset('assets/images/np/nepal3.jpg') }}" alt="">
-            <span class="co-photo-count"><i class="bi bi-images"></i> ३</span>
-            <div class="co-overlay-body">
-              <h3 class="co-mark-title co-mark-sm"><span class="co-mark">बौद्धका प्रार्थना चक्र: आस्था र सम्पदाको जीवन्त
-                  झलक</span></h3>
-            </div>
-          </a>
+          @empty
+            <p class="co-excerpt">फोटो फिचर अहिलेसम्म उपलब्ध छैन।</p>
+          @endforelse
         </div>
       </div>
     </section>

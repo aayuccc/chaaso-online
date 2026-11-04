@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Helpers\SettingHelper;
 use App\Enums\CategoryType;
 use App\Enums\TemplateType;
+use App\Enums\PostType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PostRepository;
@@ -47,6 +48,10 @@ class PostController extends Controller
                     $data = array_merge($data, $this->getTeamsData());
                 }
 
+                if ( $pageTemplate === TemplateType::PHOTO ) {
+                    $data['photoFeatures'] = $this->getPhotoFeatures();
+                }
+
                 return view($viewName, $data);
 
             }
@@ -85,6 +90,16 @@ class PostController extends Controller
         ];
     }
 
+    // published photo features, newest first
+    private function getPhotoFeatures()
+    {
+        return Post::PostType(PostType::PHOTO_FEATURE)
+            ->PostStatus('publish')
+            ->with('postMeta:id,post_id,meta_key,meta_value')
+            ->latest()
+            ->paginate(12);
+    }
+
     public function newsIndex($id)
     {
         $post = Post::where([ 'id' => $id, 'post_type' => 'post' ])->first();
@@ -98,7 +113,7 @@ class PostController extends Controller
                 $postMeta = $post->GetAllMetaData();
 
                 if ( $isPublished ) {
-                    $this->countView($post);
+                    $this->postRepository->countView($post);
                 }
 
                 // first assigned category, used for the breadcrumb and "more" link
@@ -129,21 +144,5 @@ class PostController extends Controller
             }
         }
         abort(404, 'Post not found');
-    }
-
-    // one view per post per visitor session, so refreshing doesn't inflate the count
-    private function countView(Post $post)
-    {
-        $viewed = session('viewed_posts', []);
-
-        if ( in_array($post->id, $viewed) ) {
-            return;
-        }
-
-        // query-level increment: skips the observer (last_updated_by) and leaves updated_at alone
-        Post::whereKey($post->id)->toBase()->increment('views');
-        $post->views = ($post->views ?? 0) + 1;
-
-        session()->push('viewed_posts', $post->id);
     }
 }

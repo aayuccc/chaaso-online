@@ -164,6 +164,24 @@
                     </ul>
                 </div>
             </li>
+            <li class="side-nav-item {{ request()->segment(2) === 'photo-feature' ? 'menuitem-active' : '' }}">
+                <a data-bs-toggle="collapse" href="#photoFeature" aria-expanded="false" aria-controls="photoFeature"
+                    class="side-nav-link">
+                    <i class="ri-gallery-line"></i>
+                    <span> Photo Features </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse {{ request()->segment(2) === 'photo-feature' ? 'show' : '' }}" id="photoFeature">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{{ route('backend.photo_feature') }}">All Photo Features</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('backend.photo_feature.create') }}">Add New Photo Feature</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             {{-- @php
                 $pendingComments = CommentHelper::getModel()->where('approved', 0)->count();
             @endphp

@@ -313,4 +313,20 @@ class PostRepository
     {
         return Post::postType($postType)->onlyTrashed()->count();
     }
+
+    // one view per post per visitor session, so refreshing doesn't inflate the count
+    public function countView(Post $post)
+    {
+        $viewed = session('viewed_posts', []);
+
+        if ( in_array($post->id, $viewed) ) {
+            return;
+        }
+
+        // query-level increment: skips the observer (last_updated_by) and leaves updated_at alone
+        Post::whereKey($post->id)->toBase()->increment('views');
+        $post->views = ($post->views ?? 0) + 1;
+
+        session()->push('viewed_posts', $post->id);
+    }
 }

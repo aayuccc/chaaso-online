@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\Backend\PhotoFeatureController;
 use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\TrashController;
@@ -117,6 +118,12 @@ Route::prefix('backend')->middleware(['auth', 'check.user.role'])->group(functio
     Route::post('team', [TeamController::class, 'store'])->name('backend.team.store');
     Route::get('team/{id}/edit', [TeamController::class, 'edit'])->name('backend.team.edit');
     Route::post('team/{id}/edit', [TeamController::class, 'update'])->name('backend.team.update');
+    // photo feature routing
+    Route::get('photo-feature', [PhotoFeatureController::class, 'index'])->name('backend.photo_feature');
+    Route::get('photo-feature/create', [PhotoFeatureController::class, 'create'])->name('backend.photo_feature.create');
+    Route::post('photo-feature', [PhotoFeatureController::class, 'store'])->name('backend.photo_feature.store');
+    Route::get('photo-feature/{id}/edit', [PhotoFeatureController::class, 'edit'])->name('backend.photo_feature.edit');
+    Route::post('photo-feature/{id}/edit', [PhotoFeatureController::class, 'update'])->name('backend.photo_feature.update');
     // soft deletes for posts
     Route::get('{type}/trash', [TrashController::class, 'index'])->name('backend.post.trash');
     Route::get('post/{id}/restore', [TrashController::class, 'restore'])->name('backend.post.restore');

@@ -129,14 +129,20 @@
             <p class="co-art-dek">{{ $short_desc }}</p>
             @endif
             <div class="co-cover-bar">
-
+              @php
+                $author_name = $author->name ?? '';
+                $authordesc = $author->description ?? '';
+                $author_url = ($author && Route::has('frontend.author.index')) ? route('frontend.author.index', $author->slug) : '#';
+              @endphp
+              @if($author_name || $authordesc)
               <div class="co-art-byline">
-                <span class="co-art-av" aria-hidden="true">चा</span>
+                <span class="co-art-av" aria-hidden="true">{{ mb_substr($author_name, 0, 2) }}</span>
                 <div>
-                  <strong>चासो संवाददाता</strong>
+                  <strong>{{$author_name}}</strong>
                   <span class="co-art-meta"><span>{{ NepaliDateHelper::format($post->created_at, true) }}</span><span>६ मिनेट पढाइ</span><span><i class="bi bi-eye"></i> {{ NepaliDateHelper::digits(number_format($post->views ?? 0)) }}</span></span>
                 </div>
               </div>
+              @endif
 
               <div class="co-share">
                   <a href="#" class="co-share-fb" aria-label="Facebook मा सेयर गर्नुहोस्"><i class="bi bi-facebook"></i></a>

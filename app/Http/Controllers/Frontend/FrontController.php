@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Enums\PostType;
 use App\Helpers\SettingHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -33,7 +34,7 @@ class FrontController extends Controller
     {
         $homeId = SettingHelper::get_home_id() ?? 1;
 
-        $cached = Cache::remember("home_page_data_{$homeId}", now()->addMinutes(5), function () use ($homeId) {
+        $cached = Cache::remember("home_page_data_{$homeId}", now()->addMinutes(1), function () use ($homeId) {
                 $post = Post::with(['authors:id,name', 'postMeta'])
                 ->select(['id', 'user_id', 'post_title', 'slug'])
                 ->where('post_type', 'page')
@@ -146,6 +147,15 @@ class FrontController extends Controller
                 ->reverse()
                 ->values();
 
+            // latest photo features for the फोटो फिचर carousel
+            $photoFeatures = Post::select('id', 'user_id', 'post_title', 'slug', 'created_at')
+                ->where('post_type', PostType::PHOTO_FEATURE)
+                ->where('post_status', 'publish')
+                ->with('postMeta:id,post_id,meta_key,meta_value')
+                ->latest()
+                ->take(10)
+                ->get();
+
             return [
                 'post' => $post,
                 'postMeta' => $postMeta,
@@ -153,6 +163,7 @@ class FrontController extends Controller
                 'front_posts' => $frontPosts,
                 'sections' => $sectionData,
                 'provinces' => $provinces,
+                'photoFeatures' => $photoFeatures,
             ];
         });
 
@@ -163,6 +174,7 @@ class FrontController extends Controller
             'recent_posts' => $cached['recent_posts'],
             'front_posts' => $cached['front_posts'] ?? collect(),
             'provinces' => $cached['provinces'] ?? collect(),
+            'photoFeatures' => $cached['photoFeatures'] ?? collect(),
         ];
         foreach ($this->sections as $key => $take) {
             $prefix = str_replace('_cat', '', $key);
