@@ -52,9 +52,9 @@ Route::get('storage', function () {
     Artisan::call('storage:link');
 });
 
-// Route::get('/sitemap_index.xml', [SitemapController::class, 'index']);
+Route::get('/sitemap_index.xml', [SitemapController::class, 'index']);
 
-Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::get('admin-chaaso', [AuthController::class, 'login'])->name('login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
 Route::get('reset-password/{token}', [AuthController::class, 'resetPassword']);
