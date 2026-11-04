@@ -46,6 +46,8 @@ class SettingRepository
         $metaDatas['youtube'] = $request->youtube ?? null;
         $metaDatas['instagram'] = $request->instagram ?? null;
         $metaDatas['tiktok'] = $request->tiktok ?? null;
+        $metaDatas['map_link'] = $request->map_link ?? null;
+        $metaDatas['map_url'] = $request->map_url ?? null;
 
         // add meta data as per form data
 

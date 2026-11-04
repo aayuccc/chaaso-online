@@ -83,8 +83,16 @@
             </div>
         </div>
     </div>
-    <div class="mb-3">
-        <label for="map" class="form-label">Map</label>
-        <textarea class="form-control" name="map_url" id="map_url" cols="30" rows="3">{{ isset($settings['map_url']) ? $settings['map_url'] : '' }}</textarea>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="map_link" class="form-label">Map URL</label>
+                <input type="url" class="form-control" id="map_link" name="map_link" value="{{ isset($settings['map_link']) ? $settings['map_link'] : '' }}" />
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="map" class="form-label">Map</label>
+            <textarea class="form-control" name="map_url" id="map_url" cols="30" rows="3">{{ isset($settings['map_url']) ? $settings['map_url'] : '' }}</textarea>
+        </div>
     </div>
 </div>

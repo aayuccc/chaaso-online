@@ -14,6 +14,8 @@
     $instagram = SettingHelper::get_field('instagram');
     $youtube = SettingHelper::get_field('youtube');
     $tiktok = SettingHelper::get_field('tiktok');
+    $map_url = SettingHelper::get_field('map_url');
+    $map_link = SettingHelper::get_field('map_link');
   @endphp
   <main class="co-main co-page">
 
@@ -59,72 +61,7 @@
       <div class="container co-container">
         <div class="co-ct-grid">
 
-          <form class="co-ct-form" id="coContactForm" novalidate>
-            <div class="co-ct-form-head">
-              <h2>सन्देश पठाउनुहोस्</h2>
-              <p><span class="co-ct-req">*</span> चिन्ह भएका विवरण अनिवार्य छन्।</p>
-            </div>
-
-            <fieldset class="co-ct-topics">
-              <legend>विषय</legend>
-              <label><input type="radio" name="topic" value="general" checked><span><i class="bi bi-chat-dots"></i> सामान्य</span></label>
-              <label><input type="radio" name="topic" value="tip"><span><i class="bi bi-lightning-charge"></i> समाचार टिप</span></label>
-              <label><input type="radio" name="topic" value="ads"><span><i class="bi bi-megaphone"></i> विज्ञापन</span></label>
-              <label><input type="radio" name="topic" value="fix"><span><i class="bi bi-flag"></i> सुधार / गुनासो</span></label>
-            </fieldset>
-
-            <div class="co-ct-row">
-              <div class="co-ct-field">
-                <label for="ctName">पूरा नाम <span class="co-ct-req">*</span></label>
-                <input id="ctName" name="name" type="text" autocomplete="name" placeholder="तपाईंको नाम" required>
-                <small class="co-ct-err">कृपया नाम लेख्नुहोस्।</small>
-              </div>
-              <div class="co-ct-field">
-                <label for="ctEmail">इमेल <span class="co-ct-req">*</span></label>
-                <input id="ctEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-                <small class="co-ct-err">मान्य इमेल ठेगाना लेख्नुहोस्।</small>
-              </div>
-            </div>
-
-            <div class="co-ct-row">
-              <div class="co-ct-field">
-                <label for="ctPhone">फोन <span class="co-ct-opt">(ऐच्छिक)</span></label>
-                <input id="ctPhone" name="phone" type="tel" autocomplete="tel" placeholder="९८XXXXXXXX">
-              </div>
-              <div class="co-ct-field">
-                <label for="ctSubject">शीर्षक <span class="co-ct-req">*</span></label>
-                <input id="ctSubject" name="subject" type="text" placeholder="छोटो शीर्षक" required>
-                <small class="co-ct-err">शीर्षक लेख्नुहोस्।</small>
-              </div>
-            </div>
-
-            <div class="co-ct-field">
-              <label for="ctMsg">सन्देश <span class="co-ct-req">*</span></label>
-              <textarea id="ctMsg" name="message" rows="6" maxlength="1000" placeholder="तपाईंको कुरा यहाँ लेख्नुहोस्…" required minlength="20"></textarea>
-              <div class="co-ct-field-foot">
-                <small class="co-ct-err">कम्तीमा २० अक्षरको सन्देश लेख्नुहोस्।</small>
-                <small class="co-ct-count" id="ctCount">0 / 1000</small>
-              </div>
-            </div>
-
-            <label class="co-ct-check">
-              <input type="checkbox" name="consent" required>
-              <span>मेरो विवरण यो सन्देशको जवाफ दिन मात्र प्रयोग गर्न सहमत छु। <a href="#">प्राइवेसी पोलिसी</a></span>
-            </label>
-
-            <div class="co-ct-submit">
-              <button type="submit" class="co-btn"><i class="bi bi-send"></i> सन्देश पठाउनुहोस्</button>
-              <p class="co-ct-note"><i class="bi bi-lock"></i> तपाईंको पहिचान गोप्य राखिन्छ।</p>
-            </div>
-
-            <div class="co-ct-done" id="coContactDone" hidden>
-              <span class="co-pg-ic"><i class="bi bi-check2"></i></span>
-              <div>
-                <strong>धन्यवाद! सन्देश प्राप्त भयो।</strong>
-                <p>हाम्रो टिमले छिट्टै तपाईंलाई इमेलमार्फत जवाफ दिनेछ।</p>
-              </div>
-            </div>
-          </form>
+          <livewire:form.contact-form />
 
           @if($address || $email_address || $registration_number || $opening_hours)
           <aside class="co-ct-side">
@@ -170,10 +107,14 @@
               </div>
               @endif
             </div>
+            @if($map_url)
             <div class="co-ct-map">
-              <iframe title="चासो अनलाइन कार्यालयको नक्सा" src="https://maps.google.com/maps?q=New%20Baneshwor%2C%20Kathmandu&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              <a href="https://maps.google.com/?q=New+Baneshwor,+Kathmandu" target="_blank" rel="noopener" class="co-ct-map-link"><i class="bi bi-sign-turn-right"></i> दिशा हेर्नुहोस्</a>
+              {{$map_url}}
+              @if($map_link)
+              <a href="{{ $map_link }}" target="_blank" rel="noopener" class="co-ct-map-link"><i class="bi bi-sign-turn-right"></i> दिशा हेर्नुहोस्</a>
+              @endif
             </div>
+            @endif
           </aside>
           @endif
         </div>
